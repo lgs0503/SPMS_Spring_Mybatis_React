@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lgs.com.bbs.mapper.BoardMapper">
+
+	<resultMap type="lgs.com.bbs.vo.BoardVO" id="boardMap">
+		<id property="bno" column="bno"></id>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="writer" column="writer"/>
+		<result property="regDate" column="regDate"/>
+	</resultMap>
+	
+	<select id="getBoardList" resultMap="boardMap">
+		SELECT	BNO,
+				TITLE,
+				CONTENT,
+				WRITER,
+				TO_CHAR(REGDATE, 'YYYY-MM-DD') AS REGDATE
+		FROM	BOARD
+	</select>
+
+</mapper>
