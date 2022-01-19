@@ -1,4 +1,4 @@
-#ShowPingMall - Spring
+ # ShowPingMall - Spring
 
 스프링 프레임워크 쇼핑몰 프로젝트
 
@@ -9,7 +9,7 @@
 등록한 물품을 사용자가 구매신청 하는 사이트
 
 ----------------------------------
-> ##사용 기술
+> ## 사용 기술
 > - Java 1.8
 > - Spring 
 >   - MVC 
@@ -25,7 +25,7 @@
 > - Docker 
 > - Oracle 11g (Docker image)
 ----------------------------------
-> ##협업 담당
+> ## 협업 담당
 >
 > 프론트 : 정다은(jde98)
 >  - HTML CSS Javascript
