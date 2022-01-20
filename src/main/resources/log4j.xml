@@ -43,15 +43,15 @@
 		<appender-ref ref="console"/> 
 	</logger>
 	
-	<logger name="jdbc.sqlonly" additivity="false"> 
+<!--	<logger name="jdbc.sqlonly" additivity="false">
 		<level value="debug"/>
 		<appender-ref ref="console"/> 
-	</logger>
+	</logger>-->
 	
-	<logger name="jdbc.audit" additivity="false"> 
+<!--	<logger name="jdbc.audit" additivity="false">
 		<level value="debug"/>
 		<appender-ref ref="console"/> 
-	</logger> 
+	</logger> -->
 
 	<logger name="jdbc.resultset" additivity="false">
 		<level value="debug" />
