@@ -31,7 +31,7 @@
 	</beans:bean>
 
 	<!-- Interceptors -->
-	<beans:bean id="authenticationInterceptor" class="lgs.com.utill.AuthenticationInterceptor">
+	<beans:bean id="authenticationInterceptor" class="lgs.com.utill.interceptor.AuthenticationInterceptor">
 	</beans:bean>
 
 	<!-- Interceptor 설정 -->
