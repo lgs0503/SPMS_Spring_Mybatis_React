@@ -8,5 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MainMapper {
 
 	public int loginProcessing(UserVO userVO);
+
+	public void registerProcessing(UserVO userVO);
 	
 }

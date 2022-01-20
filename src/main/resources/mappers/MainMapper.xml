@@ -10,4 +10,24 @@
 		AND		PASSWORD = #{password}
 	</select>
 
+	<insert id="registerProcessing" parameterType="lgs.com.main.vo.UserVO">
+	/* insertUser 계정 생성 */
+		INSERT
+		INTO	MEMBER
+		(		ID
+		,		PASSWORD
+		,		NAME
+		,		DATE_OF_BIRTH
+		,		PHONE_NUMBER
+		,		EMAIL
+		)		VALUES
+		(		#{userId}
+		,		#{password}
+		,		#{userName}
+		,		#{birth}
+		,		#{phoneNum}
+		,		#{email}
+		)
+	</insert>
+
 </mapper>

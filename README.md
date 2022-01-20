@@ -18,6 +18,7 @@
 >   - DBtranscation
 >   - log4j
 >   - JsonView
+>   - Junit4 단위 테스트
 >   - JSP 삭제후 순수 HTML 로 대체
 >      - 추후 React.js or Vue.js 로 변경하기위함
 > - HTML CSS JavaScript

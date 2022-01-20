@@ -1,4 +1,4 @@
-package com.bbs.comm;
+package lgs.com;
 
 import java.sql.Connection;
 

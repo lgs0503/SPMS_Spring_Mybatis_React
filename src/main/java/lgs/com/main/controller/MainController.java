@@ -50,8 +50,18 @@ public class MainController {
 	 * @return 로그인 결과값
 	*/
 	@RequestMapping(value = "/loginProcessing", method = RequestMethod.POST)
-	public @ResponseBody int loginProcessing(@RequestBody UserVO userVO)
-	{
+	public @ResponseBody int loginProcessing(@RequestBody UserVO userVO) {
+		logger.info("loginProcessing");
 		return mainService.loginProcessing(userVO);
+	}
+
+	/**
+	 *  회원가입 프로세스
+	 * @param UserVO 회원가입 할 데이터 input
+	 */
+	@RequestMapping(value = "/registerProcessing", method = RequestMethod.POST)
+	public @ResponseBody void registerProcessing(@RequestBody UserVO userVO) {
+		logger.info("registerProcessing");
+		mainService.registerProcessing(userVO);
 	}
 }
