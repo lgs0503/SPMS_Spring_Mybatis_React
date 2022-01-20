@@ -1,4 +1,4 @@
-package com.bbs.comm;
+package lgs.com;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
