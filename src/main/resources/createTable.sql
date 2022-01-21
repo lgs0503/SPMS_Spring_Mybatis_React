@@ -1,10 +1,9 @@
 -- 제품 테이블
-
 CREATE table PRODUCT
  (
     IDX VARCHAR2(20) not null,
     PRODUCT_NAME VARCHAR2(50),
-    "PRODUCT_ PRICE" int,
+    PRODUCT_PRICE int,
     PRODUCT_CNT int,
     PRODUCT_DESCRIPTION VARCHAR2(2000),
     PRODUCT_IMAGE_NO VARCHAR2(20),
@@ -13,7 +12,7 @@ CREATE table PRODUCT
     DELETED VARCHAR2(20),
     USE_YN VARCHAR2(10),
     CREATE_DATE DATE,
-    UPDAET_DATE DATE,
+    UPDATE_DATE DATE,
     CREATE_USER VARCHAR2(20),
     UPDATE_USER VARCHAR2(20)
  );
@@ -21,7 +20,7 @@ CREATE table PRODUCT
 comment on table PRODUCT is '제품';
 comment on column PRODUCT.IDX is '일련번호';
 comment on column PRODUCT.PRODUCT_NAME is '제품명';
-comment on column PRODUCT."PRODUCT_ PRICE" is '제품가격';
+comment on column PRODUCT.PRODUCT_PRICE is '제품가격';
 comment on column PRODUCT.PRODUCT_CNT is '제품수량';
 comment on column PRODUCT.PRODUCT_DESCRIPTION is '제품설명';
 comment on column PRODUCT.PRODUCT_IMAGE_NO is '제품 섬네일 파일번호';
@@ -30,7 +29,7 @@ comment on column PRODUCT.PRODUCT_CLASS2 is '소분류';
 comment on column PRODUCT.DELETED is '삭제여부';
 comment on column PRODUCT.USE_YN is '사용여부';
 comment on column PRODUCT.CREATE_DATE is '생성일';
-comment on column PRODUCT.UPDAET_DATE is '수정일';
+comment on column PRODUCT.UPDATE_DATE is '수정일';
 comment on column PRODUCT.CREATE_USER is '생성자';
 comment on column PRODUCT.UPDATE_USER is '수정자';
 create unique index PRODUCT_IDX_uindex
@@ -38,9 +37,48 @@ create unique index PRODUCT_IDX_uindex
 alter table PRODUCT
     add constraint PRODUCT_pk
         primary key (IDX);
--- 사용자 테이블
 
-
+-- 유저 테이블
+CREATE TABLE "USER_INFO"
+(
+    USER_ID VARCHAR2(20),
+    PASSWORD VARCHAR2(500),
+    USER_NAME VARCHAR2(20),
+    AGE INT,
+    GENDER VARCHAR2(20),
+    EMAIL VARCHAR2(20),
+    LOCATION VARCHAR2(20),
+    LOCATION_DTL VARCHAR2(20),
+    IMAGE_FILE_NO VARCHAR2(500),
+    USER_URLE VARCHAR2(500),
+    DELETED VARCHAR2(20),
+    CREATE_USER VARCHAR2(20),
+    CREATE_DATE DATE,
+    UPDATE_USER VARCHAR2(20),
+    UPDATE_DATE DATE,
+    PHONE_NUM VARCHAR2(50)
+);
+comment on table USER_INFO is '사용자';
+comment on column USER_INFO.USER_ID is '계정';
+comment on column USER_INFO.PASSWORD is '비밀번호';
+comment on column USER_INFO.USER_NAME is '성명';
+comment on column USER_INFO.AGE is '나이';
+comment on column USER_INFO.GENDER is '성별';
+comment on column USER_INFO.EMAIL is '이메일';
+comment on column USER_INFO.LOCATION is '주소';
+comment on column USER_INFO.LOCATION_DTL is '주소 상세';
+comment on column USER_INFO.IMAGE_FILE_NO is '프로필 사진';
+comment on column USER_INFO.DELETED is '삭제여부';
+comment on column USER_INFO.CREATE_DATE is '생성일';
+comment on column USER_INFO.UPDATE_DATE is '수정일';
+comment on column USER_INFO.CREATE_USER is '생성자';
+comment on column USER_INFO.UPDATE_USER is '수정자';
+comment on column USER_INFO.PHONE_NUM is '연락처';
+create unique index USER_IDX_uindex
+    on USER_INFO (USER_ID);
+alter table USER_INFO
+    add constraint USER_pk
+        primary key (USER_ID);
 
 -- 구매신청 테이블
 
