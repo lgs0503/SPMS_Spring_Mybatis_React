@@ -20,7 +20,15 @@
 			,	UPDATE_USER
 		FROM	PRODUCT
 	<where>
-
+		<if test="PRODUCT_NAME != null and PRODCUT_NAME != ''">
+		AND 	PRODUCT_NAME LIKE '%' || #{productName} || '%'
+		</if>
+		<if test="PRODUCT_CLASS1 != null and PRODUCT_CLASS1 != ''">
+		AND 	PRODUCT_CLASS1 = #{productClass1}
+		</if>
+		<if test="PRODUCT_CLASS2 != null and PRODUCT_CLASS2 != ''">
+		AND 	PRODUCT_CLASS2 = #{productClass2}
+		</if>
 	</where>
 	</select>
 
@@ -32,4 +40,74 @@
 		AND 	IDX = #{idx}
 		</where>
 	</select>
+
+	<insert id="saveProduct" parameterType="lgs.com.product.vo.ProductVO">
+		/* saveProduct 제품 저장 (신규, 수정)  */
+		MERGE
+		INTO	PRODUCT P
+		USING	DUAL
+		ON 		(P.IDX = #{idx})
+		WHEN 	MATCHED THEN
+		UPDATE
+		SET		PRODUCT_NAME		= #{productName}
+		,		PRODUCT_PRICE		= #{productPrice}
+		,		PRODUCT_CNT			= #{productCnt}
+		,		PRODUCT_DESCRIPTION	= #{productDescription}
+		,		PRODUCT_IMAGE_NO	= #{productImageNo}
+		,		PRODUCT_CLASS1		= #{productClass1}
+		,		PRODUCT_CLASS2		= #{prodcutClass2}
+		,		DELETED				= #{deleted}
+		,		USE_YN				= #{useYn}
+		,		UPDATE_USER			= #{updateUser}
+		,		UPDATE_DATE			= #{updateDate}
+		WHEN 	NOT MATCHED THEN
+		INSERT
+		(
+			IDX
+		,	PRODUCT_NAME
+		,	PRODUCT_PRICE
+		,	PRODUCT_CNT
+		,	PRODUCT_DESCRIPTION
+		,	PRODUCT_IMAGE_NO
+		,	PRODUCT_CLASS1
+		,	PRODUCT_CLASS2
+		,	DELETED
+		,	USE_YN
+		,	CREATE_USER
+		,	CREATE_DATE
+		,	UPDATE_USER
+		,	UPDATE_DATE
+		)
+		VALUES
+		(
+			(
+			SELECT	NVL(MAX(IDX),0)+1
+			FROM	PRODUCT
+			)
+		,	#{productName}
+		,	#{productPrice}
+		,	#{productCnt}
+		,	#{productDescription}
+		,	#{productImageNo}
+		,	#{productClass1}
+		,	#{productClass2}
+		,	#{deleted}
+		,	#{useYn}
+		,	#{createUser}
+		,	#{createDate}
+		,	#{updateUser}
+		,	#{updateDate}
+		)
+	</insert>
+
+	<delete id="deleteProduct" parameterType="lgs.com.product.vo.ProductVO">
+		/* saveProduct 제품 저장 (신규, 수정)  */
+		DELETE
+		FROM	PRODUCT
+		WHERE IDX IN
+		<foreach collection="idxs" index="index" item="idx"
+				 separator="," open="(" close=")" >
+			#{idx}
+		</foreach>
+	</delete>
 </mapper>

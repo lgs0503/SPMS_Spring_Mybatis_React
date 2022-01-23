@@ -44,4 +44,27 @@ public class ProductServiceImpl implements ProductService {
         return result;
     }
 
+    @Override
+    public void saveProduct(ProductVO productVO) {
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ProductMapper mapper = session.getMapper(ProductMapper.class);
+
+            mapper.saveProduct(productVO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteProduct(ProductVO productVO) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ProductMapper mapper = session.getMapper(ProductMapper.class);
+
+            mapper.deleteProduct(productVO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

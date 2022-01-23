@@ -33,7 +33,6 @@ public class ProductController {
 		return "/product/list";
 	}
 
-
 	/**
 	*  제품 리스트 조회
 	 * @param ProductVO 조회조건
@@ -48,5 +47,25 @@ public class ProductController {
 		mv.addObject("productCnt", productService.productCnt(productVO));
 		mv.setViewName("jsonView");
 		return mv;
+	}
+
+	/**
+	 *  제품 저장 (신규, 수정)
+	 * @param ProductVO 저장 제품 데이터
+	 */
+	@RequestMapping(value = "/saveProduct", method = {RequestMethod.POST, RequestMethod.PUT})
+	public void saveProduct(@RequestBody ProductVO productVO) {
+		logger.info("saveProduct");
+		productService.saveProduct(productVO);
+	}
+
+	/**
+	 *  제품 삭제
+	 * @param ProductVO 삭제 제품 데이터
+	 */
+	@RequestMapping(value = "/deleteProduct", method = RequestMethod.DELETE)
+	public void deleteProduct(@RequestBody ProductVO productVO) {
+		logger.info("deleteProduct");
+		productService.deleteProduct(productVO);
 	}
 }
