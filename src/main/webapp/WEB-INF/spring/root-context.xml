@@ -14,7 +14,7 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
 	<!-- properties location -->
-	<context:property-placeholder location="classpath:properties/jdbc.properties"/>
+	<context:property-placeholder location="classpath:properties/config.properties"/>
 	
 	<!-- Oracle JDBC DataSource -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -40,5 +40,17 @@
 	<!-- jdbcTx  -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<!-- 파일업로드 설정 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!--  파일업로드 용량 (10MB)-->
+		<property name="maxUploadSize" value="${file.uploadMaxSize}"/>
+		<property name="defaultEncoding" value="${file.encoding}" />
+	</bean>
+
+	<!--  파일업로드 디렉토리 설정 -->
+	<bean id="uploadPath" class="java.lang.String">
+		<constructor-arg value="${file.uploadPath}"/>
 	</bean>
 </beans>
