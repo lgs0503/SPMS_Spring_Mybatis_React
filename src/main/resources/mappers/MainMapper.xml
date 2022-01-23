@@ -5,28 +5,48 @@
 	<select id="loginProcessing" resultType="int" parameterType="lgs.com.main.vo.UserVO">
 	/* loginProcessing 로그인 결과 조회 */
 		SELECT	COUNT(*) CNT
-		FROM	MEMBER
-		WHERE 	ID = #{userId}
+		FROM	USER_INFO
+		WHERE 	USER_ID = #{userId}
 		AND		PASSWORD = #{password}
 	</select>
 
 	<insert id="registerProcessing" parameterType="lgs.com.main.vo.UserVO">
 	/* insertUser 계정 생성 */
 		INSERT
-		INTO	MEMBER
-		(		ID
+		INTO	USER_INFO
+		(		USER_ID
 		,		PASSWORD
-		,		NAME
-		,		DATE_OF_BIRTH
-		,		PHONE_NUMBER
+		,		USER_NAME
+		,		AGE
+		,		GENDER
 		,		EMAIL
+		,		LOCATION
+		,		LOCATION_DTL
+		,		PHONE_NUM
+		,		IMAGE_FILE_NO
+		,		USER_URLE
+		,		DELETED
+		,		CREATE_USER
+		,		UPDATE_USER
+		,		CREATE_DATE
+		,		UPDATE_DATE
 		)		VALUES
 		(		#{userId}
 		,		#{password}
 		,		#{userName}
-		,		#{birth}
-		,		#{phoneNum}
+		,		#{age}
+		,		#{gender}
 		,		#{email}
+		,		#{location}
+		,		#{locationDetail}
+		,		#{phoneNum}
+		,		#{imageFileNo}
+		,		#{rule}
+		,		'0'
+		,		#{createUser}
+		,		#{updateUser}
+		,		SYSDATE
+		,		SYSDATE
 		)
 	</insert>
 

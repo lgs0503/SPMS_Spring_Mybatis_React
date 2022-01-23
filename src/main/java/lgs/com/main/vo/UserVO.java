@@ -13,8 +13,9 @@ public class UserVO extends DefaultVO {
 	String gender;
 	String email;
 	String location;
-	String locationDtail;
-	String imageFileId;
+	String locationDetail;
+	String imageFileNo;
+	String phoneNum;
 	String rule;
 	String deleted;
 
