@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,14 +18,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductVO> productList(ProductVO userVO) {
-        int result = 0;
+        List<ProductVO> result = new ArrayList<ProductVO>();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             ProductMapper mapper = session.getMapper(ProductMapper.class);
 
-             return mapper.productList(userVO);
+            result = mapper.productList(userVO);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result;
     }
 }
