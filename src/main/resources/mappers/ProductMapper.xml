@@ -24,4 +24,12 @@
 	</where>
 	</select>
 
+	<select id="productCnt" resultType="int" parameterType="lgs.com.product.vo.ProductVO">
+		/* productList 제품 리스트 갯수 조회  */
+		SELECT	COUNT(*) CNT
+		FROM	PRODUCT
+		<where>
+		AND 	IDX = #{idx}
+		</where>
+	</select>
 </mapper>

@@ -13,22 +13,27 @@
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- 리소스폴더 지정 img css hmtl js -->
 	<resources mapping="/static/**" location="/WEB-INF/static/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<!-- HTML 사용 JSP 제외 -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/static/html/" />
 		<beans:property name="suffix" value=".html" />
 		<beans:property name="order" value="1"/>
 	</beans:bean>
-	
-	<!-- component scan -->
-	<context:component-scan base-package="lgs.com" />
 
+	<!-- JSON VIEW 사용 -->
 	<beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
 		<beans:property name="order" value="0"/>
 	</beans:bean>
+
+	<beans:bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+		<beans:property name="contentType" value="application/json;charset=UTF-8"/>
+	</beans:bean>
+	
+	<!-- component scan -->
+	<context:component-scan base-package="lgs.com" />
 
 	<!-- Interceptors -->
 	<beans:bean id="authenticationInterceptor" class="lgs.com.utill.interceptor.AuthenticationInterceptor">

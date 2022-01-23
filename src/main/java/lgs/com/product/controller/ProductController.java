@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class ProductController {
 	/**
 	 *  제품 화면 으로 이동
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/product", method = RequestMethod.GET)
 	public String productPage(Model model) {
 		logger.info("productPage");
 
@@ -39,8 +40,13 @@ public class ProductController {
 	 * @return 제품 리스트
 	*/
 	@RequestMapping(value = "/productList", method = RequestMethod.GET)
-	public @ResponseBody List<ProductVO> productList(@RequestBody ProductVO userVO) {
+	public ModelAndView productList(@RequestBody ProductVO productVO) {
 		logger.info("productList");
-		return productService.productList(userVO);
+		ModelAndView mv = new ModelAndView();
+
+		mv.addObject("productList", productService.productList(productVO));
+		mv.addObject("productCnt", productService.productCnt(productVO));
+		mv.setViewName("jsonView");
+		return mv;
 	}
 }

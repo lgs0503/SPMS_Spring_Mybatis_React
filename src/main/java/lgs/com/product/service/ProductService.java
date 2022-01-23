@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ProductService {
 
-    public List<ProductVO> productList(ProductVO userVO);
+    public List<ProductVO> productList(ProductVO productVO);
+    public int productCnt(ProductVO productVO);
 }

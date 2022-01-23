@@ -17,16 +17,31 @@ public class ProductServiceImpl implements ProductService {
     private SqlSessionFactory sqlSessionFactory;
 
     @Override
-    public List<ProductVO> productList(ProductVO userVO) {
+    public List<ProductVO> productList(ProductVO productVO) {
         List<ProductVO> result = new ArrayList<ProductVO>();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             ProductMapper mapper = session.getMapper(ProductMapper.class);
 
-            result = mapper.productList(userVO);
+            result = mapper.productList(productVO);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
+
+    @Override
+    public int productCnt(ProductVO productVO) {
+        int result = 0;
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ProductMapper mapper = session.getMapper(ProductMapper.class);
+
+            result = mapper.productCnt(productVO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

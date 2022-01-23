@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
 
-	public List<ProductVO> productList(ProductVO userVO);
-	
+	public List<ProductVO> productList(ProductVO productVO);
+	public int productCnt(ProductVO productVO);
+
 }
