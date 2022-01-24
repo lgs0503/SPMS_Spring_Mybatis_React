@@ -28,6 +28,10 @@
             font-family: 'Abril Fatface', cursive;
         }
 
+        .text_trans {
+            text-transform: uppercase;
+        }
+
         /*header*/
         header {
             width: 100%;
@@ -40,7 +44,7 @@
         }
 
         /*header_background*/
-        .header_background_video {
+        .section1_background_video {
             width: 100%;
             position: relative;
             top: 0;
@@ -58,13 +62,17 @@
         .logo {
             display: flex;
             justify-content: center;
+            background: no-repeat url(../img/ROMANSON.png);
+            background-size: cover;
+            width: 300px;
+            height: 50px;
         }
 
         .logo img {
             width: 250px;
         }
 
-        /*section 시작*/
+        /*container*/
         .container {
             width: 1100px;
             height: 500px;
@@ -72,10 +80,11 @@
             background-color: grey;
         }
 
-        .section1 {
-            background-color: #093325;
+        /*section2 시작*/
+        .section2_view {
             width: 100%;
-            height: 800px;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -83,35 +92,55 @@
 <body>
     <div class="wrap">
         <header>
-            <div></div>
-            <div class="logo"><img src="../img/ROMANSON.png"></div>
+            <div id="myNav" class="overlay">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&amp;times;</a>
+                <div class="overlay-content">
+                    <a href="#">About</a>
+                    <a href="#">Services</a>
+                    <a href="#">Clients</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+            <div class="logo"></div>
             <ul class="member_list">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Cart</a></li>
-                <li><a href="#">My page</a></li>
+                <li><a href="#" class="text_trans">Home</a></li>
+                <li><a href="#" class="text_trans">Login</a></li>
+                <li><a href="#" class="text_trans">Cart</a></li>
+                <li><a href="#" class="text_trans">My page</a></li>
             </ul>
         </header>
+
+        <!-- section 1 시작 -->
         <section>
-            <div class="header_background_video">
+            <div class="section1_background_video">
                 <video class="elementor-background-video-hosted elementor-html5-video" autoplay="" muted=""
                     playsinline="" loop=""
                     src="https://content.rolex.cn/dam/rolex-sav/buying-a-rolex/buying-an-authentic-rolex/2021/videos/cover/buying-an-authentic-rolex-cover.mp4"
                     style="width: 100%; height: 100%;"></video>
             </div>
         </section>
+        <!-- section 1 끝 -->
+
+        <!-- section 2 시작 -->
         <div class="container">
             <section>
-                
+                <div class="section2_view">
+                    <div class="section2_text">
+                        <div class="logo" style="width:200px; height:30px;"></div>
+                    </div>
+                    <div class="section2_img">
+                        <img src="../img/img_main01.png" style="width: 50%;">
+                    </div>
+                </div>
             </section>
         </div>
-
+        <!-- section 2 끝 -->
     </div>
 
 
 
     <script>
-
+        
     </script>
 </body>
 
