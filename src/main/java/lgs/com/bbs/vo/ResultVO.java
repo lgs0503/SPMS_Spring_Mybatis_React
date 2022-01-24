@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 public class ResultVO {
-	
-	Object result;
-	boolean success;
+
+	private Object result;
+	private boolean success;
 	
 	// 생성자
 	public ResultVO(boolean success, Object result) {

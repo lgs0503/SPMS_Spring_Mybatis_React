@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class DefaultVO {
 
-	String createDate;
-	String createUser;
-	String updateDate;
-	String updateUser;
+	private String createDate;
+	private String createUser;
+	private String updateDate;
+	private String updateUser;
 
 }

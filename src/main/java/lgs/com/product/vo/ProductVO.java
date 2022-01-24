@@ -8,17 +8,17 @@ import java.util.ArrayList;
 @Data
 public class ProductVO extends DefaultVO {
 
-	String idx;
-	String productName;
-	int productPrice;
-	int productCnt;
-	String productDescription;
-	String productImageNo;
-	String productClass1;
-	String productClass2;
-	String deleted;
-	String useYn;
+	private String idx;
+	private String productName;
+	private int productPrice;
+	private int productCnt;
+	private String productDescription;
+	private String productImageNo;
+	private String productClass1;
+	private String productClass2;
+	private String deleted;
+	private String useYn;
 
-	ArrayList<String> idxs;
+	private ArrayList<String> idxs;
 
 }
