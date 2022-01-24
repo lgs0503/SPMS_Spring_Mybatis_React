@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lgs.com.utill.mapper.FileMapper">
+
+	<insert id="fileUpload" parameterType="lgs.com.utill.vo.FileVO">
+		/* fileUpload 업로드파일 정보 저장 */
+		INSERT
+		INTO	FILE_INFO
+		(
+			FILE_NO
+		,	FILE_PATH
+		,	FILE_NAME
+		,	FILE_PHYSICAL_NAME
+		,	FILE_EXTEN
+		,	FILE_SIZE
+		,	USE_YN
+		,	DELETED
+		,	CREATE_USER
+		,	CREATE_DATE
+		,	UPDATE_USER
+		,	UPDATE_DATE
+		)	VALUES
+		(
+			#{fileNo}
+		,	#{filePath}
+		,	#{fileName}
+		,	#{filePhysicalName}
+		,	#{fileExten}
+		,	#{fileSize}
+		,	#{useYn}
+		,	#{deleted}
+		,	#{createUser}
+		,	#{createDate}
+		,	#{updateUser}
+		,	#{updateDate}
+		)
+	</insert>
+
+	<select id="createfileNo" resultType="String">
+		/* createfileNo fileMaxNo를 생성한다.  */
+		SELECT	NVL(MAX(FILE_NO),0) +1  AS CNT
+		FROM	FILE_INFO
+	</select>
+
+	<select id="fileSearch" resultType="lgs.com.utill.vo.FileVO" parameterType="lgs.com.utill.vo.FileVO">
+		/* productList 제품 리스트 갯수 조회  */
+		SELECT	FILE_NO
+			,	FILE_PATH
+			,	FILE_PHYSICAL_NAME
+			,	FILE_EXTEN
+			,	FILE_SIZE
+			,	USE_YN
+			,	DELETED
+			,	CREATE_USER
+			,	CREATE_DATE
+			,	UPDATE_USER
+			,	UPDATE_DATE
+		FROM	FILE_INFO
+		<where>
+		AND 	FILE_NO = #{fileNo}
+		</where>
+	</select>
+
+</mapper>

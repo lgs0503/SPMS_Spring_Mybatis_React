@@ -6,17 +6,17 @@ import lombok.Data;
 @Data
 public class UserVO extends DefaultVO {
 
-	String userId;
-	String password;
-	String userName;
-	int age;
-	String gender;
-	String email;
-	String location;
-	String locationDetail;
-	String imageFileNo;
-	String phoneNum;
-	String rule;
-	String deleted;
+	private String userId;
+	private String password;
+	private String userName;
+	private int age;
+	private String gender;
+	private String email;
+	private String location;
+	private String locationDetail;
+	private String imageFileNo;
+	private String phoneNum;
+	private String rule;
+	private String deleted;
 
 }

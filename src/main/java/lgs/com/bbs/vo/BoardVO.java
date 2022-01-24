@@ -13,11 +13,11 @@ public class BoardVO {
 	REGDATE TIMESTAMP DEFAULT SYSDATE(),	-- 날짜(기본값 현재시각)
 	PRIMARY KEY (BNO)	-- 게시판 번호 기본키 지정
 */
-	
-	int bno;
-	String title;
-	String content;
-	String writer;
-	String regDate;
+
+	private int bno;
+	private String title;
+	private String content;
+	private String writer;
+	private String regDate;
 
 }

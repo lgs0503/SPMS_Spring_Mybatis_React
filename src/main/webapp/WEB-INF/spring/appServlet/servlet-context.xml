@@ -13,7 +13,7 @@
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
-	<!-- 리소스폴더 지정 img css hmtl js -->
+	<!-- 리소스폴더 지정 img css html js -->
 	<resources mapping="/static/**" location="/WEB-INF/static/" />
 
 	<!-- HTML 사용 JSP 제외 -->

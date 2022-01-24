@@ -34,10 +34,10 @@ public class ProductController {
 	}
 
 	/**
-	*  제품 리스트 조회
+	 *  제품 리스트 조회
 	 * @param ProductVO 조회조건
 	 * @return 제품 리스트
-	*/
+	 */
 	@RequestMapping(value = "/productList", method = RequestMethod.GET)
 	public ModelAndView productList(@RequestBody ProductVO productVO) {
 		logger.info("productList");
