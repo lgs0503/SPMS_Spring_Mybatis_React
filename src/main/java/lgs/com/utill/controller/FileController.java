@@ -1,10 +1,12 @@
 package lgs.com.utill.controller;
 
+import lgs.com.utill.service.FileService;
 import lgs.com.utill.vo.FileVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,11 +30,15 @@ public class FileController {
     @Autowired
     String uploadPath;
 
+    @Autowired
+    FileService fileService;
+
     /**
      *  파일 업로드
      * @param MultipartHttpServletRequest 업로드 파일 정보를 담은 request
      * @return ModelAndView 업로드 파일 정보 및 업로드 성공여부
      */
+    @Transactional
     @RequestMapping(value="/file/upload", method=RequestMethod.POST)
     public ModelAndView fileUpload(MultipartHttpServletRequest request){
         logger.info("fileUpload");
@@ -43,19 +50,45 @@ public class FileController {
 
         long time = System.currentTimeMillis();
 
+        /* 업로드 완료된 파일정보 를 담을 리스트 객체 */
+        List<FileVO> uploadList = new ArrayList<FileVO>();
+
         /* 여러개 파일을 한번에 업로드 하기위해 반복 진행 */
         for (MultipartFile mf : fileList) {
+
+            FileVO fileVO = new FileVO();
+
             String originFileName = mf.getOriginalFilename();
-            // 원본 파일 명
+            String fileExten = originFileName.substring(originFileName.lastIndexOf(".") + 1);
+            String fileName = originFileName.replace(fileExten,"").replace(".","");
+
             String saveFileName = String.format("%d_%s", time, originFileName);
-            try { // 파일생성
+
+            /* DB FILE TABLE 저장 */
+            fileVO.setFilePath(uploadPath);
+            fileVO.setFileName(fileName);
+            fileVO.setFilePhysicalName(saveFileName);
+            fileVO.setFileSize(mf.getSize());
+            fileVO.setFileExten(fileExten);
+            fileVO.setUseYn("Y");
+            fileVO.setDeleted("0");
+
+            fileService.fileUpload(fileVO);
+
+            /* 파일 생성 */
+            try {
                 mf.transferTo(new File(uploadPath, saveFileName));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            uploadList.add(fileVO);
         }
         ModelAndView mv = new ModelAndView();
+
+        /* 업로드 완료된 파일정보들 반환 */
         mv.setViewName("jsonView");
+        mv.addObject("uploadList", uploadList);
 
         return mv;
     }
@@ -71,7 +104,7 @@ public class FileController {
 
         try {
             /* 업로드 경로 + 파일명 + 파일확장자*/
-            String path = uploadPath + "/" + fileVO.getFileName() + fileVO.getFileExten();
+            String path = uploadPath + "/" + fileVO.getFileName() + '.' + fileVO.getFileExten();
 
             File file = new File(path);
 

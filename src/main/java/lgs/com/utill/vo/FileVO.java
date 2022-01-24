@@ -10,7 +10,7 @@ public class FileVO extends DefaultVO {
     private String fileName;
     private String filePhysicalName;
     private String fileExten;
-    private String fileSize;
+    private Long fileSize;
     private String useYn;
     private String deleted;
 
