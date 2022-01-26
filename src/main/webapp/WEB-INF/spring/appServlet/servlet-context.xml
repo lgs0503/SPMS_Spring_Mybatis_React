@@ -3,13 +3,10 @@
 			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			 xmlns:beans="http://www.springframework.org/schema/beans"
 			 xmlns:context="http://www.springframework.org/schema/context"
-			 xmlns:tx="http://www.springframework.org/schema/tx"
 			 xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
@@ -34,23 +31,5 @@
 	
 	<!-- component scan -->
 	<context:component-scan base-package="lgs.com" />
-
-	<!-- Interceptors -->
-	<beans:bean id="authenticationInterceptor" class="lgs.com.utill.interceptor.AuthenticationInterceptor">
-	</beans:bean>
-
-	<!-- Interceptor 설정 -->
-	<interceptors>
-		<interceptor>
-			<mapping path="/**"/>
-			<beans:ref bean="authenticationInterceptor"/>
-		</interceptor>
-	</interceptors>
-
-	<!-- @Transactional 사용하기 위한 설정 -->
-	<beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<beans:property name="dataSource" ref="dataSource"></beans:property>
-	</beans:bean>
-	<tx:annotation-driven/>
 
 </beans:beans>
