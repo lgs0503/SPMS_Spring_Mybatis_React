@@ -10,6 +10,7 @@
 			/WEB-INF/spring/config/root-context.xml
 			/WEB-INF/spring/config/datasource-context.xml
 			/WEB-INF/spring/config/interceptor-context.xml
+			/WEB-INF/spring/config/security-context.xml.xml
 		</param-value>
 	</context-param>
 	
