@@ -2,6 +2,7 @@
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
 			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:mvc="http://www.springframework.org/schema/c"
 			 xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 
@@ -10,10 +11,13 @@
 	</beans:bean>
 
 	<!-- Interceptor 설정 -->
-	<interceptors>
-		<interceptor>
-			<mapping path="/**"/>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>/>
+			<mvc:exclude-mapping path="/login"/>
+			<mvc:exclude-mapping path="/loginProcessing"/>
+			<mvc:exclude-mapping path="/registerProcessing"/>
 			<beans:ref bean="authenticationInterceptor"/>
-		</interceptor>
-	</interceptors>
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans:beans>
