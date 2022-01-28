@@ -37,7 +37,6 @@ public class StringUtils {
         return str == null ? defaultStr : (str == (null)) ? defaultStr : (str == "null") ? defaultStr : (str == "(null)") ? defaultStr : str;
     }
 
-
     public static String enterToBr(String str) {
         str = replaceString(str);
         return str == null ? "" : str.replaceAll("\n", " <br/>");
@@ -134,7 +133,6 @@ public class StringUtils {
         return text.replaceAll(originTxt, replaceTxt);
     }
 
-
     public static String replaceBrTag(String text) {
         return text.replaceAll("\\n", "<br/>");
     }
@@ -142,7 +140,6 @@ public class StringUtils {
     public static String removeAllTag(String txt) {
         return txt.replaceAll("(?:<!.*?(?:--.*?--\\s*)*.*?>)|(?:<(?:[^>'\"]*|\".*?\"|'.*?')+>)", "");
     }
-
 
     /**
      * get String of java.util.Map keys and values to log
@@ -159,7 +156,6 @@ public class StringUtils {
         }
         return buf.toString();
     }
-
 
     public static boolean isNullCheck(String str) {
         boolean bool = false;
@@ -180,7 +176,6 @@ public class StringUtils {
     public static String historyDate(String value) {
         return !(nvl(value, "").length() == 0) && value.length() == 8 ? value = value.substring(4, 6) + "/" + value.substring(6, 8) : "";
     }
-
 
     /**
      * 검색 결과 날짜표기 YYYY.MM.DD
@@ -488,6 +483,4 @@ public class StringUtils {
         }
         return str;
     }
-
-
 }
