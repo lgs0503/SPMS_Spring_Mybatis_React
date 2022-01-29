@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
-        "file:../../../../../../main/webapp/WEB-INF/spring/config/root-context.xml",
+        "file:src/main/webapp/WEB-INF/spring/config/*.xml",
         "file:src/main/webapp/WEB-INF/spring/**/appServlet/servlet-context.xml"
 })
 @Log4j

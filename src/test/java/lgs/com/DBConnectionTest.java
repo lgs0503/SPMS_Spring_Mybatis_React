@@ -11,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"file:../../../../main/webapp/WEB-INF/spring/config/root-context.xml"})
+@ContextConfiguration(locations ={"file:src/main/webapp/WEB-INF/spring/config/*.xml"})
 public class DBConnectionTest {
     
     @Inject
