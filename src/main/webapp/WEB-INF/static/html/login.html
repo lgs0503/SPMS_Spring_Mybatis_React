@@ -9,6 +9,7 @@
 <input type="text" id="userId"/>
 <input type="password" id="password"/>
 <button id="btnLogin">로그인</button>
+<script type="text/javascript" src="/static/js/comm.js"></script>
 <script type="text/javascript">
     const btnLogin = document.getElementById("btnLogin");
 
@@ -18,14 +19,15 @@
             password : document.getElementById("password").value
         };
 
-        fetch("/loginProcessing", {
-            method : "POST",
-            headers : { 'content-Type': 'application/json' },
-            body : JSON.stringify(data)
-        }).then(function(x) {
-            console.log(JSON.stringify(x.loginStatus));
-        }).catch(function(error){
-            console.log(error);
+        /* 로그인 요청 */
+        fetchLoad("/loginProcessing", "POST", data, function(result){
+            console.log(JSON.stringify(result));
+            if(result.loginStatus == "1"){
+                alert("로그인성공");
+                location.href = "/main";
+            } else {
+                alert("로그인실패");
+            }
         });
     });
 </script>
