@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+			 http://www.springframework.org/schema/beans/spring-beans.xsd
+			 http://www.springframework.org/schema/security
+		     http://www.springframework.org/schema/security/spring-security.xsd">
+	<!--
+		비밀번호 문서를 위한 bean 추가
+		BCryptPasswordEncoder 은 스프링 시큐리티에서 제공해주는 라이브러리 클래스
+		단 !!! 비밀번호 암호화 메서드 , 와 인코딩 된 비밀번호를 비교해주는 역할 -->
+	<beans:bean id="bcryptPasswordEncoder"
+				class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+</beans:beans>

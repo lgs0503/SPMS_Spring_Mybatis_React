@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML !DOCTYPE declaration</title>
+</head>
+<body>
+회원가입 페이지<br>
+<input type="text" id="userId" name="userId" placeholder="아이디"><br>
+<input type="password" id="password" name="password" placeholder="비밀번호"><br>
+<input type="text" id="userName" name="userName" placeholder="이름"><br>
+<input type="text" id="age" name="age" placeholder="나이"><br>
+<select id="gender" name="gender">
+    <option value="">선택</option>
+    <option value="1">남자</option>
+    <option value="2">여자</option>
+</select><br>
+<input type="text" id="email" name="email" placeholder="e-mail"><br>
+<input type="text" id="location" name="location" placeholder="주소"><br>
+<input type="text" id="locationDetail" name="locationDetail" placeholder="상세주소"><br>
+<input type="hidden" id="imageFileNo" name="imageFileNo" value="1"><br>
+<input type="text" id="phoneNum" name="phoneNum" placeholder="(-)를 제외한 휴대폰번호"><br>
+<input type="hidden" id="rule" name="rule" value="admin"><br>
+<input type="hidden" id="deleted" name="deleted" value="0"><br>
+<button id="register">회원가입</button>
+<script type="text/javascript" src="/static/js/comm.js"></script>
+<script type="text/javascript">
+    const btnRegister = document.getElementById("register");
+
+    btnRegister.addEventListener("click", function() {
+        let data = {
+            userId : document.getElementById("userId").value,
+            password : document.getElementById("password").value,
+            userName :document.getElementById("userName").value,
+            age : document.getElementById("age").value,
+            gender : document.getElementById("gender").value,
+            email : document.getElementById("email").value,
+            location : document.getElementById("location").value,
+            locationDetail : document.getElementById("locationDetail").value,
+            imageFileNo : document.getElementById("imageFileNo").value,
+            phoneNum : document.getElementById("phoneNum").value,
+            rule : document.getElementById("rule").value,
+            deleted : document.getElementById("deleted").value
+        }
+
+        console.log(data);
+        console.log(JSON.stringify(data));
+
+        fetchLoad("/registerProcessing", "POST", data, function (result) {
+            alert("회원가입 완료");
+            location.href="/login"
+        })
+    });
+
+</script>
+</body>
+</html>

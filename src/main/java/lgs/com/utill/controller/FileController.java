@@ -103,6 +103,9 @@ public class FileController {
         logger.info("download");
 
         try {
+            /*파일 번호로 상세 정보 조회 */
+            fileVO = fileService.fileSearch(fileVO);
+
             /* 업로드 경로 + 파일명 + 파일확장자*/
             String path = uploadPath + "/" + fileVO.getFileName() + '.' + fileVO.getFileExten();
 

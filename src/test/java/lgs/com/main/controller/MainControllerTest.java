@@ -2,8 +2,6 @@ package lgs.com.main.controller;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,7 +23,7 @@ import lombok.extern.log4j.Log4j;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
-        "file:src/main/webapp/WEB-INF/spring/**/root-context.xml",
+        "file:src/main/webapp/WEB-INF/spring/config/*.xml",
         "file:src/main/webapp/WEB-INF/spring/**/appServlet/servlet-context.xml"
 })
 @Log4j

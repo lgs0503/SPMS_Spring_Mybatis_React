@@ -19,27 +19,30 @@
 			,	UPDATE_DATE
 			,	UPDATE_USER
 		FROM	PRODUCT
-	<where>
-		<if test="PRODUCT_NAME != null and PRODCUT_NAME != ''">
-		AND 	PRODUCT_NAME LIKE '%' || #{productName} || '%'
-		</if>
-		<if test="PRODUCT_CLASS1 != null and PRODUCT_CLASS1 != ''">
-		AND 	PRODUCT_CLASS1 = #{productClass1}
-		</if>
-		<if test="PRODUCT_CLASS2 != null and PRODUCT_CLASS2 != ''">
-		AND 	PRODUCT_CLASS2 = #{productClass2}
-		</if>
-	</where>
+		<include refid="productWhere"></include>
 	</select>
 
 	<select id="productCnt" resultType="int" parameterType="lgs.com.product.vo.ProductVO">
 		/* productList 제품 리스트 갯수 조회  */
 		SELECT	COUNT(*) CNT
 		FROM	PRODUCT
-		<where>
-		AND 	IDX = #{idx}
-		</where>
+		<include refid="productWhere"></include>
 	</select>
+
+	<sql id="productWhere">
+		/* productWhere 제품 조회조건  */
+		<where>
+			<if test="productName != null and productName != ''">
+				AND 	PRODUCT_NAME LIKE '%' || #{productName} || '%'
+			</if>
+			<if test="productClass1 != null and productClass1 != ''">
+				AND 	PRODUCT_CLASS1 = #{productClass1}
+			</if>
+			<if test="productClass2 != null and productClass2 != ''">
+				AND 	PRODUCT_CLASS2 = #{productClass2}
+			</if>
+		</where>
+	</sql>
 
 	<insert id="saveProduct" parameterType="lgs.com.product.vo.ProductVO">
 		/* saveProduct 제품 저장 (신규, 수정)  */

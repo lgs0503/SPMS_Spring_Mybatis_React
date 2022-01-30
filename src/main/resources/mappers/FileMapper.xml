@@ -43,7 +43,7 @@
 	</select>
 
 	<select id="fileSearch" resultType="lgs.com.utill.vo.FileVO" parameterType="lgs.com.utill.vo.FileVO">
-		/* productList 제품 리스트 갯수 조회  */
+		/* fileSearch 파일정보를 조회한다.  */
 		SELECT	FILE_NO
 			,	FILE_PATH
 			,	FILE_PHYSICAL_NAME
