@@ -6,5 +6,28 @@
 </head>
 <body>
 로그인페이지
+<input type="text" id="userId"/>
+<input type="password" id="password"/>
+<button id="btnLogin">로그인</button>
+<script type="text/javascript">
+    const btnLogin = document.getElementById("btnLogin");
+
+    btnLogin.addEventListener("click", function(){
+        let data = {
+            userId : document.getElementById("userId").value,
+            password : document.getElementById("password").value
+        };
+
+        fetch("/loginProcessing", {
+            method : "POST",
+            headers : { 'content-Type': 'application/json' },
+            body : JSON.stringify(data)
+        }).then(function(x) {
+            console.log(JSON.stringify(x.loginStatus));
+        }).catch(function(error){
+            console.log(error);
+        });
+    });
+</script>
 </body>
 </html>

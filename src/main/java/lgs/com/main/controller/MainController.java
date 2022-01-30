@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +51,15 @@ public class MainController {
 	 * @return 로그인 결과값
 	*/
 	@RequestMapping(value = "/loginProcessing", method = RequestMethod.POST)
-	public @ResponseBody int loginProcessing(@RequestBody UserVO userVO) {
+	public @ResponseBody ModelAndView loginProcessing(@RequestBody UserVO userVO) {
 		logger.info("loginProcessing");
-		return mainService.loginProcessing(userVO);
+
+		ModelAndView mv = new ModelAndView();
+
+		mv.addObject("loginStatus", mainService.loginProcessing(userVO));
+		mv.setViewName("jsonView");
+
+		return mv;
 	}
 
 	/**
