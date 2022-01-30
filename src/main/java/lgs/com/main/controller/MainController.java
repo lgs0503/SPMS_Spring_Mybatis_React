@@ -46,12 +46,22 @@ public class MainController {
 	}
 
 	/**
+	 *  회원가입 으로 이동
+	 */
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String registerPage(Model model) {
+		logger.info("registerPage");
+
+		return "register";
+	}
+
+	/**
 	*  로그인 프로세스
 	 * @param UserVO 로그인 ID ,PW
 	 * @return 로그인 결과값
 	*/
 	@RequestMapping(value = "/loginProcessing", method = RequestMethod.POST)
-	public @ResponseBody ModelAndView loginProcessing(@RequestBody UserVO userVO) {
+	public ModelAndView loginProcessing(@RequestBody UserVO userVO) {
 		logger.info("loginProcessing");
 
 		ModelAndView mv = new ModelAndView();
@@ -67,8 +77,16 @@ public class MainController {
 	 * @param UserVO 회원가입 할 데이터 input
 	 */
 	@RequestMapping(value = "/registerProcessing", method = RequestMethod.POST)
-	public @ResponseBody void registerProcessing(@RequestBody UserVO userVO) {
+	public @ResponseBody ModelAndView registerProcessing(@RequestBody UserVO userVO) {
 		logger.info("registerProcessing");
+
+		ModelAndView mv = new ModelAndView();
+
 		mainService.registerProcessing(userVO);
+
+		mv.addObject("registerStatus", "1");
+		mv.setViewName("jsonView");
+
+		return mv;
 	}
 }

@@ -40,7 +40,7 @@ public class MainServiceServiceImpl implements MainService {
             String rawPassword = StringUtils.nvl(userVO.getPassword(), "");
 
             /* 입력 비밀번호와 db 계정 비밀번호를 디코딩하여 비교 */
-            if(passwordEncoder.matches(password, rawPassword)) {
+            if(passwordEncoder.matches(rawPassword, password)) {
                 result = LOGIN_SUCCESS;
             } else {
                 result = LOGIN_FAIL;
