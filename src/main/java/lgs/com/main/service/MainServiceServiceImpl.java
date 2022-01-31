@@ -14,8 +14,8 @@ import javax.inject.Inject;
 @Service
 public class MainServiceServiceImpl implements MainService {
 
-    private final static int LOGIN_SUCCESS = 1;
-    private final static int LOGIN_FAIL = 0;
+    private final static int SUCCESS = 1;
+    private final static int FAIL = 0;
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
@@ -25,7 +25,7 @@ public class MainServiceServiceImpl implements MainService {
 
     @Override
     public int loginProcessing(UserVO userVO) {
-        int result = 0;
+        int result = FAIL;
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             MainMapper mapper = session.getMapper(MainMapper.class);
@@ -33,7 +33,7 @@ public class MainServiceServiceImpl implements MainService {
             UserVO loginUser = mapper.loginProcessing(userVO);
 
             if(loginUser == null){
-                return LOGIN_FAIL;
+                return FAIL;
             }
 
             String password = StringUtils.nvl(loginUser.getPassword(), "");
@@ -41,10 +41,26 @@ public class MainServiceServiceImpl implements MainService {
 
             /* 입력 비밀번호와 db 계정 비밀번호를 디코딩하여 비교 */
             if(passwordEncoder.matches(rawPassword, password)) {
-                result = LOGIN_SUCCESS;
+
+                result = SUCCESS;
             } else {
-                result = LOGIN_FAIL;
+                result = FAIL;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public int userIdCheck(UserVO userVO) {
+        int result = FAIL;
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            MainMapper mapper = session.getMapper(MainMapper.class);
+
+            result = mapper.userIdCheck(userVO);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
