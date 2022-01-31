@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lgs.com.utill.mapper.FileMapper">
 
+	<resultMap type="lgs.com.utill.vo.FileVO" id="FileVO">
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="filePhysicalName" column="FILE_PHYSICAL_NAME"/>
+		<result property="fileExten" column="FILE_EXTEN"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="deleted" column="DELETED"/>
+		<result property="createUser" column="CREATE_USER"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="updateUser" column="UPDATE_USER"/>
+		<result property="updateDate" column="UPDATE_DATE"/>
+	</resultMap>
+
 	<insert id="fileUpload" parameterType="lgs.com.utill.vo.FileVO">
 		/* fileUpload 업로드파일 정보 저장 */
 		INSERT
@@ -42,10 +57,11 @@
 		FROM	FILE_INFO
 	</select>
 
-	<select id="fileSearch" resultType="lgs.com.utill.vo.FileVO" parameterType="lgs.com.utill.vo.FileVO">
+	<select id="fileSearch" resultMap="FileVO" parameterType="lgs.com.utill.vo.FileVO">
 		/* fileSearch 파일정보를 조회한다.  */
 		SELECT	FILE_NO
 			,	FILE_PATH
+			,	FILE_NAME
 			,	FILE_PHYSICAL_NAME
 			,	FILE_EXTEN
 			,	FILE_SIZE

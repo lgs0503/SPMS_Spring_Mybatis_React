@@ -40,7 +40,7 @@ public class FileController {
      */
     @Transactional
     @RequestMapping(value="/file/upload", method=RequestMethod.POST)
-    public ModelAndView fileUpload(MultipartHttpServletRequest request){
+        public ModelAndView fileUpload(MultipartHttpServletRequest request){
         logger.info("fileUpload");
 
         List<MultipartFile> fileList = request.getFiles("file");
@@ -62,7 +62,7 @@ public class FileController {
             String fileExten = originFileName.substring(originFileName.lastIndexOf(".") + 1);
             String fileName = originFileName.replace(fileExten,"").replace(".","");
 
-            String saveFileName = String.format("%d_%s", time, originFileName);
+            String saveFileName = String.format("%d_%s", time, fileName);
 
             /* DB FILE TABLE 저장 */
             fileVO.setFilePath(uploadPath);
@@ -77,7 +77,7 @@ public class FileController {
 
             /* 파일 생성 */
             try {
-                mf.transferTo(new File(uploadPath, saveFileName));
+                mf.transferTo(new File(uploadPath, saveFileName + '.' + fileExten));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -107,7 +107,7 @@ public class FileController {
             fileVO = fileService.fileSearch(fileVO);
 
             /* 업로드 경로 + 파일명 + 파일확장자*/
-            String path = uploadPath + "/" + fileVO.getFileName() + '.' + fileVO.getFileExten();
+            String path = uploadPath + "/" + fileVO.getFilePhysicalName() + '.' + fileVO.getFileExten();
 
             File file = new File(path);
 
@@ -133,7 +133,7 @@ public class FileController {
      *  폴더 생성
      * @param dirPath 폴더위치
      */
-    public void makeDirectories(String dirPath){
+    public boolean makeDirectories(String dirPath){
         logger.info("makeDirectories");
         boolean result;
         File f = new File(dirPath);
@@ -141,11 +141,10 @@ public class FileController {
         // 최 하위 디렉토리에 대해서만 생성을 함.
         // 최 하위 디렉토리의 바루 상위 디렉토리가 존재하지 않을 경우,
         // 디렉토리가 생성되지 못하고, false를 리턴함
-        result = f.mkdir();
-        logger.debug(result ? "폴더 생성" : "폴더 생성되지않음");
-        // 상위 디렉토리가 존재하지 않을 경우, 상위 디렉토리까지 생성함
 
         result = f.mkdirs();
         logger.debug(result == true ? "폴더 생성" : "폴더 생성되지않음");
+
+        return result;
     }
 }
