@@ -9,7 +9,7 @@
 <input type="text" id="userId"/>
 <input type="password" id="password"/>
 <button id="btnLogin">로그인</button>
-<script type="text/javascript" src="/static/js/comm.js"></script>
+<script type="text/javascript" src="../js/comm.js"></script>
 <script type="text/javascript">
     const btnLogin = document.getElementById("btnLogin");
 
@@ -20,7 +20,7 @@
         };
 
         /* 로그인 요청 */
-        fetchLoad("/loginProcessing", "POST", data, function(result){
+        fetchLoad("http://localhost:8080/loginProcessing", "POST", data, function(result){
             console.log(JSON.stringify(result));
             if(result.loginStatus == "1"){
                 alert("로그인성공");
