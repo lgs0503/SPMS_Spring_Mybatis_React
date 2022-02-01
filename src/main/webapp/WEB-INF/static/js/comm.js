@@ -10,7 +10,9 @@
 * @param callback : 성공결과콜백함수
 * */
 function fetchLoad(url, method, data, callback){
-    fetch(url, {
+    const serverUrl = "http://3.35.218.236";
+
+    fetch(serverUrl + url, {
         method : method,
         headers : { 'content-Type': 'application/json; charset=utf-8' },
         body : JSON.stringify(data)
