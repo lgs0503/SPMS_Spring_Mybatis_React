@@ -1,35 +1,72 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <title>HTML !DOCTYPE declaration</title>
+    <link rel="shortcut icon" href="../img/romanson.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../css/index-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Open+Sans&display=swap" rel="stylesheet">
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .wrap {
+            display: flex;
+            height: 100%;
+            flex-wrap: wrap;
+        }
+
+        .back_login {
+            width: 50%;
+            max-height: 100%;
+            background: no-repeat url(../img/d71c3e81140161.5cf6566d4cd42.jpg);
+            background-position: left;
+            background-size: cover;
+            
+        }
+    </style>
 </head>
+
 <body>
-로그인페이지
-<input type="text" id="userId"/>
-<input type="password" id="password"/>
-<button id="btnLogin">로그인</button>
-<script type="text/javascript" src="../js/comm.js"></script>
-<script type="text/javascript">
-    const btnLogin = document.getElementById("btnLogin");
+    <div class="wrap">
+        <div class="back_login"></div>
+        <div class="login_form">
+            <input type="text" id="userId" />
+            <input type="password" id="password" />
+            <button id="btnLogin">로그인</button>
+        </div>
+    </div>
 
-    btnLogin.addEventListener("click", function(){
-        let data = {
-            userId : document.getElementById("userId").value,
-            password : document.getElementById("password").value
-        };
+    <script type="text/javascript" src="../js/comm.js"></script>
+    <script type="text/javascript">
+        const btnLogin = document.getElementById("btnLogin");
 
-        /* 로그인 요청 */
-        fetchLoad("http://localhost:8080/loginProcessing", "POST", data, function(result){
-            console.log(JSON.stringify(result));
-            if(result.loginStatus == "1"){
-                alert("로그인성공");
-                location.href = "/main";
-            } else {
-                alert("로그인실패");
-            }
+        btnLogin.addEventListener("click", function () {
+            let data = {
+                userId: document.getElementById("userId").value,
+                password: document.getElementById("password").value
+            };
+
+            /* 로그인 요청 */
+            fetchLoad("http://localhost:8080/loginProcessing", "POST", data, function (result) {
+                console.log(JSON.stringify(result));
+                if (result.loginStatus == "1") {
+                    alert("로그인성공");
+                    location.href = "/main";
+                } else {
+                    alert("로그인실패");
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>
