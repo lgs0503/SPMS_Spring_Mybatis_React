@@ -9,6 +9,13 @@
 		WHERE 	USER_ID = #{userId}
 	</select>
 
+	<select id="userIdCheck" resultType="int" parameterType="lgs.com.main.vo.UserVO">
+	/* userIdCheck 계정 중복확인 */
+		SELECT	COUNT(*) CNT
+		FROM	USER_INFO
+		WHERE 	USER_ID = #{userId}
+	</select>
+
 	<insert id="registerProcessing" parameterType="lgs.com.main.vo.UserVO">
 	/* insertUser 계정 생성 */
 		INSERT

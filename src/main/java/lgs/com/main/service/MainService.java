@@ -6,5 +6,7 @@ public interface MainService {
 
     public int loginProcessing(UserVO userVO);
 
+    public int userIdCheck(UserVO userVO);
+
     public void registerProcessing(UserVO userVO);
 }
