@@ -44,7 +44,7 @@
 
 ***
 
-프론트 서버 : 미정
+프론트 서버 : https://lgs0503.github.io/spring-showpingmall/
 
 백 엔드 서버 : http://3.35.218.236/
 
@@ -59,3 +59,5 @@ AWS EC2 젠킨스 자동배포 빌드에러 해결 : https://tape22.tistory.com/
 ubuntu docker 설치 : https://shanepark.tistory.com/237
 
 docker oracle11g 설치 : https://romeoh.tistory.com/entry/Oracle-docker%EC%97%90-Oracle-11g-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
+
+HTTPS ssl 인증서 발급 및 apache , tomcat 설정 : https://jdh5202.tistory.com/772
