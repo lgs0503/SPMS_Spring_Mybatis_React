@@ -24,16 +24,6 @@ public class ProductController {
 	ProductService productService;
 
 	/**
-	 *  제품 화면 으로 이동
-	 */
-	@RequestMapping(value = "/product", method = RequestMethod.GET)
-	public String productPage(Model model) {
-		logger.info("productPage");
-
-		return "/product/list";
-	}
-
-	/**
 	 *  제품 리스트 조회
 	 * @param ProductVO 조회조건
 	 * @return 제품 리스트
