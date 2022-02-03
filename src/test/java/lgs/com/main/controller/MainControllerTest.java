@@ -64,22 +64,6 @@ public class MainControllerTest {
     }
 
     @Test
-    public void registerPage() throws Exception {
-        mockMvc.perform(get("/register")).andExpect(status().isOk())
-                .andExpect(view().name("register"))
-                .andExpect(handler().handlerType(MainController.class))
-                .andExpect(handler().methodName("registerPage"));
-    }
-
-    @Test
-    public void loginPage() throws Exception {
-        mockMvc.perform(get("/login")).andExpect(status().isOk())
-                .andExpect(view().name("login"))
-                .andExpect(handler().handlerType(MainController.class))
-                .andExpect(handler().methodName("loginPage"));
-    }
-
-    @Test
     public void loginProcessing() throws Exception  {
         /* 로그인 계정 */
         userVO.setUserId("lgs0503");

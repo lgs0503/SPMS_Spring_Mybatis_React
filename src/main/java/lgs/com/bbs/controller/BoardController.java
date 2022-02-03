@@ -22,13 +22,6 @@ public class BoardController {
 
 	@Autowired
 	BoardService service;
-
-	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String BoardView() 
-	{	
-		LOG.info("[GET] BoardView");
-		return "borad";
-	}
 	
 	@RequestMapping(value = "getBoardList", method = RequestMethod.POST)
 	public @ResponseBody List<BoardVO> getBoardList() 

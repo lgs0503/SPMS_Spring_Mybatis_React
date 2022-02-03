@@ -38,26 +38,6 @@ public class MainController {
 	}
 
 	/**
-	 *  로그인 으로 이동
-	 */
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginPage(Model model) {
-		logger.info("loginPage");
-
-		return "login";
-	}
-
-	/**
-	 *  회원가입 으로 이동
-	 */
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String registerPage(Model model) {
-		logger.info("registerPage");
-
-		return "register";
-	}
-
-	/**
 	*  로그인 프로세스
 	 * @param UserVO 로그인 ID ,PW
 	 * @return 로그인 결과값
