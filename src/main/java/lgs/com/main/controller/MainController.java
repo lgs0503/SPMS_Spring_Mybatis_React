@@ -68,7 +68,7 @@ public class MainController {
 	 * @param UserVO 로그인 ID
 	 * @return 중복확인 결과값
 	 */
-	@RequestMapping(value = "/userIdCheck", method = RequestMethod.GET)
+	@RequestMapping(value = "/userIdCheck", method = RequestMethod.POST)
 	public ModelAndView userIdCheck(@RequestBody UserVO userVO) {
 		logger.info("userIdCheck");
 
