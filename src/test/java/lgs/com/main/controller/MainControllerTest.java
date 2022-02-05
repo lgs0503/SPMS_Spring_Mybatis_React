@@ -110,7 +110,7 @@ public class MainControllerTest {
         /* 중복확인 계정 */
         userVO.setUserId("lgs0503테스터");
 
-        mockMvc.perform(get("/userIdCheck")
+        mockMvc.perform(post("/userIdCheck")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(userVO)))
                 .andExpect(status().isOk())
