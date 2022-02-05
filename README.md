@@ -42,6 +42,19 @@
 ## 기타 설명
 깃헙 협업 개발 및 추후 react.js 스터디 를 위해 진행된 프로젝트
 
+## 폴더 구조 
+***
+
+|  위치                          |  설명                                   | 
+| --------                       | ---------                               | 
+|/docs                           |프론트 정적 소스(html, css, js) 파일 구성   |
+|/src/main/java                  |백엔드 java 파일 구성                      |
+|/src/main/resources/mappers     |mybatis mapper xml 파일 구성              |
+|/src/main/resources/properties  |properties 파일 구성                      |
+|/src/main/webapp/WEB_INF/spring |spring config xml 파일 구성               |
+|/src/test/java                  |junit test 소스                           |
+
+
 ***
 
 프론트 서버 : https://lgs0503.github.io/spring-showpingmall/

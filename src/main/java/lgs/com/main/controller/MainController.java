@@ -50,7 +50,7 @@ public class MainController {
 
 		int loginStatus = mainService.loginProcessing(userVO);
 
-		if(loginStatus == SUCCESS){
+		if(loginStatus == SUCCESS) {
 			HttpSession session = request.getSession();
 
 			session.setAttribute("LOGIN_USER_ID", userVO.getUserId());
