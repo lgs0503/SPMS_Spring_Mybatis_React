@@ -7,6 +7,9 @@
 		SELECT	PASSWORD
 		FROM	USER_INFO
 		WHERE 	USER_ID = #{userId}
+		<if test="rule != null and rule != ''">
+		AND		USER_RULE 	= #{rule}
+		</if>
 	</select>
 
 	<select id="userIdCheck" resultType="int" parameterType="lgs.com.main.vo.UserVO">
