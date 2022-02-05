@@ -11,6 +11,7 @@
 * */
 function fetchLoad(url, method, data, callback){
     const serverUrl = "https://3.35.218.236";
+    //const serverUrl = "http://localhost:8080";
 
     fetch(serverUrl + url, {
         method : method,
@@ -20,4 +21,17 @@ function fetchLoad(url, method, data, callback){
     ).catch(function(error){
         console.log(error);
     });
+}
+
+/**
+ * Null Check 함수 
+ * @param data : NULL체크할데이터
+ * @return Null 아니면 TRUE NULL 이면 FALSE
+ * */
+function nullCheck(data) {
+    if (data == null || data == "" || data == "undefined"){
+        return false;
+    } else {
+        return true;
+    }
 }
