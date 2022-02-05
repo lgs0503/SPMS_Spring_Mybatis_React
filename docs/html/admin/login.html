@@ -30,17 +30,17 @@
                                                 <label for="password">비밀번호</label>
                                             </div>
                                             <div class="form-check mb-3">
-                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
-                                                <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
+                                                <input class="form-check-input" id="userIdChecked" type="checkbox" value="" />
+                                                <label class="form-check-label" for="userIdChecked">아이디 저장</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.html">Forgot Password?</a>
+                                                <a class="small" href="password.html">비밀번호 찾기</a>
                                                 <a class="btn btn-primary" id="btnLogin">Login</a>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+                                        <div class="small"><a href="register.html">회원가입</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -67,13 +67,33 @@
         <script src="js/scripts.js"></script>
         <script src="../../js/comm.js"></script>
         <script>
+            let key = getCookie("key");
+            const userIdChecked = document.getElementById("userIdChecked");
+            const userIdinput = document.getElementById("userId");
 
+            if(key){
+                userIdinput.value = key;
+                userIdChecked.checked = true;
+            }
+
+            userIdChecked.addEventListener("change", function(){
+               if (userIdChecked.checked == true){
+                   setCookie("key", userIdinput.value, 7);
+               } else {
+                   deleteCookie("key");
+               }
+            });
+
+            userIdinput.addEventListener("keyup", function () {
+                if (userIdChecked.checked == true){
+                    setCookie("key", userIdinput.value, 7);
+                }
+            });
 
             document.getElementById("btnLogin").addEventListener("click", function () {
 
                 let userId = document.getElementById("userId");
                 let password = document.getElementById("password");
-
 
                 if(!nullCheck(userId.value)){
                     alert("아이디를 입력해주세요.");
