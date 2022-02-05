@@ -77,3 +77,18 @@ function getCookie(cookieName) {
     }
     return unescape(cookieValue);
 }
+
+function uploadImgPreview() {
+
+    let fileInfo = document.getElementById("upImgFile").files[0];
+    let reader = new FileReader();
+
+    reader.onload = function() {
+        document.getElementById("thumbnailImg").src = reader.result;
+        document.getElementById("thumbnailUrl").innerText = reader.result;
+    };
+
+    if( fileInfo ) {
+        reader.readAsDataURL( fileInfo );
+    }
+}
