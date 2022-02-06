@@ -48,7 +48,6 @@
 |  위치                          |  설명                                   | 
 | --------                       | ---------                               | 
 |/docs                           |프론트 정적 소스(html, css, js) 파일 구성   |
-
 |/docs/html                      |사용자 페이지                             |
 |/docs/html/admin                |관리자 페이지                             |
 |/src/main/java                  |백엔드 java 파일 구성                      |
