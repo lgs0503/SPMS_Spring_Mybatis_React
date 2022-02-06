@@ -116,6 +116,8 @@
                 fetchLoad("/loginProcessing", "POST", data, function (result) {
 
                     if(result.loginStatus == "1"){
+                        sessionStorage.setItem("userId", userId.value);
+
                         location.href = "../admin/index.html";
                     } else {
                         alert("아이디와 비밀번호를 확인해주세요.");
