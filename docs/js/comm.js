@@ -9,18 +9,26 @@
 * @param data : 요청에필요한데이터값
 * @param callback : 성공결과콜백함수
 * */
-function fetchLoad(url, method, data, callback){
+function fetchLoad(url, method, data, callback, fileUpload = false){
     const serverUrl = "https://3.35.218.236";
     //const serverUrl = "http://localhost:8080";
 
-    fetch(serverUrl + url, {
-        method : method,
-        headers : { 'content-Type': 'application/json; charset=utf-8' },
-        body : JSON.stringify(data)
-    }).then(e => e.json()).then(callback
-    ).catch(function(error){
-        console.log(error);
+    let fetchData = {method : method};
+
+    if(fileUpload){
+        fetchData.body = data;
+    } else {
+        fetchData.body = JSON.stringify(data);
+        fetchData.headers = {'content-Type': 'application/json; charset=utf-8'};
+    }
+
+    fetch(serverUrl + url, fetchData)
+        .then(e => e.json())
+        .then(callback)
+        .catch(function(error){
+            console.log(error);
     });
+
 }
 
 /**
@@ -78,9 +86,9 @@ function getCookie(cookieName) {
     return unescape(cookieValue);
 }
 
-function uploadImgPreview() {
+function uploadImgPreview(e) {
 
-    let fileInfo = document.getElementById("upImgFile").files[0];
+    let fileInfo = document.getElementById("imageFile").files[0];
     let reader = new FileReader();
 
     reader.onload = function() {
