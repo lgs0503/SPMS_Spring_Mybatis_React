@@ -74,7 +74,7 @@
                                                 <label for="phoneNum">연락처(-)없이 숫자만 입력</label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="imageFile" type="file" onChange="uploadImgPreview();" accept=".gif, .jpg, .png"/>
+                                                <input class="form-control" id="imageFile" type="file" accept=".gif, .jpg, .png"/>
                                                 <img id="thumbnailImg" src="" style="width: 100%; margin-top: 10px; border: 1px solid #ced4da;">
                                             </div>
                                             <div class="mt-4 mb-0">
@@ -141,6 +141,12 @@
                 });
             });
 
+            /* 파일 찾기 */
+            document.getElementById("imageFile").addEventListener("change", function () {
+                uploadImgChange("imageFile", "thumbnailImg");
+            })
+
+            /* 회원가입 */
             document.getElementById("btnRegister").addEventListener("click", function () {
 
                 /* 아이디 중복 체크 */
@@ -192,27 +198,40 @@
                     }
                 }
 
-                /*파일업로드 */
-                new Promise(function(resolve, reject){
-                    let form = new FormData();
-                    form.append( "file", document.getElementById("imageFile").files[0]);
+                /* 파일이 존재하면 */
+                if(document.getElementById(fileId).value){
 
-                    fetchLoad("/file/upload", "POST", form, function (result) {
-                        resolve(result.uploadList[0].fileNo);
-                    }, true);
+                    /*파일업로드 */
+                    new Promise(function(resolve, reject){
+                        let form = new FormData();
+                        form.append( "file", document.getElementById("imageFile").files[0]);
 
-                }).then(function (resolve) {
-                    /* 이미지 번호가 있으면 회원가입에 같이 저장한다.*/
-                    if (resolve){
-                        data.imageFileNo = resolve;
-                    }
+                        fetchLoad("/file/upload", "POST", form, function (result) {
+                            resolve(result.uploadList[0].fileNo);
+                        }, true);
+
+                    }).then(function (resolve) {
+                        /* 이미지 번호가 있으면 회원가입에 같이 저장한다.*/
+                        if (resolve){
+                            data.imageFileNo = resolve;
+                        }
+                        fetchLoad("/registerProcessing", "POST", data, function (result) {
+                            if (result.registerStatus == "1"){
+                                alert("회원가입이 성공되었습니다.");
+                                location.href = "../admin/login.html";
+                            }
+                        });
+                    });
+
+                } else {  /* 파일이 없으면 파일업로드 제외 */
+
                     fetchLoad("/registerProcessing", "POST", data, function (result) {
                         if (result.registerStatus == "1"){
                             alert("회원가입이 성공되었습니다.");
                             location.href = "../admin/login.html";
                         }
                     });
-                });
+                }
             });
         </script>
     </body>
