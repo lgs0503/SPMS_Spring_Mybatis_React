@@ -40,7 +40,7 @@ public class FileController {
      */
     @Transactional
     @RequestMapping(value="/file/upload", method=RequestMethod.POST)
-        public ModelAndView fileUpload(MultipartHttpServletRequest request){
+    public ModelAndView fileUpload(MultipartHttpServletRequest request) throws Exception {
         logger.info("fileUpload");
 
         List<MultipartFile> fileList = request.getFiles("file");
