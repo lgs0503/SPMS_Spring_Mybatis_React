@@ -120,3 +120,13 @@ function valiImageType(image) {
                     ,  'image/jpg' ].indexOf(image.type) > -1);
     return result;
 }
+/**
+* 로그인 세션 체크
+* */
+function loginUserSessionCheck(){
+    let userId = sessionStorage.getItem("userId");
+    if(!userId){
+        alert("세션이 존재하지 않습니다.");
+        location.href = "../admin/login.html";
+    }
+}
