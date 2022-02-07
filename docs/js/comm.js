@@ -9,18 +9,26 @@
 * @param data : 요청에필요한데이터값
 * @param callback : 성공결과콜백함수
 * */
-function fetchLoad(url, method, data, callback){
+function fetchLoad(url, method, data, callback, fileUpload = false){
     const serverUrl = "https://3.35.218.236";
     //const serverUrl = "http://localhost:8080";
 
-    fetch(serverUrl + url, {
-        method : method,
-        headers : { 'content-Type': 'application/json; charset=utf-8' },
-        body : JSON.stringify(data)
-    }).then(e => e.json()).then(callback
-    ).catch(function(error){
-        console.log(error);
+    let fetchData = {method : method};
+
+    if(fileUpload){
+        fetchData.body = data;
+    } else {
+        fetchData.body = JSON.stringify(data);
+        fetchData.headers = {'content-Type': 'application/json; charset=utf-8'};
+    }
+
+    fetch(serverUrl + url, fetchData)
+        .then(e => e.json())
+        .then(callback)
+        .catch(function(error){
+            console.log(error);
     });
+
 }
 
 /**
@@ -77,18 +85,38 @@ function getCookie(cookieName) {
     }
     return unescape(cookieValue);
 }
+/**
+ * 이미지 체인지
+ * @param fileId : 파일inputID
+ * @param thumId : 섬네일imgID
+ * */
+function uploadImgChange(fileId, thumId) {
 
-function uploadImgPreview() {
-
-    let fileInfo = document.getElementById("upImgFile").files[0];
+    let fileInfo = document.getElementById(fileId).files[0];
     let reader = new FileReader();
 
+    if(!valiImageType(fileInfo)) {
+        alert("jpeg/png/jpg 파일만 선택 가능합니다.")
+        document.getElementById(fileId).value = "";
+        return;
+    }
+
     reader.onload = function() {
-        document.getElementById("thumbnailImg").src = reader.result;
-        document.getElementById("thumbnailUrl").innerText = reader.result;
+        document.getElementById(thumId).src = reader.result;
     };
 
     if( fileInfo ) {
         reader.readAsDataURL( fileInfo );
     }
+}
+/**
+ * 이미지 타입 유효성 체크
+ * @param image : imageFile
+ * @param result : 이미지타입일경우TRUE아닌경우FALSE
+ * */
+function valiImageType(image) {
+    const result = ([ 'image/jpeg'
+                    , 'image/png'
+                    ,  'image/jpg' ].indexOf(image.type) > -1);
+    return result;
 }
