@@ -59,7 +59,9 @@
 
 ***
 
-프론트 서버 : https://lgs0503.github.io/spring-showpingmall/
+프론트 사용자 페이지 : https://lgs0503.github.io/spring-showpingmall/
+
+프론트 관리자 페이지 : https://lgs0503.github.io/spring-showpingmall/html/admin/login.html
 
 백 엔드 서버 : http://3.35.218.236/
 
