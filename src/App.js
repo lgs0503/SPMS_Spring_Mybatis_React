@@ -1,24 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import React from "react";
+import {Routes, Route, BrowserRouter} from 'react-router-dom';
+import AdminMain from './component/admin/index';
+import AdminRegister from './component/admin/register';
+import AdminLogin from './component/admin/login';
 
-function App() {
+const App = () =>{
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <BrowserRouter basename="/spring-showpingmall">
+          <Routes>
+              <Route path="/"           element={<AdminMain />} />
+              <Route path="register"   element={<AdminRegister />} />
+              <Route path="login"      element={<AdminLogin />} />
+          </Routes>
+      </BrowserRouter>
   );
 }
 
