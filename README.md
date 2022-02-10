@@ -40,7 +40,7 @@
 
 ***
 ## 기타 설명
-깃헙 협업 개발 및 추후 react.js 스터디 를 위해 진행된 프로젝트
+깃헙 협업 개발 ~~및 추후 react.js 스터디 를~~ (React js 적용) 위해 진행된 프로젝트
 
 ## 폴더 구조 
 ***
@@ -59,7 +59,9 @@
 
 ***
 
-프론트 서버 : https://lgs0503.github.io/spring-showpingmall/
+프론트 사용자 페이지 : https://lgs0503.github.io/spring-showpingmall/
+
+프론트 관리자 페이지 : https://lgs0503.github.io/spring-showpingmall/admin/login
 
 백 엔드 서버 : http://3.35.218.236/
 
