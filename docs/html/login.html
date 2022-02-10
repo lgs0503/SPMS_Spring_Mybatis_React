@@ -38,6 +38,7 @@
 
         .login_form {
             width: 50%;
+            background-color: #fff;
         }
 
         .container {
@@ -49,29 +50,50 @@
         }
 
         .login_logo {
+            width: 100%;
             margin-top: 100px;
+            text-align: center;
         }
+
         .login_logo img {
             width: 70%;
         }
 
         .input_wrap {
-            
+            width: 100%;
+            text-align: center;
         }
 
         .input_style {
-            width: 100%;
+            width: 462px;
             display: block;
-            border: 1px solid #383838;
+            border: 1px solid #ced4da;
             padding: 17px 18px 17px 19px;
-            border-radius: 6px 6px 0 0;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
-        .input_style:nth-child(2){
-            margin-top: -1px;
-            border-radius: 0 0 6px 6px;
+
+        .input_style:hover {
+            border: 3px solid #ebbd63;
+            margin: -3px;
+        }
+        .login_button {
+            width: 100%;
         }
 
         .button_style {
+            width: 500px;
+            border-radius: 0.25rem;
+            padding: 17px 18px 17px 19px;
+            background-color: #000;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        .button_style:hover {
+            background-color: #ebbd63;
         }
     </style>
 </head>
@@ -85,7 +107,7 @@
                     <img src="../img/ROMANSON.png">
                 </div>
                 <div class="input_wrap">
-                    <input type="text" id="userId" class="input_style" style=""/>
+                    <input type="text" id="userId" class="input_style" style="" />
                     <input type="password" id="password" class="input_style" />
                 </div>
                 <div class="login_button">
