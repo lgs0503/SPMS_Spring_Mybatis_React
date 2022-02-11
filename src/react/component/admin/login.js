@@ -1,9 +1,52 @@
 
-import React from 'react';
-import "../../css/styles.css";
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 
+import "../../css/styles.css";
+import * as common from "../../comm/common";
+
 const  AdminLogin = () => {
+    useEffect(() => {
+
+    }, []);
+
+    /* 로그인 로직 */
+    function login(){
+        let userId = document.getElementById("userId");
+        let password = document.getElementById("password");
+
+        if(!common.nullCheck(userId.value)){
+            alert("아이디를 입력해주세요.");
+            userId.focus();
+            return ;
+        }
+
+        if(!common.nullCheck(password.value)){
+            alert("비밀번호를 입력해주세요.");
+            password.focus();
+            return ;
+        }
+
+        let data = {
+            userId      : userId.value,
+            password    : password.value,
+            rule        : "admin"
+        }
+
+        common.fetchLoad("/loginProcessing", "POST", data, function (result) {
+
+            if(result.loginStatus == "1"){
+                sessionStorage.setItem("userId", userId.value);
+                alert("로그인성공");
+                window.location.href="/spring-showpingmall/#/admin";
+            } else {
+                alert("아이디와 비밀번호를 확인해주세요.");
+                userId.value = "";
+                password.value = "";
+            }
+        });
+    };
+
   return (
       <div className="bg-primary">
           <div id="layoutAuthentication">
@@ -31,7 +74,7 @@ const  AdminLogin = () => {
                                               </div>
                                               <div className="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                   <a className="small" href="password.html">비밀번호 찾기</a>
-                                                  <a className="btn btn-primary" id="btnLogin">Login</a>
+                                                  <a className="btn btn-primary" id="btnLogin" onClick={login}>Login</a>
                                               </div>
                                           </form>
                                       </div>
