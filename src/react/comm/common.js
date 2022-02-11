@@ -80,7 +80,6 @@ export function getCookie(cookieName) {
         let end = cookieData.indexOf(';', start);
         if (end == -1) // 쿠키 값의 마지막 위치 인덱스 번호 설정
             end = cookieData.length;
-        console.log("end위치  : " + end);
         cookieValue = cookieData.substring(start, end);
     }
     return unescape(cookieValue);
@@ -127,5 +126,6 @@ export function loginUserSessionCheck(){
     let userId = sessionStorage.getItem("userId");
     if(!userId){
         alert("세션이 존재하지 않습니다.");
+        window.location.href = "../admin/login.html";
     }
 }
