@@ -12,13 +12,13 @@
 ## 사용 기술
 > 
 >
-> ###Front Stak
+> ### Front Stak
 > - HTML
 > - CSS
 > - Javascript
 > - React.Js
 
-> ###Back End 
+> ### Back End 
 > - Java 1.8
 > - Spring 
 >   - MVC 
