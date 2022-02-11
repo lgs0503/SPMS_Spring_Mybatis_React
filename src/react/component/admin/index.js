@@ -4,7 +4,7 @@ import AdminNavigation from "./layout/navigation";
 import AdminFooter from "./layout/footer";
 import {Route, Routes} from "react-router-dom";
 
-import AdminMain from "./content/index";
+import AdminMain from "./content";
 import AdminCode from "./content/code";
 
 import "../../css/styles.css";
