@@ -10,21 +10,26 @@
 
 ***
 ## 사용 기술
+> 
+>
+> ###Front Stak
+> - HTML
+> - CSS
+> - Javascript
+> - React.Js
+
+> ###Back End 
 > - Java 1.8
 > - Spring 
 >   - MVC 
 >   - MyBatis
 >   - interceptor
->   - DBtranscation
+>   - DBTranscation
 >   - log4j
 >   - JsonView
->   - Junit4 단위 테스트
+>   - JUnit4
 >   - Maven
 >   - Security
->   - JSP 삭제후 순수 HTML 로 대체
->      - 추후 React.js or Vue.js 로 변경하기위함
-> - HTML CSS JavaScript
-> - ~~Naver Colud (aws 무료 기간 끝나서 대체)~~
 > - Aws EC2 (WAS/Jenkins, DB)
 > - Docker 
 > - Oracle 11g (Docker image)
@@ -35,33 +40,34 @@
 프론트 : 정다은(jde98)
  - HTML CSS Javascript 
 
-백엔드 : 이광석(lgs0503)
-- Java DB WebServer 
+백엔드 / 프론트 : 이광석(lgs0503)
+- Java DB WebServer React Javascript
 
 ***
 ## 기타 설명
-깃헙 협업 개발 및 추후 react.js 스터디 를 위해 진행된 프로젝트
+깃헙 협업 개발 ~~및 추후 react.js 스터디 를~~ (React js 적용) 위해 진행된 프로젝트
 
 ## 폴더 구조 
 ***
 
-|  위치                          |  설명                                   | 
-| --------                       | ---------                               | 
-|/docs                           |프론트 정적 소스(html, css, js) 파일 구성   |
-|/docs/html                      |사용자 페이지                             |
-|/docs/html/admin                |관리자 페이지                             |
-|/src/main/java                  |백엔드 java 파일 구성                      |
-|/src/main/resources/mappers     |mybatis mapper xml 파일 구성              |
-|/src/main/resources/properties  |properties 파일 구성                      |
-|/src/main/webapp/WEB_INF/spring |spring config xml 파일 구성               |
-|/src/test/java                  |junit test 소스                           |
+|  위치                          |  설명                                            | 
+| --------                       | ---------                                       | 
+|/docs                           |퍼블리싱 프론트 정적 소스(html, css, js) 파일 구성  |
+|/docs/html                      |퍼블리싱 사용자 페이지                             |
+|/docs/html/admin                |퍼블리싱 관리자 페이지                             |
+|/src/react                      |프론트 React 소스 구성                             |
+|/src/main/java                  |백엔드 java 파일 구성                              |
+|/src/main/resources/mappers     |mybatis mapper xml 파일 구성                      |
+|/src/main/resources/properties  |properties 파일 구성                              |
+|/src/main/webapp/WEB_INF/spring |spring config xml 파일 구성                       |
+|/src/test/java                  |junit test 소스                                   |
 
 
 ***
 
 프론트 사용자 페이지 : https://lgs0503.github.io/spring-showpingmall/
 
-프론트 관리자 페이지 : https://lgs0503.github.io/spring-showpingmall/html/admin/login.html
+프론트 관리자 페이지 : https://lgs0503.github.io/spring-showpingmall/#/admin/login
 
 백 엔드 서버 : http://3.35.218.236/
 
@@ -78,3 +84,5 @@ ubuntu docker 설치 : https://shanepark.tistory.com/237
 docker oracle11g 설치 : https://romeoh.tistory.com/entry/Oracle-docker%EC%97%90-Oracle-11g-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
 
 HTTPS ssl 인증서 발급 및 apache , tomcat 설정 : https://jdh5202.tistory.com/772
+
+GitHub Pages SPA 배포시 설정 : https://velog.io/@alvin/Github-Pages%EC%97%90-HashRouter%EB%A1%9C-SPA-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
