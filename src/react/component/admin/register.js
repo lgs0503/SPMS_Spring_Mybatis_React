@@ -12,7 +12,7 @@ const  AdminRegister = () => {
                           <div className="row justify-content-center">
                               <div className="col-lg-7">
                                   <div className="card shadow-lg border-0 rounded-lg mt-5">
-                                      <div className="card-header"><h3 className="text-center font-weight-light my-4">Admin 계정생성</h3></div>
+                                      <div className="card-header"><h3 className="text-center font-weight-light my-4">Admin 회원가입</h3></div>
                                       <div className="card-body">
                                           <form>
                                               <div className="form-floating mb-3">
@@ -72,7 +72,7 @@ const  AdminRegister = () => {
                                                   <label htmlFor="phoneNum">연락처(-)없이 숫자만 입력</label>
                                               </div>
                                               <div className="form-floating mb-3">
-                                                  <input id="imageFile" type="file" accept=".gif, .jpg, .png"/>
+                                                  <input className="form-control" id="imageFile" type="file" accept=".gif, .jpg, .png"/>
                                               </div>
                                               <img id="thumbnailImg" src=""/>
                                               <div className="mt-4 mb-0">
