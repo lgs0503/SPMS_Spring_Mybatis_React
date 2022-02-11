@@ -12,7 +12,7 @@ import "../../css/styles.css";
 const  AdminLayout = () => {
   return (
       <div className="sb-nav-fixed">
-          <AdminHeader/>
+          <AdminHeader title={"Admin"}/>
           <div id="layoutSidenav">
               <AdminNavigation/>
               <div id="layoutSidenav_content">
