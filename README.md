@@ -50,16 +50,17 @@
 ## 폴더 구조 
 ***
 
-|  위치                          |  설명                                   | 
-| --------                       | ---------                               | 
-|/docs                           |퍼블리싱 프론트 정적 소스(html, css, js) 파일 구성   |
+|  위치                          |  설명                                            | 
+| --------                       | ---------                                       | 
+|/docs                           |퍼블리싱 프론트 정적 소스(html, css, js) 파일 구성  |
 |/docs/html                      |퍼블리싱 사용자 페이지                             |
 |/docs/html/admin                |퍼블리싱 관리자 페이지                             |
-|/src/main/java                  |백엔드 java 파일 구성                      |
-|/src/main/resources/mappers     |mybatis mapper xml 파일 구성              |
-|/src/main/resources/properties  |properties 파일 구성                      |
-|/src/main/webapp/WEB_INF/spring |spring config xml 파일 구성               |
-|/src/test/java                  |junit test 소스                           |
+|/src/react                      |프론트 React 소스 구성                             |
+|/src/main/java                  |백엔드 java 파일 구성                              |
+|/src/main/resources/mappers     |mybatis mapper xml 파일 구성                      |
+|/src/main/resources/properties  |properties 파일 구성                              |
+|/src/main/webapp/WEB_INF/spring |spring config xml 파일 구성                       |
+|/src/test/java                  |junit test 소스                                   |
 
 
 ***
