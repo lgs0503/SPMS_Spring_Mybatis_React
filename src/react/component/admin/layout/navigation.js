@@ -12,7 +12,7 @@ const AdminNavigation = () => {
                           <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                           코드 관리
                       </Link>
-                      <Link className="nav-link" to="index.html">
+                      <Link className="nav-link" to="/admin/menu">
                           <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                           메뉴 관리
                       </Link>
