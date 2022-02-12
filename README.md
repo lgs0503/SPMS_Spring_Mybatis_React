@@ -39,6 +39,22 @@
 - Java DB WebServer 
 
 ***
+## 브런치 설명
+
+|  브런치                          |  설명                                   | 
+| --------                       | ---------                               | 
+|master                           |백엔드 운영 소스, Pull request 후 머지된 데이터를 Jenkins 자동배포 툴을 통해 AWS 백엔드 서버에 자동 배포된다.   |
+|development                           |개발용 브런치, development에 개발 소스를 푸쉬 후 Pull Request를 통해 소스 리뷰를 한 뒤 마스터 브런치에 병합한다.   |
+|gh-pages                           |프론트엔드 운영 소스, React JS를 빌드한 코드를 깃허브 페이지에 호스팅한다.   |
+
+
+
+빌드 명령어
+```
+npm run deploy
+```
+
+***
 ## 기타 설명
 깃헙 협업 개발 ~~및 추후 react.js 스터디 를~~ (React js 적용) 위해 진행된 프로젝트
 
