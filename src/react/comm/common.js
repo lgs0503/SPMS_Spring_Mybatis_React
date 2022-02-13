@@ -95,8 +95,9 @@ export function uploadImgChange(fileId, thumId) {
     let reader = new FileReader();
 
     if(!valiImageType(fileInfo)) {
-        alert("jpeg/png/jpg 파일만 선택 가능합니다.")
+        alert("jpeg/png/jpg 파일만 선택 가능합니다.");
         document.getElementById(fileId).value = "";
+        document.getElementById(thumId).src = "";
         return;
     }
 

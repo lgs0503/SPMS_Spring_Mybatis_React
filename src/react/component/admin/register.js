@@ -1,19 +1,51 @@
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import "../../css/styles.css";
 import AdminLoginRegiFooter from "./footer";
 import * as common from "../../comm/common";
+import DaumPostcode from 'react-daum-postcode';
+import Modal from "../modal";
+import {Link} from "react-router-dom";
 
 const  AdminRegister = () => {
     let idCheckStatus = "";
 
+    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+    const [modalOpen, setModalOpen] = useState(false);
+    const [isOpenPost, setIsOpenPost] = useState(false);
+
+    const onChangeOpenPost = () => {
+        setIsOpenPost(!isOpenPost);
+    };
+
+    const onCompletePost = (data) => {
+        let fullAddr = data.address;
+        let extraAddr = '';
+
+        if (data.addressType === 'R') {
+            if (data.bname !== '') {
+                extraAddr += data.bname;
+            }
+            if (data.buildingName !== '') {
+                extraAddr += extraAddr !== '' ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddr += extraAddr !== '' ? ` (${extraAddr})` : '';
+        }
+        document.getElementById("location").value = fullAddr;
+        closeModal();
+    };
+
+    const openModal = () => {
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
     useEffect( () => {
 
     },[]);
-
-    const daumLocation = () => {
-        /* 주소 찾기 카카오 api */
-    };
 
     const userIdCheck = () => {
         let data = {
@@ -80,7 +112,7 @@ const  AdminRegister = () => {
             , "phoneNum"];
 
         for(let i = 0 ; i < validationChkName.length ; i++){
-            if (!nullCheck(document.getElementById(validationChkId[i]).value)){
+            if (!common.nullCheck(document.getElementById(validationChkId[i]).value)){
                 alert("["+ validationChkName[i] + "]를 입력해주세요.");
                 document.getElementById(validationChkId[i]).focus();
                 return;
@@ -107,7 +139,7 @@ const  AdminRegister = () => {
                 common.fetchLoad("/registerProcessing", "POST", data, function (result) {
                     if (result.registerStatus == "1"){
                         alert("회원가입이 성공되었습니다.");
-                        location.href = "../admin/login.html";
+                        window.location.href = "../admin/login.html";
                     }
                 });
             });
@@ -117,12 +149,16 @@ const  AdminRegister = () => {
             common.fetchLoad("/registerProcessing", "POST", data, function (result) {
                 if (result.registerStatus == "1"){
                     alert("회원가입이 성공되었습니다.");
-                    location.href = "../admin/login.html";
+                    window.location.href = "../admin/login.html";
                 }
             });
         }
     }
 
+    const imageStyle = {
+        "width" : "100%",
+        "border" : "1px solid #ced4da"
+    };
 
    return (
       <div className="bg-primary">
@@ -177,7 +213,7 @@ const  AdminRegister = () => {
                                                   <div className="col-md-4">
                                                       <div className="form-floating mb-3 mb-md-0">
                                                           <div className="d-grid">
-                                                              <a className="btn btn-primary btn-block" id="btnLocation" onClick={daumLocation}>주소찾기</a>
+                                                              <a className="btn btn-primary btn-block" id="btnLocation" onClick={openModal}>주소찾기</a>
                                                           </div>
                                                       </div>
                                                   </div>
@@ -193,9 +229,9 @@ const  AdminRegister = () => {
                                                   <label htmlFor="phoneNum">연락처(-)없이 숫자만 입력</label>
                                               </div>
                                               <div className="form-floating mb-3">
-                                                  <input className="form-control" id="imageFile" type="file" accept=".gif, .jpg, .png"/>
+                                                  <input className="form-control" id="imageFile" type="file" accept=".gif, .jpg, .png" onChange={fileChange}/>
                                               </div>
-                                              <img id="thumbnailImg" src=""/>
+                                              <img id="thumbnailImg" src="" style={imageStyle}/>
                                               <div className="mt-4 mb-0">
                                                   <div className="d-grid">
                                                       <a className="btn btn-primary btn-block" id="btnRegister">회원가입</a>
@@ -204,7 +240,7 @@ const  AdminRegister = () => {
                                           </form>
                                       </div>
                                       <div className="card-footer text-center py-3">
-                                          <div className="small"><a href="login.html">뒤로가기</a></div>
+                                          <div className="small"><Link to="/admin/login">뒤로가기</Link></div>
                                       </div>
                                   </div>
                               </div>
@@ -212,9 +248,11 @@ const  AdminRegister = () => {
                       </div>
                   </main>
               </div>
-
               <AdminLoginRegiFooter/>
           </div>
+          <Modal open={modalOpen} close={closeModal} header="주소찾기">
+              <DaumPostcode autoClose onComplete={onCompletePost } />
+          </Modal>
       </div>
   );
 }
