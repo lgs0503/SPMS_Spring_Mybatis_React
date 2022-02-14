@@ -234,7 +234,7 @@ alter table POST
 
 
 -- 댓글 테이블
-CREATE TABLE COMMENT
+CREATE TABLE POST_COMMENT
 (
     POST_ID VARCHAR2(20),
     COMMENT_ID VARCHAR2(20),
@@ -248,22 +248,22 @@ CREATE TABLE COMMENT
     UPDATE_USER VARCHAR2(20)
 );
 
-comment on table COMMENT is '댓글';
-comment on column COMMENT.POST_ID is '게시글 일련번호';
-comment on column COMMENT.COMMENT_ID is '댓글 일련번호';
-comment on column COMMENT.COMMENT_UPPER_ID is '부모 댓글 일련번호';
-comment on column COMMENT.COMMENT_TITLE is '댓글 제목';
-comment on column COMMENT.COMMENT_TEXT is '댓글 내용';
-comment on column COMMENT.DELETED is '삭제여부';
-comment on column COMMENT.CREATE_DATE is '등록일';
-comment on column COMMENT.CREATE_USER is '등록자';
-comment on column COMMENT.UPDATE_DATE is '수정일';
-comment on column COMMENT.UPDATE_USER is '수정자';
+comment on table POST_COMMENT is '댓글';
+comment on column POST_COMMENT.POST_ID is '게시글 일련번호';
+comment on column POST_COMMENT.COMMENT_ID is '댓글 일련번호';
+comment on column POST_COMMENT.COMMENT_UPPER_ID is '부모 댓글 일련번호';
+comment on column POST_COMMENT.COMMENT_TITLE is '댓글 제목';
+comment on column POST_COMMENT.COMMENT_TEXT is '댓글 내용';
+comment on column POST_COMMENT.DELETED is '삭제여부';
+comment on column POST_COMMENT.CREATE_DATE is '등록일';
+comment on column POST_COMMENT.CREATE_USER is '등록자';
+comment on column POST_COMMENT.UPDATE_DATE is '수정일';
+comment on column POST_COMMENT.UPDATE_USER is '수정자';
 
 create unique index COMMENT_ID_uindex
-    on POST (COMMENT_ID);
+    on POST_COMMENT (COMMENT_ID);
 
-alter table COMMENT
+alter table POST_COMMENT
     add constraint COMMENT_pk
         primary key (COMMENT_ID);
 
@@ -293,7 +293,7 @@ comment on column PRODUCT_BUY.UPDATE_DATE is '수정일';
 comment on column PRODUCT_BUY.UPDATE_USER is '수정자';
 
 create unique index PRODUCT_BUY_uindex
-    on POST (BUY_ID);
+    on PRODUCT_BUY (BUY_ID);
 
 alter table PRODUCT_BUY
     add constraint PRODUCT_BUY_pk
@@ -328,7 +328,7 @@ comment on column PRODUCT_QA.UPDATE_DATE is '수정일';
 comment on column PRODUCT_QA.UPDATE_USER is '수정자';
 
 create unique index PRODUCT_QA_uindex
-    on POST (QA_ID);
+    on PRODUCT_QA (QA_ID);
 
 alter table PRODUCT_QA
     add constraint PRODUCT_QA_pk
@@ -362,7 +362,7 @@ comment on column BANNER.UPDATE_DATE is '수정일';
 comment on column BANNER.UPDATE_USER is '수정자';
 
 create unique index BANNER_uindex
-    on POST (BANNER_ID);
+    on BANNER (BANNER_ID);
 
 alter table BANNER
     add constraint BANNER_pk
@@ -400,7 +400,7 @@ comment on column POPUP.UPDATE_DATE is '수정일';
 comment on column POPUP.UPDATE_USER is '수정자';
 
 create unique index POPUP_uindex
-    on POST (POPUP_ID);
+    on POPUP (POPUP_ID);
 
 alter table POPUP
     add constraint POPUP_pk
@@ -435,7 +435,7 @@ comment on column MENU.UPDATE_DATE is '수정일';
 comment on column MENU.UPDATE_USER is '수정자';
 
 create unique index MENU_uindex
-    on POST (MENU_ID);
+    on MENU (MENU_ID);
 
 alter table MENU
     add constraint MENU_pk
