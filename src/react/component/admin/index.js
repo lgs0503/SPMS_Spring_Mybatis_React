@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AdminHeader from "./layout/header";
 import AdminNavigation from "./layout/navigation";
 import AdminFooter from "./layout/footer";
@@ -6,10 +6,17 @@ import {Route, Routes} from "react-router-dom";
 
 import AdminMain from "./content";
 import AdminCode from "./content/code";
+import AdminMenu from "./content/menu";
 
 import "../../css/styles.css";
+import * as common from "../../comm/common";
 
 const  AdminLayout = () => {
+    useEffect( () => {
+
+        common.loginUserSessionCheck();
+
+    },[]);
   return (
       <div className="sb-nav-fixed">
           <AdminHeader title={"Admin"}/>
@@ -20,6 +27,7 @@ const  AdminLayout = () => {
                       <Routes>
                           <Route path="/" element={<AdminMain />} />
                           <Route path="/code" element={<AdminCode />} />
+                          <Route path="/menu" element={<AdminMenu />} />
                       </Routes>
                   </main>
                   <AdminFooter/>

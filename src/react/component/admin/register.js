@@ -1,10 +1,166 @@
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "../../css/styles.css";
 import AdminLoginRegiFooter from "./footer";
+import * as common from "../../comm/common";
+import DaumPostcode from 'react-daum-postcode';
+import Modal from "../modal";
+import {Link} from "react-router-dom";
 
 const  AdminRegister = () => {
-  return (
+    let idCheckStatus = "";
+
+    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+    const [modalOpen, setModalOpen] = useState(false);
+    const [isOpenPost, setIsOpenPost] = useState(false);
+
+    const onChangeOpenPost = () => {
+        setIsOpenPost(!isOpenPost);
+    };
+
+    const onCompletePost = (data) => {
+        let fullAddr = data.address;
+        let extraAddr = '';
+
+        if (data.addressType === 'R') {
+            if (data.bname !== '') {
+                extraAddr += data.bname;
+            }
+            if (data.buildingName !== '') {
+                extraAddr += extraAddr !== '' ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddr += extraAddr !== '' ? ` (${extraAddr})` : '';
+        }
+        document.getElementById("location").value = fullAddr;
+        closeModal();
+    };
+
+    const openModal = () => {
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
+    useEffect( () => {
+
+    },[]);
+
+    const userIdCheck = () => {
+        let data = {
+            userId : document.getElementById("userId").value
+        };
+
+        common.fetchLoad("/userIdCheck", "POST", data, function (result) {
+            idCheckStatus = result.idCheckStatus;
+            if(idCheckStatus == "1"){
+                document.getElementById("idCheck").innerText = "중복된 계정이 존재합니다.";
+                document.getElementById("idCheck").style.color = "red";
+            } else {
+                document.getElementById("idCheck").innerText = "아이디";
+                document.getElementById("idCheck").style.color = "black";
+            }
+        });
+    };
+
+    const fileChange = () => {
+        common.uploadImgChange("imageFile", "thumbnailImg");
+    }
+
+    const register = () => {
+
+        /* 아이디 중복 체크 */
+        if(idCheckStatus == "1"){
+            alert("중복된 아이디가 존재합니다.");
+            return;
+        }
+
+        /* 비밀번호 체크 */
+        if(document.getElementById("password").value != document.getElementById("passwordchk").value){
+            alert("비밀번호 와 비밀번호 확인이 일치하지 않습니다.");
+            document.getElementById("passwordchk").focus();
+            return;
+        }
+
+        let data = {
+            userId : document.getElementById("userId").value,
+            password : document.getElementById("password").value,
+            userName : document.getElementById("userName").value,
+            age : document.getElementById("age").value,
+            gender : document.getElementById("gender").value,
+            email : document.getElementById("email").value,
+            location : document.getElementById("location").value,
+            locationDetail : document.getElementById("locationDtl").value,
+            imageFileNo : "1",
+            phoneNum : document.getElementById("phoneNum").value,
+            rule : "admin",
+            deleted : "0"
+        };
+
+        /* 필수값 체크 */
+        let validationChkName = ["아이디", "비밀번호"
+            , "성명", "나이"
+            , "성별", "이메일"
+            , "주소", "상세주소"
+            , "연락처"];
+
+        let validationChkId = ["userId", "password"
+            , "userName", "age"
+            , "gender" , "email"
+            , "location", "locationDtl"
+            , "phoneNum"];
+
+        for(let i = 0 ; i < validationChkName.length ; i++){
+            if (!common.nullCheck(document.getElementById(validationChkId[i]).value)){
+                alert("["+ validationChkName[i] + "]를 입력해주세요.");
+                document.getElementById(validationChkId[i]).focus();
+                return;
+            }
+        }
+
+        /* 파일이 존재하면 */
+        if(document.getElementById("imageFile").value){
+
+            /*파일업로드 */
+            new Promise(function(resolve, reject){
+                let form = new FormData();
+                form.append( "file", document.getElementById("imageFile").files[0]);
+
+                common.fetchLoad("/file/upload", "POST", form, function (result) {
+                    resolve(result.uploadList[0].fileNo);
+                }, true);
+
+            }).then(function (resolve) {
+                /* 이미지 번호가 있으면 회원가입에 같이 저장한다.*/
+                if (resolve){
+                    data.imageFileNo = resolve;
+                }
+                common.fetchLoad("/registerProcessing", "POST", data, function (result) {
+                    if (result.registerStatus == "1"){
+                        alert("회원가입이 성공되었습니다.");
+                        window.location.href = "../admin/login.html";
+                    }
+                });
+            });
+
+        } else {  /* 파일이 없으면 파일업로드 제외 */
+
+            common.fetchLoad("/registerProcessing", "POST", data, function (result) {
+                if (result.registerStatus == "1"){
+                    alert("회원가입이 성공되었습니다.");
+                    window.location.href = "../admin/login.html";
+                }
+            });
+        }
+    }
+
+    const imageStyle = {
+        "width" : "100%",
+        "border" : "1px solid #ced4da"
+    };
+
+   return (
       <div className="bg-primary">
           <div id="layoutAuthentication">
               <div id="layoutAuthentication_content">
@@ -57,7 +213,7 @@ const  AdminRegister = () => {
                                                   <div className="col-md-4">
                                                       <div className="form-floating mb-3 mb-md-0">
                                                           <div className="d-grid">
-                                                              <a className="btn btn-primary btn-block" id="btnLocation">주소찾기</a>
+                                                              <a className="btn btn-primary btn-block" id="btnLocation" onClick={openModal}>주소찾기</a>
                                                           </div>
                                                       </div>
                                                   </div>
@@ -73,9 +229,9 @@ const  AdminRegister = () => {
                                                   <label htmlFor="phoneNum">연락처(-)없이 숫자만 입력</label>
                                               </div>
                                               <div className="form-floating mb-3">
-                                                  <input className="form-control" id="imageFile" type="file" accept=".gif, .jpg, .png"/>
+                                                  <input className="form-control" id="imageFile" type="file" accept=".gif, .jpg, .png" onChange={fileChange}/>
                                               </div>
-                                              <img id="thumbnailImg" src=""/>
+                                              <img id="thumbnailImg" src="" style={imageStyle}/>
                                               <div className="mt-4 mb-0">
                                                   <div className="d-grid">
                                                       <a className="btn btn-primary btn-block" id="btnRegister">회원가입</a>
@@ -84,7 +240,7 @@ const  AdminRegister = () => {
                                           </form>
                                       </div>
                                       <div className="card-footer text-center py-3">
-                                          <div className="small"><a href="login.html">뒤로가기</a></div>
+                                          <div className="small"><Link to="/admin/login">뒤로가기</Link></div>
                                       </div>
                                   </div>
                               </div>
@@ -92,9 +248,11 @@ const  AdminRegister = () => {
                       </div>
                   </main>
               </div>
-
               <AdminLoginRegiFooter/>
           </div>
+          <Modal open={modalOpen} close={closeModal} header="주소찾기">
+              <DaumPostcode autoClose onComplete={onCompletePost } />
+          </Modal>
       </div>
   );
 }
