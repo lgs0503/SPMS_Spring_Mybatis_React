@@ -45,7 +45,7 @@
 		MERGE
 		INTO	CODE C
 		USING	DUAL
-		ON 		(C.CODE_ID = #{idx})
+		ON 		(C.CODE_ID = #{codeId})
 		WHEN 	MATCHED THEN
 		UPDATE
 		SET		CODE_NAME			= #{codeName}
@@ -73,10 +73,7 @@
 		)
 		VALUES
 		(
-			(
-			SELECT	NVL(MAX(CODE_ID),0)+1
-			FROM	CODE
-			)
+			#{codeId}
 		,	#{codeName}
 		,	#{upperCodeId}
 		,	#{codeValue}

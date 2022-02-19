@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class CodeController {
@@ -39,18 +41,14 @@ public class CodeController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
+        Map<String, Object> data = new HashMap<String, Object>();
+
         message.setStatus(StatusEnum.OK);
-        message.setMessage("성공 코드");
-        message.setData(codeService.codeList(codeVO));
+        data.put("codeList", codeService.codeList(codeVO));
+        data.put("codeCnt", codeService.codeCnt(codeVO));
+        message.setData(data);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
-/*
-        ModelAndView mv = new ModelAndView();
-
-        mv.addObject("codeList", );
-        mv.addObject("codeCnt", codeService.codeCnt(codeVO));
-        mv.setViewName("jsonView");
-        return mv;*/
     }
 
     /**
@@ -58,9 +56,15 @@ public class CodeController {
      * @param CodeVO 저장 제품 데이터
      */
     @RequestMapping(value = "/saveCode", method = {RequestMethod.POST, RequestMethod.PUT})
-    public void saveCode(@RequestBody CodeVO codeVO) {
+    public ResponseEntity<Message> saveCode(@RequestBody CodeVO codeVO) {
         logger.info("saveCode");
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
         codeService.saveCode(codeVO);
+        message.setStatus(StatusEnum.OK);
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /**
@@ -68,8 +72,14 @@ public class CodeController {
      * @param CodeVO 삭제 제품 데이터
      */
     @RequestMapping(value = "/deleteCode", method = RequestMethod.DELETE)
-    public void deleteCode(@RequestBody CodeVO codeVO) {
+    public ResponseEntity<Message> deleteCode(@RequestBody CodeVO codeVO) {
         logger.info("deleteCode");
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
         codeService.deleteCode(codeVO);
+        message.setStatus(StatusEnum.OK);
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 }
