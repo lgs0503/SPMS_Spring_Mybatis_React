@@ -10,8 +10,14 @@
  * @param callback : 성공결과콜백함수
  * */
 export function fetchLoad(url, method, data, callback, fileUpload = false){
-    const serverUrl = "https://3.35.218.236";
-    //const serverUrl = "http://localhost:8080";
+    const href = window.location.href;
+    let serverUrl = "";
+
+    if(href.indexOf("localhost") == -1){   /* 운영 */
+        serverUrl = "https://3.35.218.236";
+    } else {                               /* 로컬 */
+        serverUrl = "http://localhost:8080"
+    }
 
     let fetchData = {method : method};
 
