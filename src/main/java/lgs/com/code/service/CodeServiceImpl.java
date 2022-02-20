@@ -31,13 +31,13 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public CodeVO serachCode(CodeVO codeVO) {
+    public CodeVO searchCode(CodeVO codeVO) {
         CodeVO result = new CodeVO();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             CodeMapper mapper = session.getMapper(CodeMapper.class);
 
-            result = mapper.serachCode(codeVO);
+            result = mapper.searchCode(codeVO);
         } catch (Exception e) {
             e.printStackTrace();
         }

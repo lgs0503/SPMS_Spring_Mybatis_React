@@ -81,18 +81,18 @@ public class BannerControllerTest {
     }
 
     @Test
-    public void serachBanner() throws Exception   {
+    public void searchBanner() throws Exception   {
         bannerVO.setBannerId("1");
 
-        mockMvc.perform(get("/serachBanner")
+        mockMvc.perform(get("/searchBanner")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(bannerVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
                 .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("serachBanner"));
+                .andExpect(handler().methodName("searchBanner"));
 
-        ResponseEntity<Message> re = bannerController.serachBanner(bannerVO);
+        ResponseEntity<Message> re = bannerController.searchBanner(bannerVO);
 
         Map<String, Object> data = (Map<String, Object>) re.getBody().getData();
 

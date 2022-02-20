@@ -85,18 +85,18 @@ public class CodeControllerTest {
     }
 
     @Test
-    public void serachCode() throws Exception  {
+    public void searchCode() throws Exception  {
         codeVO.setCodeId("T000");
 
-        mockMvc.perform(get("/serachCode")
+        mockMvc.perform(get("/searchCode")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(codeVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
                 .andExpect(handler().handlerType(CodeController.class))
-                .andExpect(handler().methodName("serachCode"));
+                .andExpect(handler().methodName("searchCode"));
 
-        ResponseEntity<Message> re = codeController.serachCode(codeVO);
+        ResponseEntity<Message> re = codeController.searchCode(codeVO);
 
         Map<String, Object> data = (Map<String, Object>) re.getBody().getData();
 
