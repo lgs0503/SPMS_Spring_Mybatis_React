@@ -73,8 +73,8 @@ public class CodeController {
     }
 
     /**
-     *  제품 저장 (신규, 수정)
-     * @param CodeVO 저장 제품 데이터
+     *  코드 저장 (신규, 수정)
+     * @param CodeVO 저장 코드 데이터
      */
     @RequestMapping(value = "/saveCode", method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<Message> saveCode(@RequestBody CodeVO codeVO) {
@@ -89,8 +89,8 @@ public class CodeController {
     }
 
     /**
-     *  제품 삭제
-     * @param CodeVO 삭제 제품 데이터
+     *  코드 삭제
+     * @param CodeVO 삭제 코드 데이터
      */
     @RequestMapping(value = "/deleteCode", method = RequestMethod.DELETE)
     public ResponseEntity<Message> deleteCode(@RequestBody CodeVO codeVO) {
