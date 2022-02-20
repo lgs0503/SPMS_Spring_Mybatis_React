@@ -104,7 +104,7 @@
 	</insert>
 
 	<delete id="deleteCode" parameterType="lgs.com.code.vo.CodeVO">
-		/* deleteCode 코드 저장 (신규, 수정)  */
+		/* deleteCode 코드 삭제  */
 		DELETE
 		FROM	CODE
 		WHERE 	CODE_ID IN
