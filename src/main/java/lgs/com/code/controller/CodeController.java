@@ -52,6 +52,27 @@ public class CodeController {
     }
 
     /**
+     *  코드 조회
+     * @param CodeVO 조회조건
+     * @return 코드 리스트
+     */
+    @RequestMapping(value = "/serachCode", method = RequestMethod.GET)
+    public ResponseEntity<Message> serachCode(@RequestBody CodeVO codeVO) {
+        logger.info("serachCode");
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        Map<String, Object> data = new HashMap<String, Object>();
+
+        message.setStatus(StatusEnum.OK);
+        data.put("code", codeService.serachCode(codeVO));
+        message.setData(data);
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+
+    /**
      *  제품 저장 (신규, 수정)
      * @param CodeVO 저장 제품 데이터
      */

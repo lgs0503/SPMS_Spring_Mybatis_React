@@ -31,6 +31,20 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
+    public CodeVO serachCode(CodeVO codeVO) {
+        CodeVO result = new CodeVO();
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            CodeMapper mapper = session.getMapper(CodeMapper.class);
+
+            result = mapper.serachCode(codeVO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public int codeCnt(CodeVO codeVO) {
         int result = 0;
 
@@ -66,5 +80,4 @@ public class CodeServiceImpl implements CodeService {
             e.printStackTrace();
         }
     }
-
 }

@@ -25,6 +25,22 @@
 		<include refid="codeWhere"></include>
 	</select>
 
+	<select id="serachCode" resultType="lgs.com.code.vo.CodeVO" parameterType="lgs.com.code.vo.CodeVO">
+		/* serachCode 코드  조회  */
+		SELECT	CODE_ID
+			,	CODE_NAME
+			,	UPPER_CODE_ID
+			,	CODE_VALUE
+			,	USE_YN
+			,	DELETED
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	CODE
+		WHERE	CODE_ID = #{codeId}
+	</select>
+
 	<sql id="codeWhere">
 		/* codeWhere 코드 조회조건  */
 		<where>
