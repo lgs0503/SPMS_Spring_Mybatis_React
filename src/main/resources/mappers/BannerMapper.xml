@@ -9,7 +9,7 @@
 			,	BANNER_STATUS
 			,	BANNER_CONTENT
 			,	BANNER_IMAGE_NO
-			,	UES_YN
+			,	USE_YN
 			,	CREATE_DATE
 			,	CREATE_USER
 			,	UPDATE_DATE
@@ -22,7 +22,7 @@
 		/* bannerCnt 배너 리스트 갯수 조회  */
 		SELECT	COUNT(*) CNT
 		FROM	BANNER
-		<include refid="codeWhere"></include>
+		<include refid="bannerWhere"></include>
 	</select>
 
 	<select id="serachBanner" resultType="lgs.com.banner.vo.BannerVO" parameterType="lgs.com.banner.vo.BannerVO">
@@ -32,7 +32,7 @@
 			,	BANNER_STATUS
 			,	BANNER_CONTENT
 			,	BANNER_IMAGE_NO
-			,	UES_YN
+			,	USE_YN
 			,	CREATE_DATE
 			,	CREATE_USER
 			,	UPDATE_DATE
@@ -68,7 +68,7 @@
 		,		BANNER_STATUS	= #{bannerStatus}
 		,		BANNER_CONTENT	= #{bannerContent}
 		,		BANNER_IMAGE_NO	= #{bannerImageNo}
-		,		UES_YN			= #{useYn}
+		,		USE_YN			= #{useYn}
 		,		CREATE_DATE		= #{createDate}
 		,		CREATE_USER		= #{createUser}
 		,		UPDATE_DATE		= #{updateDate}
@@ -81,7 +81,7 @@
 		,	BANNER_STATUS
 		,	BANNER_CONTENT
 		,	BANNER_IMAGE_NO
-		,	UES_YN
+		,	USE_YN
 		,	CREATE_DATE
 		,	CREATE_USER
 		,	UPDATE_DATE
@@ -98,10 +98,10 @@
 		,	#{bannerContent}
 		,	#{bannerImageNo}
 		,	#{useYn}
-		,	#{createUser}
 		,	#{createDate}
-		,	#{updateUser}
+		,	#{createUser}
 		,	#{updateDate}
+		,	#{updateUser}
 		)
 	</insert>
 

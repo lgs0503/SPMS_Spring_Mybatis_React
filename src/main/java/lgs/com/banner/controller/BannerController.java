@@ -65,7 +65,7 @@ public class BannerController {
         Map<String, Object> data = new HashMap<String, Object>();
 
         message.setStatus(StatusEnum.OK);
-        data.put("code", bannerService.serachBanner(bannerVO));
+        data.put("banner", bannerService.serachBanner(bannerVO));
         message.setData(data);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
