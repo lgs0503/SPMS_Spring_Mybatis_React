@@ -1,4 +1,4 @@
-package lgs.com.bbs.service;
+package lgs.com.board.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lgs.com.bbs.mapper.BoardMapper;
-import lgs.com.bbs.vo.BoardVO;
+import lgs.com.board.mapper.BoardMapper;
+import lgs.com.board.vo.BoardVO;
 
 @Service
 public class BoardServiceImpl implements BoardService {

@@ -69,8 +69,6 @@
 		,		BANNER_CONTENT	= #{bannerContent}
 		,		BANNER_IMAGE_NO	= #{bannerImageNo}
 		,		USE_YN			= #{useYn}
-		,		CREATE_DATE		= #{createDate}
-		,		CREATE_USER		= #{createUser}
 		,		UPDATE_DATE		= #{updateDate}
 		,		UPDATE_USER		= #{updateUser}
 		WHEN 	NOT MATCHED THEN
@@ -90,7 +88,7 @@
 		VALUES
 		(
 			(
-				SELECT	NVL(MAX(BANNER_ID),0)+1
+				SELECT	NVL(MAX(BANNER_ID), 0) + 1
 				FROM	BANNER
 			)
 		,	#{bannerTitle}
@@ -106,7 +104,7 @@
 	</insert>
 
 	<delete id="deleteBanner" parameterType="lgs.com.banner.vo.BannerVO">
-		/* deleteBanner 배너 저장 (신규, 수정)  */
+		/* deleteBanner 배너 삭제  */
 		DELETE
 		FROM	BANNER
 		WHERE 	BANNER_ID IN

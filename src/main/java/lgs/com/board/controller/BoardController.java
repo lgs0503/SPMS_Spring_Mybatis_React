@@ -1,4 +1,4 @@
-package lgs.com.bbs.controller;
+package lgs.com.board.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import lgs.com.bbs.service.BoardService;
-import lgs.com.bbs.vo.BoardVO;
+import lgs.com.board.service.BoardService;
+import lgs.com.board.vo.BoardVO;
 
 @Controller
 @RequestMapping("board/")

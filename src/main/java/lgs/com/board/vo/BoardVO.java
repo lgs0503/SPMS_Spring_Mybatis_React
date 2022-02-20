@@ -1,6 +1,5 @@
-package lgs.com.bbs.vo;
+package lgs.com.board.vo;
 
-import java.util.Date;
 import lombok.Data;
 
 @Data
