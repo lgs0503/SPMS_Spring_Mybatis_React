@@ -5,8 +5,12 @@ import {Link} from 'react-router-dom';
 import "../../css/styles.css";
 import * as common from "../../comm/common";
 import AdminLoginRegiFooter from "./footer";
+import {useDispatch} from "react-redux";
+import {showAlertModal} from "../../action/alertModal";
 
 const  AdminLogin = () => {
+    const dispatch = useDispatch();
+
     useEffect(() => {
         let key = common.getCookie("key");
 
@@ -30,18 +34,24 @@ const  AdminLogin = () => {
         }
     }
 
+    const onCheckEnter = (e) => {
+        if(e.key === 'Enter') {
+            login();
+        }
+    }
+
     const login = () => {
         let userId = document.getElementById("userId");
         let password = document.getElementById("password");
 
         if(!common.nullCheck(userId.value)){
-            alert("아이디를 입력해주세요.");
+            dispatch(showAlertModal('아이디를 입력해주세요.'));
             userId.focus();
             return ;
         }
 
         if(!common.nullCheck(password.value)){
-            alert("비밀번호를 입력해주세요.");
+            dispatch(showAlertModal('비밀번호를 입력해주세요.'));
             password.focus();
             return ;
         }
@@ -58,7 +68,7 @@ const  AdminLogin = () => {
                 sessionStorage.setItem("userId", userId.value);
                 window.location.href="/spring-showpingmall/#/admin";
             } else {
-                alert("아이디와 비밀번호를 확인해주세요.");
+                dispatch(showAlertModal('아이디와 비밀번호를 확인해주세요.'));
                 userId.value = "";
                 password.value = "";
             }
@@ -78,11 +88,11 @@ const  AdminLogin = () => {
                                       <div className="card-body">
                                           <form>
                                               <div className="form-floating mb-3">
-                                                  <input className="form-control" id="userId" type="text" placeholder="아이디" onKeyUp={userIdInputKeyup}/>
+                                                  <input className="form-control" id="userId" type="text" placeholder="아이디" onKeyUp={userIdInputKeyup} onKeyPress={onCheckEnter}/>
                                                   <label htmlFor="userId">아이디</label>
                                               </div>
                                               <div className="form-floating mb-3">
-                                                  <input className="form-control" id="password" type="password" placeholder="비밀번호"/>
+                                                  <input className="form-control" id="password" type="password" placeholder="비밀번호" onKeyPress={onCheckEnter}/>
                                                   <label htmlFor="password">비밀번호</label>
                                               </div>
                                               <div className="form-check mb-3">

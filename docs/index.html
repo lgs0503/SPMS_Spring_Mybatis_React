@@ -12,7 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Open+Sans&display=swap" rel="stylesheet">
-    
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
     <title>Document</title>
     <style>
         * {
@@ -36,12 +37,65 @@
         /*header*/
         header {
             width: 100%;
-            height: 80px;
             position: relative;
             overflow: hidden;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+        }
+
+        .header_top {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .header_bottom {
+            width: 100%;
+        }
+
+        .menu_list {
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .menu {
+            background-color: #2a7068;
+            display: inline-block;
+            float: left;
+            width: 25%;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .menu_a {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            line-height: 3;
+        }
+        
+        .menu_a:hover {
+            background-color: #1d4b46;
+        }
+
+        .sub_menu_list {
+            display: none;
+            transition: all 1.5s ease-in-out;
+        }
+
+        .sub {
+            line-height: 1.8;
+            background-color: #328179;
+        }
+
+        .sub a {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .sub:hover a {
+            background-color: #29665f;
         }
 
         /*header_background*/
@@ -80,7 +134,33 @@
         .section2_view {
             width: 100%;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slide_wrap {
+            width: 100%;
+        }
+
+        .slide {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .section2_text {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .section2_img {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .section2_img img {
+
         }
     </style>
 </head>
@@ -88,26 +168,70 @@
 <body>
     <div class="wrap">
         <header>
-            <div id="myNav" class="overlay">
-                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&amp;times;</a>
-                <div class="overlay-content">
-                    <a href="#">About</a>
-                    <a href="#">Services</a>
-                    <a href="#">Clients</a>
-                    <a href="#">Contact</a>
+            <div class="header_top">
+                <div id="myNav" class="overlay">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&amp;times;</a>
+                    <div class="overlay-content">
+                        <a href="#">About</a>
+                        <a href="#">Services</a>
+                        <a href="#">Clients</a>
+                        <a href="#">Contact</a>
+                    </div>
                 </div>
+                <ul class="member_list">
+                    <li><a href="#" class="text_trans">Home</a></li>
+                    <li><a href="#" class="text_trans">Login</a></li>
+                    <li><a href="#" class="text_trans">Cart</a></li>
+                    <li><a href="#" class="text_trans">My page</a></li>
+                </ul>
             </div>
-            <div class="logo"></div>
-            <ul class="member_list">
-                <li><a href="#" class="text_trans">Home</a></li>
-                <li><a href="#" class="text_trans">Login</a></li>
-                <li><a href="#" class="text_trans">Cart</a></li>
-                <li><a href="#" class="text_trans">My page</a></li>
-            </ul>
-            <nav>
-                
-            </nav>
+            <div class="header_center">
+                <div class="logo"></div>
+            </div>
+            <div class="header_bottom">
+                <nav>
+                    <ul class="menu_list">
+                        <li class="menu">
+                            <a class="menu_a">신상품</a>
+                            <ul class="sub_menu_list">
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu">
+                            <a class="menu_a">베스트</a>
+                            <ul class="sub_menu_list">
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu">
+                            <a class="menu_a">기획전</a>
+                            <ul class="sub_menu_list">
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu">
+                            <a class="menu_a">이벤트</a>
+                            <ul class="sub_menu_list">
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                                <li class="sub"><a>sub</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </header>
+
 
         <!-- section 1 시작 -->
         <section>
@@ -124,12 +248,16 @@
         <div class="container">
             <section>
                 <div class="section2_view">
-                    <div class="section2_text">
-                        <div class="logo" style="width:200px; height:30px;"></div>
-                    </div>
-                    <div class="section2_img">
-                        <img src="img/img_main01.png" style="width: 50%;">
-                    </div>
+                    <ul id="slide_wrap" class="slide_wrap">
+                        <li class="slide">
+                            <div class="section2_text">
+                                <div class="logo"></div>
+                            </div>
+                            <div class="section2_img">
+                                <img src="img/img_main01.png" style="width: 50%;">
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </section>
         </div>
@@ -139,7 +267,13 @@
 
 
     <script>
-        
+        let menu = document.getElementsByClassName("menu");
+
+        function slideMenu() {
+            
+        }
+
+        addEventListener("mouseover", )
     </script>
 </body>
 
