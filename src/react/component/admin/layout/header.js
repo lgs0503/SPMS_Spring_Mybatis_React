@@ -24,6 +24,11 @@ const AdminHeader = (prop) => {
 
     }
 
+    const logout = () => {
+        sessionStorage.removeItem("userId");
+        window.location.href="/spring-showpingmall/#/admin/login";
+    }
+
   return (
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
           <Link className="navbar-brand ps-3" to="/admin">{prop.title}</Link>
@@ -44,7 +49,7 @@ const AdminHeader = (prop) => {
                           <hr className="dropdown-divider"/>
                       </li>
                       <li>
-                          <Link className="dropdown-item" to="#">Logout</Link>
+                          <span className="dropdown-item" onClick={logout}>Logout</span>
                       </li>
                   </ul>
               </li>
