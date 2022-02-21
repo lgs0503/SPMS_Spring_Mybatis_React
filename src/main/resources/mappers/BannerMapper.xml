@@ -42,7 +42,7 @@
 	</select>
 
 	<sql id="bannerWhere">
-		/* bannerWhere 코드 조회조건  */
+		/* bannerWhere 배너 조회조건  */
 		<where>
 			<if test="bannerId != null and bannerId != ''">
 				AND 	BANNER_ID LIKE '%' || #{bannerId} || '%'
