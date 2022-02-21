@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lgs.com.popup.mapper.PopupMapper">
+
+	<select id="popupList" resultType="lgs.com.popup.vo.PopupVO" parameterType="lgs.com.popup.vo.PopupVO">
+	/* popupList 팝업 리스트 조회  */
+		SELECT	POPUP_ID
+			,	POPUP_TITLE
+			,	POPUP_STATUS
+			,	POPUP_CONTENT
+			,	POPUP_IMAGE_NO
+			,	POPUP_URL
+			,	USE_YN
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	POPUP
+		<include refid="popupWhere"></include>
+	</select>
+
+	<select id="popupCnt" resultType="int" parameterType="lgs.com.popup.vo.PopupVO">
+		/* popupCnt 팝업 리스트 갯수 조회  */
+		SELECT	COUNT(*) CNT
+		FROM	POPUP
+		<include refid="popupWhere"></include>
+	</select>
+
+	<select id="searchPopup" resultType="lgs.com.popup.vo.PopupVO" parameterType="lgs.com.popup.vo.PopupVO">
+		/* searchPopup 팝업 조회  */
+		SELECT	POPUP_ID
+			,	POPUP_TITLE
+			,	POPUP_STATUS
+			,	POPUP_CONTENT
+			,	POPUP_IMAGE_NO
+			,	POPUP_URL
+			,	USE_YN
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	POPUP
+		WHERE	POPUP_ID = #{popupId}
+	</select>
+
+	<sql id="popupWhere">
+		/* popupWhere 팝업 조회조건  */
+		<where>
+			<if test="popupId != null and popupId != ''">
+				AND 	POPUP_ID = #{popupId}
+			</if>
+			<if test="popupTitle != null and popupTitle != ''">
+				AND 	POPUP_TITLE LIKE '%' || #{popupTitle} || '%'
+			</if>
+			<if test="useYn != null and useYn != ''">
+				AND 	USE_YN = #{useYn}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="savePopup" parameterType="lgs.com.popup.vo.PopupVO">
+		/* savePopup 팝업 저장 (신규, 수정)  */
+		MERGE
+		INTO	POPUP P
+		USING	DUAL
+		ON 		(P.POPUP_ID = #{popupId})
+		WHEN 	MATCHED THEN
+		UPDATE
+		SET		POPUP_TITLE		= #{popupTitle}
+		,		POPUP_STATUS	= #{popupStatus}
+		,		POPUP_CONTENT	= #{popupContent}
+		,		POPUP_IMAGE_NO	= #{popupImageNo}
+		,		POPUP_URL		= #{popupUrl}
+		,		USE_YN			= #{useYn}
+		,		UPDATE_DATE		= #{updateDate}
+		,		UPDATE_USER		= #{updateUser}
+		WHEN 	NOT MATCHED THEN
+		INSERT
+		(
+			POPUP_ID
+		,	POPUP_TITLE
+		,	POPUP_STATUS
+		,	POPUP_CONTENT
+		,	POPUP_IMAGE_NO
+		,	POPUP_URL
+		,	USE_YN
+		,	CREATE_DATE
+		,	CREATE_USER
+		,	UPDATE_DATE
+		,	UPDATE_USER
+		)
+		VALUES
+		(
+			(
+				SELECT	NVL(MAX(POPUP_ID), 0) + 1
+				FROM	POPUP
+			)
+		,	#{popupTitle}
+		,	#{popupStatus}
+		,	#{popupContent}
+		,	#{popupImageNo}
+		,	#{popupUrl}
+		,	#{useYn}
+		,	#{createDate}
+		,	#{createUser}
+		,	#{updateDate}
+		,	#{updateUser}
+		)
+	</insert>
+
+	<delete id="deletePopup" parameterType="lgs.com.popup.vo.PopupVO">
+		/* deletePopup 팝업 삭제  */
+		DELETE
+		FROM	POPUP
+		WHERE 	POPUP_ID IN
+		<foreach collection="popupIds" index="index" item="idx"
+				 separator="," open="(" close=")" >
+			#{idx}
+		</foreach>
+	</delete>
+</mapper>
