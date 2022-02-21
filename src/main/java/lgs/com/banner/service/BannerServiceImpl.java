@@ -31,13 +31,13 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public BannerVO serachBanner(BannerVO bannerVO) {
+    public BannerVO searchBanner(BannerVO bannerVO) {
         BannerVO result = new BannerVO();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             BannerMapper mapper = session.getMapper(BannerMapper.class);
 
-            result = mapper.serachBanner(bannerVO);
+            result = mapper.searchBanner(bannerVO);
         } catch (Exception e) {
             e.printStackTrace();
         }

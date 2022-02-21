@@ -1,9 +1,12 @@
-package lgs.com.banner.controller;
+package lgs.com.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lgs.com.banner.vo.BannerVO;
+import lgs.com.code.controller.CodeController;
 import lgs.com.main.controller.MainControllerTest;
+import lgs.com.popup.controller.PopupController;
+import lgs.com.post.vo.PostVO;
 import lgs.com.utill.vo.Message;
+import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "file:src/main/webapp/WEB-INF/spring/config/*.xml",
         "file:src/main/webapp/WEB-INF/spring/**/appServlet/servlet-context.xml"
 })
-public class BannerControllerTest {
-
+@Log4j
+public class PostControllerTest {
     private static final Logger logger = LoggerFactory.getLogger(MainControllerTest.class);
 
     @Autowired
@@ -43,7 +46,7 @@ public class BannerControllerTest {
 
     private MockMvc mockMvc;
 
-    private BannerVO bannerVO = new BannerVO();
+    private PostVO postVO = new PostVO();
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -52,7 +55,7 @@ public class BannerControllerTest {
             Charset.forName("utf8"));
 
     @Autowired
-    private BannerController bannerController;
+    private PostController postController;
 
     @Before
     public void setup() {
@@ -61,75 +64,90 @@ public class BannerControllerTest {
     }
 
     @Test
-    public void bannerList() throws Exception   {
-        bannerVO.setBannerId(null);
+    public void postList() throws Exception{
+        postVO.setPostId(null);
 
-        mockMvc.perform(get("/bannerList")
+        mockMvc.perform(get("/postList")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(bannerVO)))
+                .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("bannerList"));
+                .andExpect(handler().handlerType(PostController.class))
+                .andExpect(handler().methodName("postList"));
 
-        ResponseEntity<Message> re = bannerController.bannerList(bannerVO);
+        ResponseEntity<Message> re = postController.postList(postVO);
 
         Map<String, Object> data = (Map<String, Object>) re.getBody().getData();
 
-        System.out.println("bannerList:"+data.get("bannerList"));
-        System.out.println("bannerCnt:"+data.get("bannerCnt"));
+        System.out.println("postList:"+data.get("postList"));
+        System.out.println("postCnt:"+data.get("postCnt"));
     }
 
     @Test
-    public void searchBanner() throws Exception   {
-        bannerVO.setBannerId("1");
+    public void searchPost() throws Exception {
+        postVO.setPostId("1");
 
-        mockMvc.perform(get("/searchBanner")
+        mockMvc.perform(get("/searchPost")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(bannerVO)))
+                .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("searchBanner"));
+                .andExpect(handler().handlerType(PostController.class))
+                .andExpect(handler().methodName("searchPost"));
 
-        ResponseEntity<Message> re = bannerController.searchBanner(bannerVO);
+        ResponseEntity<Message> re = postController.searchPost(postVO);
 
         Map<String, Object> data = (Map<String, Object>) re.getBody().getData();
 
-        System.out.println("banner:"+data.get("banner"));
-
+        System.out.println("post:"+data.get("post"));
     }
 
     @Test
-    public void saveBanner() throws Exception   {
-        bannerVO.setBannerId("1");
-        bannerVO.setBannerContent("테스트");
-        bannerVO.setBannerImageNo("5");
-        bannerVO.setBannerStatus("0");
-        bannerVO.setBannerTitle("배너");
-        bannerVO.setUseYn("Y");
+    public void updateViewCnt() throws Exception {
+        postVO.setPostId("1");
 
-        mockMvc.perform(put("/saveBanner")
+        mockMvc.perform(get("/updateViewCnt")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(bannerVO)))
+                .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("saveBanner"));
+                .andExpect(handler().handlerType(PostController.class))
+                .andExpect(handler().methodName("updateViewCnt"));
+
     }
 
     @Test
-    public void deleteBanner() throws Exception   {
+    public void savePost() throws Exception {
+        postVO.setPostId("1");
+        postVO.setBoardId("1");
+        postVO.setDeleted("0");
+        postVO.setFileNo1("0");
+        postVO.setFileNo2("0");
+        postVO.setPostContent("테스트");
+        postVO.setPostType("test");
+        postVO.setViewCnt("0");
+
+        mockMvc.perform(put("/savePost")
+                .contentType(contentType)
+                .content(mapper.writeValueAsString(postVO)))
+                .andExpect(status().isOk())
+                /*.andExpect(view().name("jsonView"))*/
+                .andExpect(handler().handlerType(PostController.class))
+                .andExpect(handler().methodName("savePost"));
+    }
+
+    @Test
+    public void deletePost() throws Exception {
         ArrayList<String> deletes = new ArrayList<String>();
         deletes.add("1");
-        bannerVO.setBannerIds(deletes);
+        postVO.setPostIds(deletes);
 
-        mockMvc.perform(delete("/deleteBanner")
+        mockMvc.perform(delete("/deletePost")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(bannerVO)))
+                .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("deleteBanner"));
+                .andExpect(handler().handlerType(PostController.class))
+                .andExpect(handler().methodName("deletePost"));
     }
 }

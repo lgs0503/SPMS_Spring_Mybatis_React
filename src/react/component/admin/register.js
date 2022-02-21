@@ -6,8 +6,12 @@ import * as common from "../../comm/common";
 import DaumPostcode from 'react-daum-postcode';
 import Modal from "../common/modal";
 import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {showAlertModal} from "../../action/alertModal";
 
 const  AdminRegister = () => {
+    const dispatch = useDispatch();
+
     let idCheckStatus = "";
 
     // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
@@ -72,13 +76,13 @@ const  AdminRegister = () => {
 
         /* 아이디 중복 체크 */
         if(idCheckStatus == "1"){
-            alert("중복된 아이디가 존재합니다.");
+            dispatch(showAlertModal('중복된 아이디가 존재합니다.'));
             return;
         }
 
         /* 비밀번호 체크 */
         if(document.getElementById("password").value != document.getElementById("passwordchk").value){
-            alert("비밀번호 와 비밀번호 확인이 일치하지 않습니다.");
+            dispatch(showAlertModal('비밀번호 와 비밀번호 확인이 일치하지 않습니다.'));
             document.getElementById("passwordchk").focus();
             return;
         }
@@ -113,7 +117,7 @@ const  AdminRegister = () => {
 
         for(let i = 0 ; i < validationChkName.length ; i++){
             if (!common.nullCheck(document.getElementById(validationChkId[i]).value)){
-                alert("["+ validationChkName[i] + "]를 입력해주세요.");
+                dispatch(showAlertModal("["+ validationChkName[i] + "]를 입력해주세요."));
                 document.getElementById(validationChkId[i]).focus();
                 return;
             }
@@ -138,7 +142,7 @@ const  AdminRegister = () => {
                 }
                 common.fetchLoad("/registerProcessing", "POST", data, function (result) {
                     if (result.registerStatus == "1"){
-                        alert("회원가입이 성공되었습니다.");
+                        dispatch(showAlertModal("회원가입이 성공되었습니다."));
                         window.location.href = "../admin/login.html";
                     }
                 });
@@ -148,7 +152,7 @@ const  AdminRegister = () => {
 
             common.fetchLoad("/registerProcessing", "POST", data, function (result) {
                 if (result.registerStatus == "1"){
-                    alert("회원가입이 성공되었습니다.");
+                    dispatch(showAlertModal("회원가입이 성공되었습니다."));
                     window.location.href = "../admin/login.html";
                 }
             });
@@ -173,7 +177,7 @@ const  AdminRegister = () => {
                                       <div className="card-body">
                                           <form>
                                               <div className="form-floating mb-3">
-                                                  <input className="form-control" id="userId" type="text" placeholder="아이디를 입력해주세요" maxLength="20"/>
+                                                  <input className="form-control" id="userId" type="text" placeholder="아이디를 입력해주세요" maxLength="20" onChange={userIdCheck}/>
                                                   <label htmlFor="userId" id="idCheck">아이디</label>
                                               </div>
                                               <div className="form-floating mb-3">
@@ -234,7 +238,7 @@ const  AdminRegister = () => {
                                               <img id="thumbnailImg" src="" style={imageStyle}/>
                                               <div className="mt-4 mb-0">
                                                   <div className="d-grid">
-                                                      <a className="btn btn-primary btn-block" id="btnRegister">회원가입</a>
+                                                      <a className="btn btn-primary btn-block" id="btnRegister" onClick={register}>회원가입</a>
                                                   </div>
                                               </div>
                                           </form>

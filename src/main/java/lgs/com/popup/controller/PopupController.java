@@ -1,7 +1,7 @@
-package lgs.com.code.controller;
+package lgs.com.popup.controller;
 
-import lgs.com.code.service.CodeService;
-import lgs.com.code.vo.CodeVO;
+import lgs.com.popup.service.PopupService;
+import lgs.com.popup.vo.PopupVO;
 import lgs.com.utill.StatusEnum;
 import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;
@@ -15,28 +15,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class CodeController {
+public class PopupController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CodeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PopupController.class);
 
     @Autowired
-    CodeService codeService;
+    PopupService popuptService;
 
     /**
-     *  코드 리스트 조회
-     * @param CodeVO 조회조건
-     * @return 코드 리스트
+     *  팝업 리스트 조회
+     * @param PopupVO 조회조건
+     * @return 팝업 리스트
      */
-    @RequestMapping(value = "/codeList", method = RequestMethod.GET)
-    public ResponseEntity<Message> codeList(@RequestBody CodeVO codeVO) {
-        logger.info("codeList");
+    @RequestMapping(value = "/popupList", method = RequestMethod.GET)
+    public ResponseEntity<Message> popupList(@RequestBody PopupVO popupVO) {
+        logger.info("popupList");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -44,21 +43,21 @@ public class CodeController {
         Map<String, Object> data = new HashMap<String, Object>();
 
         message.setStatus(StatusEnum.OK);
-        data.put("codeList", codeService.codeList(codeVO));
-        data.put("codeCnt", codeService.codeCnt(codeVO));
+        data.put("popupList", popuptService.popupList(popupVO));
+        data.put("popupCnt", popuptService.popupCnt(popupVO));
         message.setData(data);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /**
-     *  코드 조회
-     * @param CodeVO 조회조건
-     * @return 코드 리스트
+     *  팝업 조회
+     * @param PopupVO 조회조건
+     * @return 팝업 리스트
      */
-    @RequestMapping(value = "/searchCode", method = RequestMethod.GET)
-    public ResponseEntity<Message> searchCode(@RequestBody CodeVO codeVO) {
-        logger.info("serachCode");
+    @RequestMapping(value = "/searchPopup", method = RequestMethod.GET)
+    public ResponseEntity<Message> searchPopup(@RequestBody PopupVO popupVO) {
+        logger.info("searchPopup");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -66,40 +65,40 @@ public class CodeController {
         Map<String, Object> data = new HashMap<String, Object>();
 
         message.setStatus(StatusEnum.OK);
-        data.put("code", codeService.searchCode(codeVO));
+        data.put("popup", popuptService.searchPopup(popupVO));
         message.setData(data);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /**
-     *  코드 저장 (신규, 수정)
-     * @param CodeVO 저장 코드 데이터
+     *  팝업 저장 (신규, 수정)
+     * @param PopupVO 저장 팝업 데이터
      */
-    @RequestMapping(value = "/saveCode", method = {RequestMethod.POST, RequestMethod.PUT})
-    public ResponseEntity<Message> saveCode(@RequestBody CodeVO codeVO) {
-        logger.info("saveCode");
+    @RequestMapping(value = "/savePopup", method = {RequestMethod.POST, RequestMethod.PUT})
+    public ResponseEntity<Message> savePopup(@RequestBody PopupVO popupVO) {
+        logger.info("savePopup");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        codeService.saveCode(codeVO);
+        popuptService.savePopup(popupVO);
         message.setStatus(StatusEnum.OK);
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /**
-     *  코드 삭제
-     * @param CodeVO 삭제 코드 데이터
+     *  팝업 삭제
+     * @param PopupVO 삭제 팝업 데이터
      */
-    @RequestMapping(value = "/deleteCode", method = RequestMethod.DELETE)
-    public ResponseEntity<Message> deleteCode(@RequestBody CodeVO codeVO) {
-        logger.info("deleteCode");
+    @RequestMapping(value = "/deletePopup", method = RequestMethod.DELETE)
+    public ResponseEntity<Message> deletePopup(@RequestBody PopupVO popupVO) {
+        logger.info("deletePopup");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        codeService.deleteCode(codeVO);
+        popuptService.deletePopup(popupVO);
         message.setStatus(StatusEnum.OK);
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }

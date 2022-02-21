@@ -1,8 +1,9 @@
-package lgs.com.banner.controller;
+package lgs.com.popup.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lgs.com.banner.vo.BannerVO;
+import lgs.com.banner.controller.BannerController;
 import lgs.com.main.controller.MainControllerTest;
+import lgs.com.popup.vo.PopupVO;
 import lgs.com.utill.vo.Message;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "file:src/main/webapp/WEB-INF/spring/config/*.xml",
         "file:src/main/webapp/WEB-INF/spring/**/appServlet/servlet-context.xml"
 })
-public class BannerControllerTest {
+public class PopupControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(MainControllerTest.class);
 
@@ -43,7 +44,7 @@ public class BannerControllerTest {
 
     private MockMvc mockMvc;
 
-    private BannerVO bannerVO = new BannerVO();
+    private PopupVO popupVO = new PopupVO();
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -52,7 +53,7 @@ public class BannerControllerTest {
             Charset.forName("utf8"));
 
     @Autowired
-    private BannerController bannerController;
+    private PopupController popupController;
 
     @Before
     public void setup() {
@@ -61,75 +62,76 @@ public class BannerControllerTest {
     }
 
     @Test
-    public void bannerList() throws Exception   {
-        bannerVO.setBannerId(null);
+    public void popupList() throws Exception {
+        popupVO.setPopupId(null);
 
-        mockMvc.perform(get("/bannerList")
+        mockMvc.perform(get("/popupList")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(bannerVO)))
+                .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("bannerList"));
+                .andExpect(handler().handlerType(PopupController.class))
+                .andExpect(handler().methodName("popupList"));
 
-        ResponseEntity<Message> re = bannerController.bannerList(bannerVO);
+        ResponseEntity<Message> re = popupController.popupList(popupVO);
 
         Map<String, Object> data = (Map<String, Object>) re.getBody().getData();
 
-        System.out.println("bannerList:"+data.get("bannerList"));
-        System.out.println("bannerCnt:"+data.get("bannerCnt"));
+        System.out.println("popupList:"+data.get("popupList"));
+        System.out.println("popupCnt:"+data.get("popupCnt"));
     }
 
     @Test
-    public void searchBanner() throws Exception   {
-        bannerVO.setBannerId("1");
+    public void searchPopup() throws Exception {
+        popupVO.setPopupId("1");
 
-        mockMvc.perform(get("/searchBanner")
+        mockMvc.perform(get("/searchPopup")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(bannerVO)))
+                .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("searchBanner"));
+                .andExpect(handler().handlerType(PopupController.class))
+                .andExpect(handler().methodName("searchPopup"));
 
-        ResponseEntity<Message> re = bannerController.searchBanner(bannerVO);
+        ResponseEntity<Message> re = popupController.searchPopup(popupVO);
 
         Map<String, Object> data = (Map<String, Object>) re.getBody().getData();
 
-        System.out.println("banner:"+data.get("banner"));
+        System.out.println("popup:"+data.get("popup"));
 
     }
 
     @Test
-    public void saveBanner() throws Exception   {
-        bannerVO.setBannerId("1");
-        bannerVO.setBannerContent("테스트");
-        bannerVO.setBannerImageNo("5");
-        bannerVO.setBannerStatus("0");
-        bannerVO.setBannerTitle("배너");
-        bannerVO.setUseYn("Y");
+    public void savePopup() throws Exception {
+        popupVO.setPopupId("1");
+        popupVO.setPopupContent("테스트");
+        popupVO.setPopupImageNo("0");
+        popupVO.setPopupStatus("0");
+        popupVO.setPopupTitle("테스트");
+        popupVO.setPopupUrl("/test");
+        popupVO.setUesYn("Y");
 
-        mockMvc.perform(put("/saveBanner")
+        mockMvc.perform(put("/savePopup")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(bannerVO)))
+                .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("saveBanner"));
+                .andExpect(handler().handlerType(PopupController.class))
+                .andExpect(handler().methodName("savePopup"));
     }
 
     @Test
-    public void deleteBanner() throws Exception   {
+    public void deletePopup() throws Exception {
         ArrayList<String> deletes = new ArrayList<String>();
         deletes.add("1");
-        bannerVO.setBannerIds(deletes);
+        popupVO.setPopupIds(deletes);
 
-        mockMvc.perform(delete("/deleteBanner")
+        mockMvc.perform(delete("/deletePopup")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(bannerVO)))
+                .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(BannerController.class))
-                .andExpect(handler().methodName("deleteBanner"));
+                .andExpect(handler().handlerType(PopupController.class))
+                .andExpect(handler().methodName("deletePopup"));
     }
 }

@@ -55,9 +55,9 @@ public class BannerController {
      * @param BannerVO 조회조건
      * @return 배너 리스트
      */
-    @RequestMapping(value = "/serachBanner", method = RequestMethod.GET)
-    public ResponseEntity<Message> serachBanner(@RequestBody BannerVO bannerVO) {
-        logger.info("serachBanner");
+    @RequestMapping(value = "/searchBanner", method = RequestMethod.GET)
+    public ResponseEntity<Message> searchBanner(@RequestBody BannerVO bannerVO) {
+        logger.info("searchBanner");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -65,7 +65,7 @@ public class BannerController {
         Map<String, Object> data = new HashMap<String, Object>();
 
         message.setStatus(StatusEnum.OK);
-        data.put("banner", bannerService.serachBanner(bannerVO));
+        data.put("banner", bannerService.searchBanner(bannerVO));
         message.setData(data);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);

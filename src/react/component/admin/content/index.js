@@ -28,14 +28,6 @@ const  AdminMain = () => {
                       <th>InsertDtae</th>
                   </tr>
                   </thead>
-                  <tfoot>
-                  <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                  </tr>
-                  </tfoot>
                   <tbody>
                   <tr>
                       <td>1</td>

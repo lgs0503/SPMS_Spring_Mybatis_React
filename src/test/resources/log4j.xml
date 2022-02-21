@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="lgs.com.bbs.controller">
+	<logger name="lgs">
 		<level value="info" />
 	</logger>
 	

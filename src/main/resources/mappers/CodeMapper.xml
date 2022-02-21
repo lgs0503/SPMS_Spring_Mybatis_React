@@ -25,8 +25,8 @@
 		<include refid="codeWhere"></include>
 	</select>
 
-	<select id="serachCode" resultType="lgs.com.code.vo.CodeVO" parameterType="lgs.com.code.vo.CodeVO">
-		/* serachCode 코드  조회  */
+	<select id="searchCode" resultType="lgs.com.code.vo.CodeVO" parameterType="lgs.com.code.vo.CodeVO">
+		/* searchCode 코드  조회  */
 		SELECT	CODE_ID
 			,	CODE_NAME
 			,	UPPER_CODE_ID
@@ -104,7 +104,7 @@
 	</insert>
 
 	<delete id="deleteCode" parameterType="lgs.com.code.vo.CodeVO">
-		/* deleteCode 코드 저장 (신규, 수정)  */
+		/* deleteCode 코드 삭제  */
 		DELETE
 		FROM	CODE
 		WHERE 	CODE_ID IN

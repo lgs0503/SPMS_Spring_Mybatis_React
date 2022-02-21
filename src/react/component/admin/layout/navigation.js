@@ -9,7 +9,7 @@ const AdminNavigation = () => {
               <div className="sb-sidenav-menu">
                   <div className="nav">
                       <div className="sb-sidenav-menu-heading">Setting</div>
-                      <Link  className="nav-link" to="/admin/code">
+                      <Link className="nav-link" to="/admin/code">
                           <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                           코드 관리
                       </Link>
