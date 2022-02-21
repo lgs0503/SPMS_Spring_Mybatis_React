@@ -1,7 +1,7 @@
-package lgs.com.bbs.service;
+package lgs.com.board.service;
 
 import java.util.List;
-import lgs.com.bbs.vo.BoardVO;
+import lgs.com.board.vo.BoardVO;
 
 public interface BoardService {
 	

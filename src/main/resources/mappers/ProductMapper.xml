@@ -104,7 +104,7 @@
 	</insert>
 
 	<delete id="deleteProduct" parameterType="lgs.com.product.vo.ProductVO">
-		/* saveProduct 제품 저장 (신규, 수정)  */
+		/* saveProduct 제품 삭제 */
 		DELETE
 		FROM	PRODUCT
 		WHERE IDX IN

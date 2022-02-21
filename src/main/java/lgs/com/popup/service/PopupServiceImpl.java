@@ -1,7 +1,7 @@
-package lgs.com.code.service;
+package lgs.com.popup.service;
 
-import lgs.com.code.mapper.CodeMapper;
-import lgs.com.code.vo.CodeVO;
+import lgs.com.popup.mapper.PopupMapper;
+import lgs.com.popup.vo.PopupVO;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CodeServiceImpl implements CodeService {
+public class PopupServiceImpl implements PopupService {
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
 
     @Override
-    public List<CodeVO> codeList(CodeVO codeVO) {
-        List<CodeVO> result = new ArrayList<CodeVO>();
+    public List<PopupVO> popupList(PopupVO popupVO) {
+        List<PopupVO> result = new ArrayList<PopupVO>();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            CodeMapper mapper = session.getMapper(CodeMapper.class);
+            PopupMapper mapper = session.getMapper(PopupMapper.class);
 
-            result = mapper.codeList(codeVO);
+            result = mapper.popupList(popupVO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,13 +31,13 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public CodeVO searchCode(CodeVO codeVO) {
-        CodeVO result = new CodeVO();
+    public PopupVO searchPopup(PopupVO popupVO) {
+        PopupVO result = new PopupVO();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            CodeMapper mapper = session.getMapper(CodeMapper.class);
+            PopupMapper mapper = session.getMapper(PopupMapper.class);
 
-            result = mapper.searchCode(codeVO);
+            result = mapper.searchPopup(popupVO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,13 +45,13 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public int codeCnt(CodeVO codeVO) {
+    public int popupCnt(PopupVO popupVO) {
         int result = 0;
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            CodeMapper mapper = session.getMapper(CodeMapper.class);
+            PopupMapper mapper = session.getMapper(PopupMapper.class);
 
-            result = mapper.codeCnt(codeVO);
+            result = mapper.popupCnt(popupVO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,23 +59,23 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public void saveCode(CodeVO codeVO) {
+    public void savePopup(PopupVO popupVO) {
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            CodeMapper mapper = session.getMapper(CodeMapper.class);
+            PopupMapper mapper = session.getMapper(PopupMapper.class);
 
-            mapper.saveCode(codeVO);
+            mapper.savePopup(popupVO);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void deleteCode(CodeVO codeVO) {
+    public void deletePopup(PopupVO popupVO) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            CodeMapper mapper = session.getMapper(CodeMapper.class);
+            PopupMapper mapper = session.getMapper(PopupMapper.class);
 
-            mapper.deleteCode(codeVO);
+            mapper.deletePopup(popupVO);
         } catch (Exception e) {
             e.printStackTrace();
         }

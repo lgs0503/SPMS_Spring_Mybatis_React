@@ -1,7 +1,7 @@
-package lgs.com.code.controller;
+package lgs.com.banner.controller;
 
-import lgs.com.code.service.CodeService;
-import lgs.com.code.vo.CodeVO;
+import lgs.com.banner.service.BannerService;
+import lgs.com.banner.vo.BannerVO;
 import lgs.com.utill.StatusEnum;
 import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;
@@ -15,28 +15,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class CodeController {
+public class BannerController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CodeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BannerController.class);
 
     @Autowired
-    CodeService codeService;
+    BannerService bannerService;
 
     /**
-     *  코드 리스트 조회
-     * @param CodeVO 조회조건
-     * @return 코드 리스트
+     *  배너 리스트 조회
+     * @param BannerVO 조회조건
+     * @return 배너 리스트
      */
-    @RequestMapping(value = "/codeList", method = RequestMethod.GET)
-    public ResponseEntity<Message> codeList(@RequestBody CodeVO codeVO) {
-        logger.info("codeList");
+    @RequestMapping(value = "/bannerList", method = RequestMethod.GET)
+    public ResponseEntity<Message> bannerList(@RequestBody BannerVO bannerVO) {
+        logger.info("bannerList");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -44,21 +43,21 @@ public class CodeController {
         Map<String, Object> data = new HashMap<String, Object>();
 
         message.setStatus(StatusEnum.OK);
-        data.put("codeList", codeService.codeList(codeVO));
-        data.put("codeCnt", codeService.codeCnt(codeVO));
+        data.put("bannerList", bannerService.bannerList(bannerVO));
+        data.put("bannerCnt", bannerService.bannerCnt(bannerVO));
         message.setData(data);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /**
-     *  코드 조회
-     * @param CodeVO 조회조건
-     * @return 코드 리스트
+     *  배너 조회
+     * @param BannerVO 조회조건
+     * @return 배너 리스트
      */
-    @RequestMapping(value = "/searchCode", method = RequestMethod.GET)
-    public ResponseEntity<Message> searchCode(@RequestBody CodeVO codeVO) {
-        logger.info("serachCode");
+    @RequestMapping(value = "/searchBanner", method = RequestMethod.GET)
+    public ResponseEntity<Message> searchBanner(@RequestBody BannerVO bannerVO) {
+        logger.info("searchBanner");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -66,40 +65,40 @@ public class CodeController {
         Map<String, Object> data = new HashMap<String, Object>();
 
         message.setStatus(StatusEnum.OK);
-        data.put("code", codeService.searchCode(codeVO));
+        data.put("banner", bannerService.searchBanner(bannerVO));
         message.setData(data);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /**
-     *  코드 저장 (신규, 수정)
-     * @param CodeVO 저장 코드 데이터
+     *  배너 저장 (신규, 수정)
+     * @param BannerVO 저장 배너 데이터
      */
-    @RequestMapping(value = "/saveCode", method = {RequestMethod.POST, RequestMethod.PUT})
-    public ResponseEntity<Message> saveCode(@RequestBody CodeVO codeVO) {
-        logger.info("saveCode");
+    @RequestMapping(value = "/saveBanner", method = {RequestMethod.POST, RequestMethod.PUT})
+    public ResponseEntity<Message> saveBanner(@RequestBody BannerVO bannerVO) {
+        logger.info("saveBanner");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        codeService.saveCode(codeVO);
+        bannerService.saveBanner(bannerVO);
         message.setStatus(StatusEnum.OK);
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     /**
-     *  코드 삭제
-     * @param CodeVO 삭제 코드 데이터
+     *  배너 삭제
+     * @param BannerVO 삭제 배너 데이터
      */
-    @RequestMapping(value = "/deleteCode", method = RequestMethod.DELETE)
-    public ResponseEntity<Message> deleteCode(@RequestBody CodeVO codeVO) {
-        logger.info("deleteCode");
+    @RequestMapping(value = "/deleteBanner", method = RequestMethod.DELETE)
+    public ResponseEntity<Message> deleteBanner(@RequestBody BannerVO bannerVO) {
+        logger.info("deleteBanner");
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        codeService.deleteCode(codeVO);
+        bannerService.deleteBanner(bannerVO);
         message.setStatus(StatusEnum.OK);
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }

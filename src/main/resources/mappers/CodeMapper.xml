@@ -25,6 +25,22 @@
 		<include refid="codeWhere"></include>
 	</select>
 
+	<select id="searchCode" resultType="lgs.com.code.vo.CodeVO" parameterType="lgs.com.code.vo.CodeVO">
+		/* searchCode 코드  조회  */
+		SELECT	CODE_ID
+			,	CODE_NAME
+			,	UPPER_CODE_ID
+			,	CODE_VALUE
+			,	USE_YN
+			,	DELETED
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	CODE
+		WHERE	CODE_ID = #{codeId}
+	</select>
+
 	<sql id="codeWhere">
 		/* codeWhere 코드 조회조건  */
 		<where>
@@ -45,7 +61,7 @@
 		MERGE
 		INTO	CODE C
 		USING	DUAL
-		ON 		(C.CODE_ID = #{idx})
+		ON 		(C.CODE_ID = #{codeId})
 		WHEN 	MATCHED THEN
 		UPDATE
 		SET		CODE_NAME			= #{codeName}
@@ -73,10 +89,7 @@
 		)
 		VALUES
 		(
-			(
-			SELECT	NVL(MAX(CODE_ID),0)+1
-			FROM	CODE
-			)
+			#{codeId}
 		,	#{codeName}
 		,	#{upperCodeId}
 		,	#{codeValue}
@@ -91,7 +104,7 @@
 	</insert>
 
 	<delete id="deleteCode" parameterType="lgs.com.code.vo.CodeVO">
-		/* deleteCode 코드 저장 (신규, 수정)  */
+		/* deleteCode 코드 삭제  */
 		DELETE
 		FROM	CODE
 		WHERE 	CODE_ID IN

@@ -1,6 +1,5 @@
 package lgs.com.main.controller;
 
-import lgs.com.bbs.vo.BoardVO;
 import lgs.com.main.service.MainService;
 import lgs.com.main.vo.UserVO;
 import org.slf4j.Logger;
@@ -13,8 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class MainController {

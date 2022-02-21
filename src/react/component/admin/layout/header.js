@@ -3,16 +3,30 @@ import {Link} from 'react-router-dom';
 
 const AdminHeader = (prop) => {
 
-    // Toggle the side navigation
-    const sidebarToggle = document.body.querySelector('#sidebarToggle');
-
     const sidebarToggleClick = (event) =>{
-        alert(sidebarToggle);
+        // Toggle the side navigation
+        const sidebarToggle = document.getElementById("sidebarToggle");
+
         if (sidebarToggle) {
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
             localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
         }
+    }
+
+    const userInfoBtnClick = () => {
+        let dropDisplay = document.getElementById("userInfoDropDown").style.display;
+        if(dropDisplay == "none" || dropDisplay == ""){
+            document.getElementById("userInfoDropDown").style.display = "block";
+        } else {
+            document.getElementById("userInfoDropDown").style.display = "none";
+        }
+
+    }
+
+    const logout = () => {
+        sessionStorage.removeItem("userId");
+        window.location.href="/spring-showpingmall/#/admin/login";
     }
 
   return (
@@ -24,18 +38,18 @@ const AdminHeader = (prop) => {
           </form>
           <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
               <li className="nav-item dropdown">
-                  <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" to="#">
+                  <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" to="#" onClick={userInfoBtnClick}>
                       <i className="fas fa-user fa-fw"></i>
                   </Link>
-                  <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <ul id="userInfoDropDown" className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style={{"right" : "0px"}} >
                       <li>
-                          <Link to="#">MyPage</Link>
+                          <Link className="dropdown-item" to="#">MyPage</Link>
                       </li>
                       <li>
                           <hr className="dropdown-divider"/>
                       </li>
                       <li>
-                          <Link className="dropdown-item" to="#">Logout</Link>
+                          <span className="dropdown-item" onClick={logout}>Logout</span>
                       </li>
                   </ul>
               </li>
