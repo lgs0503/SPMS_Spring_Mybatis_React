@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lgs.com.post.mapper.PostMapper">
+
+	<select id="postList" resultType="lgs.com.post.vo.PostVO" parameterType="lgs.com.post.vo.PostVO">
+	/* postList 게시글 리스트 조회  */
+		SELECT	BOARD_ID
+			,	POST_ID
+			,	POST_TYPE
+			,	POST_TITLE
+			,	POST_CONTENT
+			,	VIEW_CNT
+			,	DELETED
+			,	FILE_NO1
+			,	FILE_NO2
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	POST
+		<include refid="postWhere"></include>
+	</select>
+
+	<select id="postCnt" resultType="int" parameterType="lgs.com.post.vo.PostVO">
+		/* postCnt 게시글 리스트 갯수 조회  */
+		SELECT	COUNT(*) CNT
+		FROM	POST
+		<include refid="postWhere"></include>
+	</select>
+
+	<select id="searchPost" resultType="lgs.com.post.vo.PostVO" parameterType="lgs.com.post.vo.PostVO">
+		/* searchPost 게시글  조회  */
+		SELECT	BOARD_ID
+			,	POST_ID
+			,	POST_TYPE
+			,	POST_TITLE
+			,	POST_CONTENT
+			,	VIEW_CNT
+			,	DELETED
+			,	FILE_NO1
+			,	FILE_NO2
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	POST
+		WHERE	POST_ID = #{postId}
+	</select>
+
+	<sql id="postWhere">
+		/* postWhere 게시글 조회조건  */
+		<where>
+			<if test="boardId != null and boardId != ''">
+				AND 	BOARD_ID = #{boardId}
+			</if>
+			<if test="postId != null and postId != ''">
+				AND 	POST_ID LIKE '%' || #{postId} || '%'
+			</if>
+			<if test="postTitle != null and postTitle != ''">
+				AND 	POST_TITLE LIKE '%' || #{postTitle} || '%'
+			</if>
+		</where>
+	</sql>
+
+	<update id="updateViewCnt" parameterType="lgs.com.post.vo.PostVO">
+		/* updateViewCnt 게시글 viewCnt +1 */
+		UPDATE	POST
+		SET 	VIEW_CNT = (
+							SELECT 	VIEW_CNT + 1
+							FROM	POST
+							WHERE	POST_ID = #{postId}
+							)
+		WHERE	POST_ID = #{postId}
+	</update>
+
+	<insert id="savePost" parameterType="lgs.com.post.vo.PostVO">
+		/* savePost 게시글 저장 (신규, 수정)  */
+		MERGE
+		INTO	POST P
+		USING	DUAL
+		ON 		(P.POST_ID = #{postId})
+		WHEN 	MATCHED THEN
+		UPDATE
+		SET		POST_TYPE		= #{postType}
+		,		POST_TITLE		= #{postTitle}
+		,		POST_CONTENT	= #{postContent}
+		,		DELETED			= #{deleted}
+		,		FILE_NO1		= #{fileNo1}
+		,		FILE_NO2		= #{fileNo2}
+		,		UPDATE_DATE		= #{updateDate}
+		,		UPDATE_USER		= #{updateUser}
+		WHEN 	NOT MATCHED THEN
+		INSERT
+		(
+			BOARD_ID
+		,	POST_ID
+		,	POST_TYPE
+		,	POST_TITLE
+		,	POST_CONTENT
+		,	VIEW_CNT
+		,	DELETED
+		,	FILE_NO1
+		,	FILE_NO2
+		,	CREATE_USER
+		,	CREATE_DATE
+		,	UPDATE_USER
+		,	UPDATE_DATE
+		)
+		VALUES
+		(
+			#{boardId}
+		,	(
+				SELECT	NVL(MAX(POST_ID), 0) + 1
+				FROM	POST
+			)
+		,	#{postType}
+		,	#{postTitle}
+		,	#{postContent}
+		,	#{viewCnt}
+		,	#{deleted}
+		,	#{fileNo1}
+		,	#{fileNo2}
+		,	#{createUser}
+		,	#{createDate}
+		,	#{updateUser}
+		,	#{updateDate}
+		)
+	</insert>
+
+	<delete id="deletePost" parameterType="lgs.com.post.vo.PostVO">
+		/* deletePost 게시글 삭제  */
+		DELETE
+		FROM	POST
+		WHERE 	POST_ID IN
+		<foreach collection="postIds" index="index" item="idx"
+				 separator="," open="(" close=")" >
+			#{idx}
+		</foreach>
+	</delete>
+</mapper>
