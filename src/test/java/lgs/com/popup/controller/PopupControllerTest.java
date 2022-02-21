@@ -1,12 +1,10 @@
-package lgs.com.post.controller;
+package lgs.com.popup.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lgs.com.code.controller.CodeController;
+import lgs.com.banner.controller.BannerController;
 import lgs.com.main.controller.MainControllerTest;
-import lgs.com.popup.controller.PopupController;
-import lgs.com.post.vo.PostVO;
+import lgs.com.popup.vo.PopupVO;
 import lgs.com.utill.vo.Message;
-import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,8 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "file:src/main/webapp/WEB-INF/spring/config/*.xml",
         "file:src/main/webapp/WEB-INF/spring/**/appServlet/servlet-context.xml"
 })
-@Log4j
-public class PostControllerTest {
+public class PopupControllerTest {
+
     private static final Logger logger = LoggerFactory.getLogger(MainControllerTest.class);
 
     @Autowired
@@ -46,7 +44,7 @@ public class PostControllerTest {
 
     private MockMvc mockMvc;
 
-    private PostVO postVO = new PostVO();
+    private PopupVO popupVO = new PopupVO();
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -55,7 +53,7 @@ public class PostControllerTest {
             Charset.forName("utf8"));
 
     @Autowired
-    private PostController postController;
+    private PopupController popupController;
 
     @Before
     public void setup() {
@@ -64,90 +62,76 @@ public class PostControllerTest {
     }
 
     @Test
-    public void postList() throws Exception{
-        postVO.setPostId(null);
+    public void popupList() throws Exception {
+        popupVO.setPopupId(null);
 
-        mockMvc.perform(get("/postList")
+        mockMvc.perform(get("/popupList")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(postVO)))
+                .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(PostController.class))
-                .andExpect(handler().methodName("postList"));
+                .andExpect(handler().handlerType(PopupController.class))
+                .andExpect(handler().methodName("popupList"));
 
-        ResponseEntity<Message> re = postController.postList(postVO);
+        ResponseEntity<Message> re = popupController.popupList(popupVO);
 
         Map<String, Object> data = (Map<String, Object>) re.getBody().getData();
 
-        System.out.println("postList:"+data.get("postList"));
-        System.out.println("postCnt:"+data.get("postCnt"));
+        System.out.println("popupList:"+data.get("popupList"));
+        System.out.println("popupCnt:"+data.get("popupCnt"));
     }
 
     @Test
-    public void searchPost() throws Exception {
-        postVO.setPostId("1");
+    public void searchPopup() throws Exception {
+        popupVO.setPopupId("1");
 
-        mockMvc.perform(get("/searchPost")
+        mockMvc.perform(get("/searchPopup")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(postVO)))
+                .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(PostController.class))
-                .andExpect(handler().methodName("searchPost"));
+                .andExpect(handler().handlerType(PopupController.class))
+                .andExpect(handler().methodName("searchPopup"));
 
-        ResponseEntity<Message> re = postController.searchPost(postVO);
+        ResponseEntity<Message> re = popupController.searchPopup(popupVO);
 
         Map<String, Object> data = (Map<String, Object>) re.getBody().getData();
 
-        System.out.println("post:"+data.get("post"));
+        System.out.println("popup:"+data.get("popup"));
+
     }
 
     @Test
-    public void updateViewCnt() throws Exception {
-        postVO.setPostId("1");
+    public void savePopup() throws Exception {
+        popupVO.setPopupId("1");
+        popupVO.setPopupContent("테스트");
+        popupVO.setPopupImageNo("0");
+        popupVO.setPopupStatus("0");
+        popupVO.setPopupTitle("테스트");
+        popupVO.setPopupUrl("/test");
+        popupVO.setUesYn("Y");
 
-        mockMvc.perform(get("/updateViewCnt")
+        mockMvc.perform(put("/savePopup")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(postVO)))
+                .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(PostController.class))
-                .andExpect(handler().methodName("updateViewCnt"));
-
+                .andExpect(handler().handlerType(PopupController.class))
+                .andExpect(handler().methodName("savePopup"));
     }
 
     @Test
-    public void savePost() throws Exception {
-        postVO.setPostId("1");
-        postVO.setBoardId("1");
-        postVO.setDeleted("0");
-        postVO.setFileNo1("0");
-        postVO.setFileNo2("0");
-        postVO.setPostContent("테스트");
-        postVO.setPostType("test");
-        postVO.setViewCnt("0");
-
-        mockMvc.perform(put("/savePost")
-                .contentType(contentType)
-                .content(mapper.writeValueAsString(postVO)))
-                .andExpect(status().isOk())
-                /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(PostController.class))
-                .andExpect(handler().methodName("savePost"));
-    }
-
-    @Test
-    public void deletePost() throws Exception {
+    public void deletePopup() throws Exception {
         ArrayList<String> deletes = new ArrayList<String>();
         deletes.add("1");
-        postVO.setPostIds(deletes);
+        popupVO.setPopupIds(deletes);
 
-        mockMvc.perform(delete("/deletePost")
+        mockMvc.perform(delete("/deletePopup")
                 .contentType(contentType)
-                .content(mapper.writeValueAsString(postVO)))
+                .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
                 /*.andExpect(view().name("jsonView"))*/
-                .andExpect(handler().handlerType(PostController.class))
-                .andExpect(handler().methodName("deletePost"));
+                .andExpect(handler().handlerType(PopupController.class))
+                .andExpect(handler().methodName("deletePopup"));
     }
 }
