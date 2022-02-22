@@ -10,6 +10,7 @@ import AdminMenu from "./content/menu";
 
 import "../../css/styles.css";
 import * as common from "../../comm/common";
+import AdminBoard from "./content/board";
 
 const  AdminLayout = () => {
 
@@ -29,6 +30,7 @@ const  AdminLayout = () => {
                           <Route path="/" element={<AdminMain />} />
                           <Route path="/code" element={<AdminCode />} />
                           <Route path="/menu" element={<AdminMenu />} />
+                          <Route path="/board" element={<AdminBoard />} />
                       </Routes>
                   </main>
                   <AdminFooter/>
