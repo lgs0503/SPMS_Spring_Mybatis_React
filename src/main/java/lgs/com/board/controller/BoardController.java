@@ -39,7 +39,7 @@ public class BoardController {
 	 * @param BoardVO 조회조건
 	 * @return 게시판 리스트
 	 */
-	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
+	@RequestMapping(value = "/boardList", method = RequestMethod.POST)
 	public ResponseEntity<Message> boardList(@RequestBody BoardVO boardVO) {
 		logger.info("boardList");
 		Message message = new Message();

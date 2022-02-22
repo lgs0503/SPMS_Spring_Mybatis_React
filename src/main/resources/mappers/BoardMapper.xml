@@ -77,10 +77,7 @@
 		WHEN 	NOT MATCHED THEN
 		INSERT
 		(
-			(
-				SELECT 	NVL(MAX(BOARD_ID), 0) + 1
-				FROM	BOARD
-			)
+			BOARD_ID
 		,	BOARD_NAME
 		,	BOARD_TYPE
 		,	BOARD_DESCRIPTION
@@ -93,7 +90,10 @@
 		)
 		VALUES
 		(
-			#{boardId}
+			(
+				SELECT 	NVL(MAX(BOARD_ID), 0) + 1
+				FROM	BOARD
+			)
 		,	#{boardName}
 		,	#{boardType}
 		,	#{boardDescription}
