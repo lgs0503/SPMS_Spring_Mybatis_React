@@ -1,22 +1,16 @@
 package lgs.com.board.vo;
 
+import lgs.com.utill.vo.DefaultVO;
 import lombok.Data;
 
 @Data
-public class BoardVO {
-/*
-	BNO INT NOT NULL ,	-- 게시판 고유 번호 (자동증가)
-	TITLE VARCHAR(100),	-- 게시글 제목
-	CONTENT VARCHAR(1000),	-- 게시글 내용
-	WRITER VARCHAR(100),	-- 글쓴이
-	REGDATE TIMESTAMP DEFAULT SYSDATE(),	-- 날짜(기본값 현재시각)
-	PRIMARY KEY (BNO)	-- 게시판 번호 기본키 지정
-*/
+public class BoardVO extends DefaultVO {
 
-	private int bno;
-	private String title;
-	private String content;
-	private String writer;
-	private String regDate;
+	private String boardId;
+	private String boardName;
+	private String boardType;
+	private String boardDescription;
+	private String useYn;
+	private String fileYn;
 
 }

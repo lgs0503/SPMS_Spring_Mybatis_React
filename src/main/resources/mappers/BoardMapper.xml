@@ -2,21 +2,119 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lgs.com.board.mapper.BoardMapper">
 
-	<resultMap type="lgs.com.board.vo.BoardVO" id="boardMap">
-		<id property="bno" column="bno"></id>
-		<result property="title" column="title"/>
-		<result property="content" column="content"/>
-		<result property="writer" column="writer"/>
-		<result property="regDate" column="regDate"/>
-	</resultMap>
-	
-	<select id="getBoardList" resultMap="boardMap">
-		SELECT	BNO,
-				TITLE,
-				CONTENT,
-				WRITER,
-				TO_CHAR(REGDATE, 'YYYY-MM-DD') AS REGDATE
+	<select id="boardList" resultType="lgs.com.board.vo.BoardVO" parameterType="lgs.com.board.vo.BoardVO">
+		/* boardList 게시판 리스트 조회  */
+		SELECT	BOARD_ID
+			,	BOARD_NAME
+			,	BOARD_TYPE
+			,	BOARD_DESCRIPTION
+			,	USE_YN
+			,	FILE_YN
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
 		FROM	BOARD
+		<include refid="boardWhere"></include>
 	</select>
+
+	<select id="boardCnt" resultType="int" parameterType="lgs.com.board.vo.BoardVO">
+		/* boardCnt 게시판 리스트 갯수 조회  */
+		SELECT	COUNT(*) CNT
+		FROM	BOARD
+		<include refid="boardWhere"></include>
+	</select>
+
+	<select id="searchBoard" resultType="lgs.com.board.vo.BoardVO" parameterType="lgs.com.board.vo.BoardVO">
+		/* searchBoard 게시판  조회  */
+		SELECT	BOARD_ID
+			,	BOARD_NAME
+			,	BOARD_TYPE
+			,	BOARD_DESCRIPTION
+			,	USE_YN
+			,	FILE_YN
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	BOARD
+		WHERE	BOARD_ID = #{boardId}
+	</select>
+
+	<sql id="boardWhere">
+		/* boardWhere 게시판 조회조건  */
+		<where>
+			<if test="boardId != null and boardId != ''">
+				AND 	BOARD_ID LIKE '%' || #{boardId} || '%'
+			</if>
+			<if test="boardName != null and boardName != ''">
+				AND 	BOARD_NAME LIKE '%' || #{boardName} || '%'
+			</if>
+			<if test="useYn != null and useYn != ''">
+				AND 	USE_YN = #{useYn}
+			</if>
+			<if test="fileYn != null and fileYn != ''">
+				AND 	FILE_YN = #{fileYn}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="saveBoard" parameterType="lgs.com.board.vo.BoardVO">
+		/* saveBoard 게시판 저장 (신규, 수정)  */
+		MERGE
+		INTO	BOARD B
+		USING	DUAL
+		ON 		(B.BOARD_ID = #{boardId})
+		WHEN 	MATCHED THEN
+		UPDATE
+		SET		BOARD_NAME			= #{boardName}
+		,		BOARD_TYPE			= #{boardType}
+		,		BOARD_DESCRIPTION	= #{boardDescription}
+		,		USE_YN				= #{useYn}
+		,		FILE_YN				= #{fileYn}
+		,		UPDATE_USER			= #{updateUser}
+		,		UPDATE_DATE			= #{updateDate}
+		WHEN 	NOT MATCHED THEN
+		INSERT
+		(
+			(
+				SELECT 	NVL(MAX(BOARD_ID), 0) + 1
+				FROM	BOARD
+			)
+		,	BOARD_NAME
+		,	BOARD_TYPE
+		,	BOARD_DESCRIPTION
+		,	USE_YN
+		,	FILE_YN
+		,	CREATE_USER
+		,	CREATE_DATE
+		,	UPDATE_USER
+		,	UPDATE_DATE
+		)
+		VALUES
+		(
+			#{boardId}
+		,	#{boardName}
+		,	#{boardType}
+		,	#{boardDescription}
+		,	#{useYn}
+		,	#{fileYn}
+		,	#{createUser}
+		,	#{createDate}
+		,	#{updateUser}
+		,	#{updateDate}
+		)
+	</insert>
+
+	<delete id="deleteBoard" parameterType="lgs.com.board.vo.BoardVO">
+		/* deleteBoard 게시판 삭제  */
+		DELETE
+		FROM	BOARD
+		WHERE 	BOARD_ID IN
+		<foreach collection="boardIds" index="index" item="idx"
+				 separator="," open="(" close=")" >
+			#{idx}
+		</foreach>
+	</delete>
 
 </mapper>
