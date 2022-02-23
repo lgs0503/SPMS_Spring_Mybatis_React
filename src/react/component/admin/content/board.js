@@ -9,6 +9,8 @@ const  AdminBoard = () => {
     // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
     const [modalOpen, setModalOpen] = useState(false);
     const [isOpenPost, setIsOpenPost] = useState(false);
+
+    const [bodyData, setBodyData] = useState(null);
     
     let modalTitle = "게시판 등록";
 
@@ -24,7 +26,6 @@ const  AdminBoard = () => {
 
     useEffect(() => {
         boardSearch();
-
     },[]);
 
     const boardSearch = () => {
@@ -39,6 +40,7 @@ const  AdminBoard = () => {
         common.fetchLoad("/boardList","POST", data,(result) => {
             console.log(result.data.boardList);
             console.log(result.data.boardCnt);
+            setBodyData(result.data.boardList);
         });
     }
 
@@ -123,7 +125,7 @@ const  AdminBoard = () => {
                   </button>
               </div>
               <div className="card-body">
-                  <Table headerData={headerData} />
+                  <Table headerData={headerData} bodyData={bodyData}/>
               </div>
           </div>
           <Modal open={modalOpen} close={closeModal} header={modalTitle}>
