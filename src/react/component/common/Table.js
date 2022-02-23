@@ -6,7 +6,7 @@ const Table  = (props) => {
     return(
         <table className="table">
             <TableHeader headerData={props.headerData}/>
-            {/*<TableBody bodyData={props.bodyData}/>*/}
+            <TableBody bodyData={props.bodyData} colSpan={props.headerData.length}/>
         </table>
     )
 };
