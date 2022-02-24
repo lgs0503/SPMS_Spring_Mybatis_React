@@ -1,30 +1,19 @@
 package lgs.com.board.controller;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import lgs.com.board.controller.BoardController;
 import lgs.com.board.vo.BoardVO;
-import lgs.com.utill.StatusEnum;
+import lgs.com.utill.CommonResponse;
 import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import lgs.com.board.service.BoardService;
-import lgs.com.board.vo.BoardVO;
 
 @Controller
 public class BoardController {
@@ -42,18 +31,13 @@ public class BoardController {
 	@RequestMapping(value = "/boardList", method = RequestMethod.POST)
 	public ResponseEntity<Message> boardList(@RequestBody BoardVO boardVO) {
 		logger.info("boardList");
-		Message message = new Message();
-		HttpHeaders headers= new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-		Map<String, Object> data = new HashMap<String, Object>();
+		CommonResponse commonResponse = new CommonResponse();
 
-		message.setStatus(StatusEnum.OK);
-		data.put("boardList", boardService.boardList(boardVO));
-		data.put("boardCnt", boardService.boardCnt(boardVO));
-		message.setData(data);
+		commonResponse.putData("boardList", boardService.boardList(boardVO));
+		commonResponse.putData("boardCnt", boardService.boardCnt(boardVO));
 
-		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+		return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
 	}
 
 	/**
@@ -64,17 +48,12 @@ public class BoardController {
 	@RequestMapping(value = "/searchBoard", method = RequestMethod.GET)
 	public ResponseEntity<Message> searchBoard(@RequestBody BoardVO boardVO) {
 		logger.info("serachBoard");
-		Message message = new Message();
-		HttpHeaders headers= new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-		Map<String, Object> data = new HashMap<String, Object>();
+		CommonResponse commonResponse = new CommonResponse();
 
-		message.setStatus(StatusEnum.OK);
-		data.put("board", boardService.searchBoard(boardVO));
-		message.setData(data);
+		commonResponse.putData("board", boardService.searchBoard(boardVO));
 
-		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+		return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
 	}
 
 	/**
@@ -84,13 +63,10 @@ public class BoardController {
 	@RequestMapping(value = "/saveBoard", method = {RequestMethod.POST, RequestMethod.PUT})
 	public ResponseEntity<Message> saveBoard(@RequestBody BoardVO boardVO) {
 		logger.info("saveBoard");
-		Message message = new Message();
-		HttpHeaders headers= new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
 		boardService.saveBoard(boardVO);
-		message.setStatus(StatusEnum.OK);
-		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
+		CommonResponse commonResponse = new CommonResponse();
+		return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
 	}
 
 	/**
@@ -100,12 +76,9 @@ public class BoardController {
 	@RequestMapping(value = "/deleteBoard", method = RequestMethod.DELETE)
 	public ResponseEntity<Message> deleteBoard(@RequestBody BoardVO boardVO) {
 		logger.info("deleteBoard");
-		Message message = new Message();
-		HttpHeaders headers= new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
 		boardService.deleteBoard(boardVO);
-		message.setStatus(StatusEnum.OK);
-		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+		CommonResponse commonResponse = new CommonResponse();
+		return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
 	}
 }
