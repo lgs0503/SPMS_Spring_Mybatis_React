@@ -22,7 +22,7 @@ const  AdminBoard = () => {
         setModalOpen(false);
     };
 
-    const headerData = ['No', '게시판명', '게시판타입', '사용여부', '파일여부'];
+    const headerData = ['ID', '게시판명', '게시판타입', '사용여부', '파일여부'];
 
     useEffect(() => {
         boardSearch();
@@ -62,8 +62,7 @@ const  AdminBoard = () => {
 
             if(type == 1){
                 callback = (result) => {
-                    console.log(result.data.boardList);
-                    console.log(result.data.boardCnt);
+
                 }
             } else {
 
@@ -168,7 +167,7 @@ const  AdminBoard = () => {
                   </div>
                   <div className="mt-4 mb-0">
                       <div className="d-grid">
-                          <a className="btn btn-primary btn-block" id="btnRegister" onClick={boardSave}>저장</a>
+                          <a className="btn btn-primary btn-block" id="btnRegister" onClick={() => boardSave(1)}>저장</a>
                       </div>
                   </div>
               </form>

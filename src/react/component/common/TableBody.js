@@ -7,7 +7,6 @@ const TableBody = (props) => {
                 props.bodyData != null ?
                     props.bodyData.map((value, index) => (
                         <tr key={index} id={index}>
-                        <td>{index + 1}</td>
                         {
                             Object.entries(value).map((key, keyValue) => (
                                 <td key={keyValue}>{key[1]}</td>
