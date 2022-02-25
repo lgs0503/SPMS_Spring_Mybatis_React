@@ -84,15 +84,22 @@
 @media all and (min-width:480px) and (max-width:767px) {
     .modal > section {
         position: absolute;
-        top:0;
-        left: 10%;
+        top:56px;
+        left:0;
+        right:0;
+        bottom:0;
+        max-width: 100%;
+        width: 100%;
     }
 }
 /* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
 @media all and (max-width:479px) {
     .modal > section {
         position: absolute;
-        top:0;
-        left: 5%;
+        top:56px;
+        left:0;
+        right:0;
+        max-width: 100%;
+        width: 100%;
     }
 }
