@@ -1,7 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AdminDashboardCard from "./dashboardcrad";
+import Table from "../../common/Table";
 
 const  AdminMain = () => {
+    useEffect(() => {
+
+    },[]);
+
+    const headerData = ['No','제목','작성자','작성일'];
+
     return (
       <div className="container-fluid px-4">
           <h1 className="mt-4">Dashboard</h1>
@@ -19,126 +26,8 @@ const  AdminMain = () => {
               Notice
           </div>
           <div className="card-body">
-              <table id="datatablesSimple">
-                  <thead>
-                  <tr>
-                      <th>No</th>
-                      <th>Title</th>
-                      <th>InsertUser</th>
-                      <th>InsertDtae</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  <tr>
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>lgs0503</td>
-                      <td>2022-02-06</td>
-                  </tr>
-                  </tbody>
-              </table>
+              <Table headerColName={headerData}
+                     deleted={true}></Table>
           </div>
       </div>
   );

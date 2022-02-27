@@ -18,19 +18,66 @@ public class BoardServiceImpl implements BoardService {
 	private SqlSessionFactory sqlSessionFactory;
 
 	@Override
-	public List<BoardVO> getBoardList() {
-		// TODO Auto-generated method stub
-		List<BoardVO> boardList = new ArrayList<BoardVO>();
+	public List<BoardVO> boardList(BoardVO boardVO) {
+		List<BoardVO> result = new ArrayList<BoardVO>();
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			BoardMapper mapper = session.getMapper(BoardMapper.class);
 
-			boardList = mapper.getBoardList();
+			result = mapper.boardList(boardVO);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return boardList;
+		return result;
 	}
 
+	@Override
+	public BoardVO searchBoard(BoardVO boardVO) {
+		BoardVO result = new BoardVO();
+
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+
+			result = mapper.searchBoard(boardVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public int boardCnt(BoardVO boardVO) {
+		int result = 0;
+
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+
+			result = mapper.boardCnt(boardVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public void saveBoard(BoardVO boardVO) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+
+			mapper.saveBoard(boardVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteBoard(BoardVO boardVO) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+
+			mapper.deleteBoard(boardVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
