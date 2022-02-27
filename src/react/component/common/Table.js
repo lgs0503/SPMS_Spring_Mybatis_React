@@ -5,8 +5,9 @@ import TableBody from "./TableBody";
 const Table  = (props) => {
     return(
         <table className="table">
-            <TableHeader headerData={props.headerData} deleted={props.deleted}/>
-            <TableBody bodyData={props.bodyData} colSpan={props.headerData.length} deleted={props.deleted}/>
+            <TableHeader tableInit={props.tableInit}/>
+            <TableBody tableInit={props.tableInit}
+                       bodyData={props.bodyData}/>
         </table>
     )
 };

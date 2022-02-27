@@ -1,26 +1,26 @@
 import React from "react";
+import Table from "./Table";
 
 const TableBody = (props) => {
     return(
         <tbody>
             {
-                props.bodyData != null ?
+                props.bodyData != null
+                ?
                     props.bodyData.map((value, index) => (
-                        <tr key={index} id={index}>
-                        {
-                            props.deleted == true ? (<td><input type="checkbox"/></td>) : null
-                        }
-                        {
-                            Object.entries(value).map((key, keyValue) => (
-                                <td key={keyValue}>{key[1]}</td>
-                            ))
-                        }
+                        <tr key={index} id={value[props.tableInit.selectCol]} onClick={props.tableInit.cellSelectEvent}>
+                            <td><input className="form-check-input" name="chk" type="checkbox"/></td>
+                            {
+                                props.tableInit.headerColData.map((headerVal, headerIndex) => (
+                                    <td key={headerIndex}>{value[headerVal]}</td>
+                                ))
+                            }
                         </tr>
                     ))
                 :
                 (
                     <tr>
-                       <td colSpan={props.deleted == true ? props.colSpan+1 : props.colSpan}>데이터가 존재하지 않습니다.</td>
+                        <td colSpan={props.tableInit.deleted ? props.tableInit.colSpan+1 : props.tableInit.colSpan}>데이터가 존재하지 않습니다.</td>
                     </tr>
                 )
             }
