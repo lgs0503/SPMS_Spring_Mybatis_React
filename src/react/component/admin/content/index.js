@@ -26,7 +26,8 @@ const  AdminMain = () => {
               Notice
           </div>
           <div className="card-body">
-              <Table headerData={headerData}></Table>
+              <Table headerColName={headerData}
+                     deleted={true}></Table>
           </div>
       </div>
   );
