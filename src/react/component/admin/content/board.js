@@ -11,8 +11,8 @@ const  AdminBoard = () => {
     const [isOpenPost, setIsOpenPost] = useState(false);
 
     const [bodyData, setBodyData] = useState(null);
-    
-    let modalTitle = "게시판 등록";
+
+    const [modalTitle, setModalTitle] = useState("게시판 등록");
 
     const openModal = () => {
         setModalOpen(true);
@@ -22,7 +22,26 @@ const  AdminBoard = () => {
         setModalOpen(false);
     };
 
-    const headerData = ['ID', '게시판명', '게시판타입', '사용여부', '파일여부'];
+    let tableInit = {
+            headerColName : ['ID', '게시판명', '게시판타입', '사용여부', '파일여부']
+        ,   headerColData : ['boardId', 'boardName', 'boardType', 'useYn', 'fileYn']
+        ,   selectCol : 'boardId'
+        ,   deleted : true
+        ,   bodyData : null
+        ,   colSpan : 5
+        ,   cellSelectEvent : (e) => {
+
+            let data = {
+                boardId             : e.target.parentNode.id
+            };
+
+            common.fetchLoad("/searchBoard","POST", data,(result) => {
+                console.log(result.data.board);
+                setModalTitle("게시판 상세");
+                openModal();
+            });
+        }
+    }
 
     useEffect(() => {
         boardSearch();
@@ -45,6 +64,7 @@ const  AdminBoard = () => {
     }
 
     const boardAdd = () => {
+        setModalTitle("게시판 등록");
         openModal();
     }
 
@@ -124,7 +144,8 @@ const  AdminBoard = () => {
                   </button>
               </div>
               <div className="card-body">
-                  <Table headerData={headerData} bodyData={bodyData}/>
+                  <Table bodyData={bodyData}
+                         tableInit={tableInit}/>
               </div>
           </div>
           <Modal open={modalOpen} close={closeModal} header={modalTitle}>
