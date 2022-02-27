@@ -45,7 +45,7 @@ public class BoardController {
 	 * @param BoardVO 조회조건
 	 * @return 게시판 리스트
 	 */
-	@RequestMapping(value = "/searchBoard", method = RequestMethod.GET)
+	@RequestMapping(value = "/searchBoard", method = RequestMethod.POST)
 	public ResponseEntity<Message> searchBoard(@RequestBody BoardVO boardVO) {
 		logger.info("serachBoard");
 
