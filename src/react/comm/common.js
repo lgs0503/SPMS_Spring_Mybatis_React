@@ -136,3 +136,16 @@ export function loginUserSessionCheck(){
         window.location.href = "/showpingmall/#/admin/login";
     }
 }
+/**
+ * 체크박스 개수 반환
+ * @param elName : 체크박스name
+ * */
+export function tableChkCnt(elName){
+    let chk = 0;
+    document.getElementsByName(elName).forEach((value, index) => {
+        if(value.checked){
+            chk ++;
+        }
+    });
+    return chk;
+}
