@@ -1,13 +1,18 @@
 import React, {useEffect} from 'react';
 import AdminDashboardCard from "./dashboardcrad";
 import Table from "../../common/Table";
+import * as common from "../../../comm/common";
 
 const  AdminMain = () => {
     useEffect(() => {
 
     },[]);
 
-    const headerData = ['No','제목','작성자','작성일'];
+    let tableInit = {
+        headerColName : ['No','제목','작성자','작성일']
+        ,   deleted : false
+        ,   colSpan : 4
+    }
 
     return (
       <div className="container-fluid px-4">
@@ -26,8 +31,7 @@ const  AdminMain = () => {
               Notice
           </div>
           <div className="card-body">
-              <Table headerColName={headerData}
-                     deleted={true}></Table>
+              <Table tableInit={tableInit}></Table>
           </div>
       </div>
   );

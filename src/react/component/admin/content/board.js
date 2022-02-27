@@ -3,8 +3,12 @@ import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/modal";
 import DaumPostcode from "react-daum-postcode";
+import {useDispatch} from "react-redux";
+import {showAlertModal} from "../../../action/alertModal";
 
 const  AdminBoard = () => {
+
+    const dispatch = useDispatch();
 
     // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
     const [modalOpen, setModalOpen] = useState(false);
@@ -95,9 +99,26 @@ const  AdminBoard = () => {
     const boardDelete = () => {
         if(window.confirm("삭제하시겠습니까?")){
 
+            if(common.tableChkCnt("chk") == 0){
+                dispatch(showAlertModal('항목을 선택해주세요.'));
+                return;
+            } else {
+
+                document.getElementsByName("chk").forEach((value, index) => {
+                    if(value.checked){
+                        console.log(this)
+                    }
+                });
+/*
+                let data = {boardIds : [0,1,2]};
+
+                common.fetchLoad("/deleteBoard","DELETE", data, () => {
+                    dispatch(showAlertModal('삭제 되었습니다.'));
+                    return;
+                });*/
+            }
         }
     }
-
 
   return (
       <div className="container-fluid px-4">
