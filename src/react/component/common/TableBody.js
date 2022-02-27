@@ -2,13 +2,23 @@ import React from "react";
 import Table from "./Table";
 
 const TableBody = (props) => {
+
+    const cellSelect = (e) => {
+
+        if(e.target.nodeName == 'INPUT')
+            return;
+
+        props.tableInit.cellSelectEvent(e);
+
+    }
+
     return(
         <tbody>
             {
                 props.bodyData != null
                 ?
                     props.bodyData.map((value, index) => (
-                        <tr key={index} id={value[props.tableInit.selectCol]} onClick={props.tableInit.cellSelectEvent}>
+                        <tr key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
                             <td><input className="form-check-input" name="chk" type="checkbox"/></td>
                             {
                                 props.tableInit.headerColData.map((headerVal, headerIndex) => (
