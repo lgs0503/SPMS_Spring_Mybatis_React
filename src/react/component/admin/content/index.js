@@ -31,7 +31,7 @@ const  AdminMain = () => {
               Notice
           </div>
           <div className="card-body">
-              <Table tableInit={tableInit}></Table>
+              {/*<Table tableInit={tableInit}></Table>*/}
           </div>
       </div>
   );

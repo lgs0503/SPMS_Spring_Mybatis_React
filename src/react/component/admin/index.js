@@ -11,6 +11,7 @@ import AdminMenu from "./content/menu";
 import "../../css/styles.css";
 import * as common from "../../comm/common";
 import AdminBoard from "./content/board";
+import AdminPost from "./content/post";
 
 const  AdminLayout = () => {
 
@@ -31,6 +32,7 @@ const  AdminLayout = () => {
                           <Route path="/code" element={<AdminCode />} />
                           <Route path="/menu" element={<AdminMenu />} />
                           <Route path="/board" element={<AdminBoard />} />
+                          <Route path="/post" element={<AdminPost />} />
                       </Routes>
                   </main>
                   <AdminFooter/>
