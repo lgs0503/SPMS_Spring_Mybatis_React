@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/modal";
@@ -12,11 +12,15 @@ const  AdminBoard = () => {
 
     // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
     const [modalOpen, setModalOpen] = useState(false);
-    const [isOpenPost, setIsOpenPost] = useState(false);
 
     const [bodyData, setBodyData] = useState(null);
+    const [bodyCnt, setBodyCnt] = useState(0);
 
     const [modalTitle, setModalTitle] = useState("게시판 등록");
+
+    useEffect(() => {
+        boardSearch();
+    },[]);
 
     const openModal = () => {
         setModalOpen(true);
@@ -29,27 +33,56 @@ const  AdminBoard = () => {
     let tableInit = {
             headerColName : ['ID', '게시판명', '게시판타입', '사용여부', '파일여부']
         ,   headerColData : ['boardId', 'boardName', 'boardType', 'useYn', 'fileYn']
+        ,   title : "Board List"
         ,   selectCol : 'boardId'
         ,   deleted : true
-        ,   bodyData : null
+        ,   inserted : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
 
             let data = {
-                boardId             : e.target.parentNode.id
+                boardId : e.target.parentNode.id
             };
 
             common.fetchLoad("/searchBoard","POST", data,(result) => {
-                console.log(result.data.board);
                 setModalTitle("게시판 상세");
+
                 openModal();
+
+                console.log(result.data.board);
+
+                document.getElementById("popupId").value = result.data.board.boardId
+                document.getElementById("popupName").value = result.data.board.boardName
+                document.getElementById("popupType").value = result.data.board.boardType
+                document.getElementById("popupDescription").value = result.data.board.boardDescription
+                document.getElementById("popupUseYn").value = result.data.board.useYn
+                document.getElementById("popupFileYn").value = result.data.board.fileYn
             });
         }
-    }
+        , addBtnClickEvent : () => {
+            setModalTitle("게시판 등록");
+            openModal();
+        }
+        , deleteBtnClickEvent :() => {
+            if(window.confirm("삭제하시겠습니까?")){
 
-    useEffect(() => {
-        boardSearch();
-    },[]);
+                if(common.tableChkCnt("chk") == 0){
+                    dispatch(showAlertModal('항목을 선택해주세요.'));
+                    return;
+                } else {
+                    let data = {boardIds : []};
+
+                    data.boardIds = common.tableChkIds("chk");
+
+                    common.fetchLoad("/deleteBoard","DELETE", data, () => {
+                        dispatch(showAlertModal('삭제 되었습니다.'));
+                        boardSearch();
+                        return;
+                    });
+                }
+            }
+        }
+    }
 
     const boardSearch = () => {
 
@@ -64,17 +97,12 @@ const  AdminBoard = () => {
             console.log(result.data.boardList);
             console.log(result.data.boardCnt);
             setBodyData(result.data.boardList);
+            setBodyCnt(result.data.boardCnt);
         });
     }
 
-    const boardAdd = () => {
-        setModalTitle("게시판 등록");
-        openModal();
-    }
-
-    const boardSave = (type) => {
+    const boardSave = () => {
         if(window.confirm("저장하시겠습니까?")){
-            let callback = null;
             let data = {
                     boardId             : document.getElementById("popupId").value
                 ,   boardName           : document.getElementById("popupName").value
@@ -84,39 +112,12 @@ const  AdminBoard = () => {
                 ,   fileYn              : document.getElementById("popupFileYn").value
             };
 
-            if(type == 1){
-                callback = (result) => {
-
-                }
-            } else {
-
-            }
-
-            common.fetchLoad("/saveBoard","POST", data, callback);
-        }
-    }
-
-    const boardDelete = () => {
-        if(window.confirm("삭제하시겠습니까?")){
-
-            if(common.tableChkCnt("chk") == 0){
-                dispatch(showAlertModal('항목을 선택해주세요.'));
+            common.fetchLoad("/saveBoard","POST", data, (result) => {
+                dispatch(showAlertModal('저장 되었습니다.'));
+                closeModal();
+                boardSearch();
                 return;
-            } else {
-
-                document.getElementsByName("chk").forEach((value, index) => {
-                    if(value.checked){
-                        console.log(this)
-                    }
-                });
-/*
-                let data = {boardIds : [0,1,2]};
-
-                common.fetchLoad("/deleteBoard","DELETE", data, () => {
-                    dispatch(showAlertModal('삭제 되었습니다.'));
-                    return;
-                });*/
-            }
+            });
         }
     }
 
@@ -153,24 +154,13 @@ const  AdminBoard = () => {
                   </button>
               </div>
           </div>
-          <div className="card mb-4">
-              <div className="card-header">
-                  <i className="fas fa-table me-1"></i>
-                  Board List
-                  <button type="button" className="btn btn-primary wrn-btn float-end btn-sm" onClick={boardDelete}>
-                      <i className="fa-solid fa-minus"></i>
-                  </button>
-                  <button type="button" className="btn btn-primary wrn-btn float-end mx-1 btn-sm" onClick={boardAdd}>
-                      <i className="fa-solid fa-plus"></i>
-                  </button>
-              </div>
-              <div className="card-body">
-                  <Table bodyData={bodyData}
-                         tableInit={tableInit}/>
-              </div>
-          </div>
+
+          <Table tableInit={tableInit}
+                 bodyData={bodyData}
+                 bodyCnt={bodyCnt}/>
+
           <Modal open={modalOpen} close={closeModal} header={modalTitle}>
-              <form>
+              <form id="formTest">
                   <div className="form-floating mb-3">
                       <input className="form-control" id="userId" type="text" maxLength="20" id="popupId"/>
                       <label htmlFor="userId" id="idCheck">일련번호</label>
@@ -209,7 +199,7 @@ const  AdminBoard = () => {
                   </div>
                   <div className="mt-4 mb-0">
                       <div className="d-grid">
-                          <a className="btn btn-primary btn-block" id="btnRegister" onClick={() => boardSave(1)}>저장</a>
+                          <a className="btn btn-primary btn-block" id="btnRegister" onClick={boardSave}>저장</a>
                       </div>
                   </div>
               </form>
