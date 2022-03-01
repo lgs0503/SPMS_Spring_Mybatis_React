@@ -73,7 +73,7 @@ public class BoardController {
 	 *  게시판 삭제
 	 * @param BoardVO 삭제 게시판 데이터
 	 */
-	@RequestMapping(value = "/deleteBoard", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/deleteBoard", method = RequestMethod.POST)
 	public ResponseEntity<Message> deleteBoard(@RequestBody BoardVO boardVO) {
 		logger.info("deleteBoard");
 
