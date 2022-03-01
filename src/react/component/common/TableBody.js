@@ -12,6 +12,14 @@ const TableBody = (props) => {
 
     }
 
+    let checkBox = null;
+
+    if(props.tableInit.deleted){
+        checkBox = <td><input className="form-check-input" name="chk" type="checkbox"/></td>;
+    } else {
+        checkBox = null;
+    }
+
     return(
         <tbody>
             {
@@ -19,7 +27,7 @@ const TableBody = (props) => {
                 ?
                     props.bodyData.map((value, index) => (
                         <tr key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
-                            <td><input className="form-check-input" name="chk" type="checkbox"/></td>
+                            {checkBox}
                             {
                                 props.tableInit.headerColData.map((headerVal, headerIndex) => (
                                     <td key={headerIndex}>{value[headerVal]}</td>
