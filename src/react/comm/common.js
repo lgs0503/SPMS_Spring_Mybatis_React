@@ -149,3 +149,16 @@ export function tableChkCnt(elName){
     });
     return chk;
 }
+/**
+ * 체크박스 선택된 ids 반환
+ * @param elName : 체크박스name
+ * */
+export function tableChkIds(elName){
+    let data = [];
+    document.getElementsByName(elName).forEach((value, index) => {
+        if(value.checked){
+            data.push(value.parentNode.parentNode.id);
+        }
+    });
+    return data;
+}
