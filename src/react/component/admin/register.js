@@ -4,7 +4,7 @@ import "../../css/styles.css";
 import AdminLoginRegiFooter from "./footer";
 import * as common from "../../comm/common";
 import DaumPostcode from 'react-daum-postcode';
-import Modal from "../common/modal";
+import Modal from "../common/Modal";
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../action/alertModal";
