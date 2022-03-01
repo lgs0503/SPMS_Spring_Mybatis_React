@@ -25,7 +25,7 @@
     transform: revert;
 }
 .pagination-btn[aria-current] {
-    background: #0d6efd;
+    background: #051b36;
     font-weight: bold;
     cursor: revert;
     transform: revert;
