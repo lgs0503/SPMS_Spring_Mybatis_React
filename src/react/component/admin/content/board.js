@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import Table from "../../common/Table";
 import * as common from "../../../comm/common";
-import Modal from "../../common/modal";
+import Modal from "../../common/Modal";
 import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../../action/alertModal";
@@ -31,12 +31,17 @@ const  AdminBoard = () => {
     };
 
     let tableInit = {
-            headerColName : ['ID', '게시판명', '게시판타입', '사용여부', '파일여부']
-        ,   headerColData : ['boardId', 'boardName', 'boardType', 'useYn', 'fileYn']
+            headerColData : [{title: "ID",         name : "boardId",             hidden: false}
+                            ,{title: "게시판명",    name : "boardName",           hidden: false}
+                            ,{title: "게시판타입",  name : "boardType",           hidden: false}
+                            ,{title: "사용여부",    name : "useYn",               hidden: false}
+                            ,{title: "파일여부",    name : "fileYn",              hidden: false}
+                            ,{title: "게시판설명",  name : "boardDescription",    hidden: true}]
         ,   title : "Board List"
         ,   selectCol : 'boardId'
         ,   deleted : true
         ,   inserted : true
+        ,   pagination : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
 
@@ -46,17 +51,12 @@ const  AdminBoard = () => {
 
             common.fetchLoad("/searchBoard","POST", data,(result) => {
                 setModalTitle("게시판 상세");
-
                 openModal();
 
-                console.log(result.data.board);
-
-                document.getElementById("popupId").value = result.data.board.boardId
-                document.getElementById("popupName").value = result.data.board.boardName
-                document.getElementById("popupType").value = result.data.board.boardType
-                document.getElementById("popupDescription").value = result.data.board.boardDescription
-                document.getElementById("popupUseYn").value = result.data.board.useYn
-                document.getElementById("popupFileYn").value = result.data.board.fileYn
+                //console.log(result.data.board);
+                tableInit.headerColData.forEach((value, index) => {
+                    document.getElementById(value.name + "Popup").value = result.data.board[value.name];
+                });
             });
         }
         , addBtnClickEvent : () => {
@@ -74,10 +74,9 @@ const  AdminBoard = () => {
 
                     data.boardIds = common.tableChkIds("chk");
 
-                    common.fetchLoad("/deleteBoard","DELETE", data, () => {
+                    common.fetchLoad("/deleteBoard","POST", data, () => {
                         dispatch(showAlertModal('삭제 되었습니다.'));
                         boardSearch();
-                        return;
                     });
                 }
             }
@@ -94,8 +93,8 @@ const  AdminBoard = () => {
         };
 
         common.fetchLoad("/boardList","POST", data,(result) => {
-            console.log(result.data.boardList);
-            console.log(result.data.boardCnt);
+            //console.log(result.data.boardList);
+            //console.log(result.data.boardCnt);
             setBodyData(result.data.boardList);
             setBodyCnt(result.data.boardCnt);
         });
@@ -103,20 +102,15 @@ const  AdminBoard = () => {
 
     const boardSave = () => {
         if(window.confirm("저장하시겠습니까?")){
-            let data = {
-                    boardId             : document.getElementById("popupId").value
-                ,   boardName           : document.getElementById("popupName").value
-                ,   boardType           : document.getElementById("popupType").value
-                ,   boardDescription    : document.getElementById("popupDescription").value
-                ,   useYn               : document.getElementById("popupUseYn").value
-                ,   fileYn              : document.getElementById("popupFileYn").value
-            };
+            let data = {};
+            tableInit.headerColData.forEach((value, index) => {
+                data[value.name] =  document.getElementById(value.name + "Popup").value;
+            });
 
             common.fetchLoad("/saveBoard","POST", data, (result) => {
                 dispatch(showAlertModal('저장 되었습니다.'));
                 closeModal();
                 boardSearch();
-                return;
             });
         }
     }
@@ -135,14 +129,14 @@ const  AdminBoard = () => {
                   <input type="text" className="form-control search-slt" placeholder="게시판 명" id="boardName"/>
               </div>
               <div className="col-md-2 my-2">
-                  <select className="form-select search-slt" id="exampleFormControlSelect1" id="useYn">
+                  <select className="form-select search-slt"  id="useYn">
                       <option value="">사용여부</option>
                       <option value="Y">Y</option>
                       <option value="N">N</option>
                   </select>
               </div>
               <div className="col-md-2 my-2">
-                  <select className="form-select search-slt" id="exampleFormControlSelect1" id="fileYn">
+                  <select className="form-select search-slt"  id="fileYn">
                       <option value="">파일여부</option>
                       <option value="Y">Y</option>
                       <option value="N">N</option>
@@ -162,15 +156,15 @@ const  AdminBoard = () => {
           <Modal open={modalOpen} close={closeModal} header={modalTitle}>
               <form id="formTest">
                   <div className="form-floating mb-3">
-                      <input className="form-control" id="userId" type="text" maxLength="20" id="popupId"/>
+                      <input className="form-control" id="userId" type="text" maxLength="20" id="boardIdPopup" disabled={true}/>
                       <label htmlFor="userId" id="idCheck">일련번호</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <input className="form-control" id="userId" type="text" maxLength="20" id="popupName"/>
+                      <input className="form-control" id="userId" type="text" maxLength="20" id="boardNamePopup"/>
                       <label>게시판 명</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="popupType">
+                      <select id="gender" className="form-select" id="boardTypePopup">
                           <option value="">선택</option>
                           <option value="1">일반게시판</option>
                           <option value="2">사진게시판</option>
@@ -178,11 +172,11 @@ const  AdminBoard = () => {
                       <label>게시판 타입</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <input className="form-control" type="text" maxLength="20" id="popupDescription"/>
+                      <input className="form-control" type="text" maxLength="20" id="boardDescriptionPopup"/>
                       <label>게시판 설명</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="popupUseYn">
+                      <select id="gender" className="form-select" id="useYnPopup">
                           <option value="">선택</option>
                           <option value="Y">Y</option>
                           <option value="N">N</option>
@@ -190,7 +184,7 @@ const  AdminBoard = () => {
                       <label>사용여부</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="popupFileYn">
+                      <select id="gender" className="form-select" id="fileYnPopup">
                           <option value="">선택</option>
                           <option value="Y">Y</option>
                           <option value="N">N</option>
