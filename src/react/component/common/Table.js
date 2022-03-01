@@ -1,8 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
+import Pagination from "./Pagination";
+import '../../css/pagination.css';
 
 const Table  = (props) => {
+    const [limit, setLimit] = useState(10);
+    const [page, setPage] = useState(1);
+    const offset = (page - 1) * limit;
+
     return(
         <div className="card mb-4">
             <div className="card-header">
@@ -29,14 +35,45 @@ const Table  = (props) => {
                     null
                 }
             </div>
+
             <div className="card-body">
                 <table className="table">
                     <TableHeader tableInit={props.tableInit}/>
                     <TableBody tableInit={props.tableInit}
-                               bodyData={props.bodyData}/>
+                               bodyData={props.bodyData}
+                               offset={offset}
+                               limit={limit}/>
                 </table>
-                <div className="float-start mx-1" >
-                    총 <strong>{props.bodyCnt}</strong> 건 조회
+                <div className={"table-bottom"}>
+                    <div>총 <strong>{props.bodyCnt}</strong> 건 조회</div>
+                    {
+                        props.tableInit.pagination == true
+                        ?
+                        (
+                            <label className={"table-bottom-right"}>
+                                <p>표시할 수 :</p>
+                                <select className={"form-select form-select-sm"}
+                                        type="number"
+                                        value={limit}
+                                        onChange={({ target: { value } }) => setLimit(Number(value))}>
+                                    <option value="10">10</option>
+                                    <option value="12">15</option>
+                                    <option value="20">30</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </label>
+                        )
+                        : null
+                    }
+                    {
+                        props.tableInit.pagination == true
+                        ?
+                        <Pagination total={props.bodyCnt}
+                                    limit={limit}
+                                    page={page}
+                                    setPage={setPage}/>
+                        : null
+                    }
                 </div>
             </div>
         </div>

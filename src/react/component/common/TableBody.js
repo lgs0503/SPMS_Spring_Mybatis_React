@@ -25,13 +25,18 @@ const TableBody = (props) => {
             {
                 props.bodyData != null
                 ?
-                    props.bodyData.map((value, index) => (
+                    props.bodyData.slice(props.offset, props.offset + props.limit).map((value, index) => (
                         <tr key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
                             {checkBox}
                             {
-                                props.tableInit.headerColData.map((headerVal, headerIndex) => (
-                                    <td key={headerIndex}>{value[headerVal]}</td>
-                                ))
+                                props.tableInit.headerColData.map((headerVal, headerIndex) =>
+                                    headerVal.hidden === false
+                                    ?
+                                    (
+                                        <td name={headerVal.name} key={headerIndex}>{value[headerVal.name]}</td>
+                                    )
+                                    : null
+                                )
                             }
                         </tr>
                     ))

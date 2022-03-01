@@ -27,9 +27,15 @@ const TableHeader = (props) => {
             <tr>
                 {checkBox}
                 {
-                    props.tableInit.headerColName.map((value, index) => (
-                        <th key={index}>{value}</th>
-                    ))
+                    props.tableInit.headerColData.map((value, index) =>
+                        value.hidden == false
+                        ?
+                        (
+                            <th key={index}>{value.title}</th>
+                        )
+                        :
+                        null
+                    )
                 }
             </tr>
         </thead>
