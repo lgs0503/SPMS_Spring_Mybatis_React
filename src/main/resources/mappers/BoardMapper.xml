@@ -11,6 +11,7 @@
 			,	FILE_YN
 		FROM	BOARD
 		<include refid="boardWhere"></include>
+		ORDER BY BOARD_ID ASC
 	</select>
 
 	<select id="boardCnt" resultType="int" parameterType="lgs.com.board.vo.BoardVO">
