@@ -1,5 +1,5 @@
 import React from "react";
-import '../../css/pagination.css';
+import '../../css/table.css';
 
 function Pagination({ total, limit, page, setPage }) {
     const numPages = Math.ceil(total / limit);
