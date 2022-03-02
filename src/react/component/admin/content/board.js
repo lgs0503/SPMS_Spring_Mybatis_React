@@ -31,12 +31,12 @@ const  AdminBoard = () => {
     };
 
     let tableInit = {
-            headerColData : [{title: "ID",         name : "boardId",             hidden: false}
-                            ,{title: "게시판명",    name : "boardName",           hidden: false}
-                            ,{title: "게시판타입",  name : "boardType",           hidden: false}
-                            ,{title: "사용여부",    name : "useYn",               hidden: false}
-                            ,{title: "파일여부",    name : "fileYn",              hidden: false}
-                            ,{title: "게시판설명",  name : "boardDescription",    hidden: true}]
+            headerColData : [{title: "ID",         name : "boardId",             width:"10px",  hidden: false}
+                            ,{title: "게시판명",    name : "boardName",           width:"30%",   hidden: false}
+                            ,{title: "게시판타입",  name : "boardType",           width:"30%",   hidden: false}
+                            ,{title: "사용여부",    name : "useYn",               width:"12%",   hidden: false}
+                            ,{title: "파일여부",    name : "fileYn",              width:"12%",   hidden: false}
+                            ,{title: "게시판설명",  name : "boardDescription",    width:"0",     hidden: true}]
         ,   title : "Board List"
         ,   selectCol : 'boardId'
         ,   deleted : true
