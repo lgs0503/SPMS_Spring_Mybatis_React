@@ -2,6 +2,7 @@ package lgs.com.code.controller;
 
 import lgs.com.code.service.CodeService;
 import lgs.com.code.vo.CodeVO;
+import lgs.com.utill.CommonResponse;
 import lgs.com.utill.StatusEnum;
 import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;
@@ -34,21 +35,15 @@ public class CodeController {
      * @param CodeVO 조회조건
      * @return 코드 리스트
      */
-    @RequestMapping(value = "/codeList", method = RequestMethod.GET)
+    @RequestMapping(value = "/codeList", method = RequestMethod.POST)
     public ResponseEntity<Message> codeList(@RequestBody CodeVO codeVO) {
         logger.info("codeList");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        CommonResponse commonResponse = new CommonResponse();
 
-        Map<String, Object> data = new HashMap<String, Object>();
+        commonResponse.putData("codeList", codeService.codeList(codeVO));
+        commonResponse.putData("codeCnt", codeService.codeCnt(codeVO));
 
-        message.setStatus(StatusEnum.OK);
-        data.put("codeList", codeService.codeList(codeVO));
-        data.put("codeCnt", codeService.codeCnt(codeVO));
-        message.setData(data);
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -56,20 +51,14 @@ public class CodeController {
      * @param CodeVO 조회조건
      * @return 코드 리스트
      */
-    @RequestMapping(value = "/searchCode", method = RequestMethod.GET)
+    @RequestMapping(value = "/searchCode", method = RequestMethod.POST)
     public ResponseEntity<Message> searchCode(@RequestBody CodeVO codeVO) {
         logger.info("serachCode");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        CommonResponse commonResponse = new CommonResponse();
 
-        Map<String, Object> data = new HashMap<String, Object>();
+        commonResponse.putData("code", codeService.searchCode(codeVO));
 
-        message.setStatus(StatusEnum.OK);
-        data.put("code", codeService.searchCode(codeVO));
-        message.setData(data);
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -79,28 +68,22 @@ public class CodeController {
     @RequestMapping(value = "/saveCode", method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<Message> saveCode(@RequestBody CodeVO codeVO) {
         logger.info("saveCode");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
         codeService.saveCode(codeVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
      *  코드 삭제
      * @param CodeVO 삭제 코드 데이터
      */
-    @RequestMapping(value = "/deleteCode", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteCode", method = RequestMethod.POST)
     public ResponseEntity<Message> deleteCode(@RequestBody CodeVO codeVO) {
         logger.info("deleteCode");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         codeService.deleteCode(codeVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 }
