@@ -1,4 +1,5 @@
 import React from "react";
+import '../../css/table.css';
 
 const TableHeader = (props) => {
 
@@ -17,19 +18,25 @@ const TableHeader = (props) => {
     }
 
     if(props.tableInit.deleted){
-        checkBox = <th><input className="form-check-input" type="checkbox" id="allCheck" onClick={itemAllCheck}/></th>;
+        checkBox = <th className={"table-header-vertical-align"}><input className="form-check-input" type="checkbox" id="allCheck" onClick={itemAllCheck}/></th>;
     } else {
         checkBox = null;
     }
 
     return(
-        <thead>
+        <thead className={"table-header-dark"}>
             <tr>
                 {checkBox}
                 {
-                    props.tableInit.headerColName.map((value, index) => (
-                        <th key={index}>{value}</th>
-                    ))
+                    props.tableInit.headerColData.map((value, index) =>
+                        value.hidden == false
+                        ?
+                        (
+                            <th className={"table-header-vertical-align"} key={index}>{value.title}</th>
+                        )
+                        :
+                        null
+                    )
                 }
             </tr>
         </thead>

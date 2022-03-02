@@ -2,18 +2,41 @@ import React from "react";
 import Table from "./Table";
 
 const TableBody = (props) => {
+
+    const cellSelect = (e) => {
+
+        if(e.target.nodeName == 'INPUT')
+            return;
+
+        props.tableInit.cellSelectEvent(e);
+
+    }
+
+    let checkBox = null;
+
+    if(props.tableInit.deleted){
+        checkBox = <td><input className="form-check-input" name="chk" type="checkbox"/></td>;
+    } else {
+        checkBox = null;
+    }
+
     return(
         <tbody>
             {
                 props.bodyData != null
                 ?
-                    props.bodyData.map((value, index) => (
-                        <tr key={index} id={value[props.tableInit.selectCol]} onClick={props.tableInit.cellSelectEvent}>
-                            <td><input className="form-check-input" name="chk" type="checkbox"/></td>
+                    props.bodyData.slice(props.offset, props.offset + props.limit).map((value, index) => (
+                        <tr className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
+                            {checkBox}
                             {
-                                props.tableInit.headerColData.map((headerVal, headerIndex) => (
-                                    <td key={headerIndex}>{value[headerVal]}</td>
-                                ))
+                                props.tableInit.headerColData.map((headerVal, headerIndex) =>
+                                    headerVal.hidden === false
+                                    ?
+                                    (
+                                        <td name={headerVal.name} key={headerIndex}>{value[headerVal.name]}</td>
+                                    )
+                                    : null
+                                )
                             }
                         </tr>
                     ))

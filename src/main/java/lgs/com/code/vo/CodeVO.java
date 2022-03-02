@@ -8,6 +8,7 @@ import java.util.ArrayList;
 @Data
 public class CodeVO extends DefaultVO {
 
+	private String level;
 	private String codeId;
 	private String codeName;
 	private String upperCodeId;

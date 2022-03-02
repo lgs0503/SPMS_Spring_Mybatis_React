@@ -6,7 +6,7 @@ import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../../action/alertModal";
 
-const  AdminBoard = () => {
+const  AdminPost = () => {
 
     const dispatch = useDispatch();
 
@@ -31,13 +31,13 @@ const  AdminBoard = () => {
     };
 
     let tableInit = {
-            headerColData : [{title: "ID",         name : "boardId",             width:"10px",  hidden: false}
-                            ,{title: "게시판명",    name : "boardName",           width:"30%",   hidden: false}
-                            ,{title: "게시판타입",  name : "boardType",           width:"30%",   hidden: false}
-                            ,{title: "사용여부",    name : "useYn",               width:"12%",   hidden: false}
-                            ,{title: "파일여부",    name : "fileYn",              width:"12%",   hidden: false}
-                            ,{title: "게시판설명",  name : "boardDescription",    width:"0",     hidden: true}]
-        ,   title : "Board List"
+            headerColData : [{title: "ID",         name : "boardId",             hidden: false}
+                            ,{title: "게시판명",    name : "boardName",           hidden: false}
+                            ,{title: "게시글명",  name : "boardType",           hidden: false}
+                            ,{title: "사용여부",    name : "useYn",               hidden: false}
+                            ,{title: "파일여부",    name : "fileYn",              hidden: false}
+                            ,{title: "게시판설명",  name : "boardDescription",    hidden: true}]
+        ,   title : "Post List"
         ,   selectCol : 'boardId'
         ,   deleted : true
         ,   inserted : true
@@ -117,9 +117,9 @@ const  AdminBoard = () => {
 
   return (
       <div className="container-fluid px-4">
-          <h1 className="mt-4">BOARD</h1>
+          <h1 className="mt-4">POST</h1>
           <ol className="breadcrumb mb-4">
-              <li className="breadcrumb-item active">게시판 관리</li>
+              <li className="breadcrumb-item active">게시글 관리</li>
           </ol>
           <div className="row py-2">
               <div className="col-md-3 my-2">
@@ -202,4 +202,4 @@ const  AdminBoard = () => {
   );
 }
 
-export default AdminBoard;
+export default AdminPost;

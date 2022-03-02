@@ -136,3 +136,29 @@ export function loginUserSessionCheck(){
         window.location.href = "/showpingmall/#/admin/login";
     }
 }
+/**
+ * 체크박스 개수 반환
+ * @param elName : 체크박스name
+ * */
+export function tableChkCnt(elName){
+    let chk = 0;
+    document.getElementsByName(elName).forEach((value, index) => {
+        if(value.checked){
+            chk ++;
+        }
+    });
+    return chk;
+}
+/**
+ * 체크박스 선택된 ids 반환
+ * @param elName : 체크박스name
+ * */
+export function tableChkIds(elName){
+    let data = [];
+    document.getElementsByName(elName).forEach((value, index) => {
+        if(value.checked){
+            data.push(value.parentNode.parentNode.id);
+        }
+    });
+    return data;
+}
