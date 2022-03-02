@@ -26,7 +26,7 @@ const TableBody = (props) => {
                 props.bodyData != null
                 ?
                     props.bodyData.slice(props.offset, props.offset + props.limit).map((value, index) => (
-                        <tr key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
+                        <tr className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
                             {checkBox}
                             {
                                 props.tableInit.headerColData.map((headerVal, headerIndex) =>

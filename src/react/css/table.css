@@ -11,7 +11,7 @@
     border-radius: 8px;
     padding: 4px 8px;
     margin: 0;
-    background-color: #0d6efd;
+    background-color: gray;
     color: white;
     font-size: 1rem;
     cursor: pointer;
@@ -25,7 +25,7 @@
     transform: revert;
 }
 .pagination-btn[aria-current] {
-    background: #051b36;
+    background: #0d6efd;
     font-weight: bold;
     cursor: revert;
     transform: revert;
@@ -50,4 +50,16 @@
     display: inline-block;
     width: 90px;
     margin: 0px;
+}
+.table-row:hover{
+    cursor: pointer;
+    background-color: #eef2f6;
+    font-weight: bold;
+}
+.table-header-dark{
+    background-color: #212529 !important;
+    color:white;
+}
+.table-header-vertical-align{
+    vertical-align : middle;
 }

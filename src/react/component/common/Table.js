@@ -2,7 +2,8 @@ import React, {useState} from "react";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import Pagination from "./Pagination";
-import '../../css/pagination.css';
+import '../../css/table.css';
+import TableColGroup from "./TableColGroup";
 
 const Table  = (props) => {
     const [limit, setLimit] = useState(10);
@@ -38,6 +39,7 @@ const Table  = (props) => {
 
             <div className="card-body">
                 <table className="table">
+                    <TableColGroup tableInit={props.tableInit}/>
                     <TableHeader tableInit={props.tableInit}/>
                     <TableBody tableInit={props.tableInit}
                                bodyData={props.bodyData}
