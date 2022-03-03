@@ -4,6 +4,7 @@ import * as common from "../../../comm/common";
 import {showAlertModal} from "../../../action/alertModal";
 import Table from "../../common/Table";
 import Modal from "../../common/Modal";
+import Select from "../../common/Select";
 
 const  AdminCode = () => {
     const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const  AdminCode = () => {
             if(target.nodeName == "BUTTON"){
                 document.getElementById("upperCodeIdPopup").value = target.parentNode.parentNode.id;
             } else if(target.nodeName == "I") {
-                console.log(e.target.parentNode.parentNode.parentNode.id);
+                //console.log(e.target.parentNode.parentNode.parentNode.id);
                 document.getElementById("upperCodeIdPopup").value = target.parentNode.parentNode.parentNode.id;
             }
         },100);
@@ -69,19 +70,24 @@ const  AdminCode = () => {
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
 
+            setModalTitle(pageTitle+" 상세");
+            openModal();
+
             let data = {
                 codeId : e.target.parentNode.id
             };
 
             common.fetchLoad("/searchCode","POST", data,(result) => {
-                setModalTitle(pageTitle+" 상세");
-                openModal();
 
                 //console.log(result.data.code);
-                tableInit.headerColData.forEach((value, index) => {
-                    if(value.name != 'button')
-                        document.getElementById(value.name + "Popup").value = result.data.code[value.name];
-                });
+
+                setTimeout(() => {
+
+                    tableInit.headerColData.forEach((value, index) => {
+                        if(value.name != 'button')
+                            document.getElementById(value.name + "Popup").value = result.data.code[value.name];
+                    });
+                },200);
 
                 document.getElementById("codeIdPopup").disabled = "disabled";
             });
@@ -131,8 +137,9 @@ const  AdminCode = () => {
 
             let data = {};
             tableInit.headerColData.forEach((value, index) => {
-                if(value.name != 'button')
-                data[value.name] =  document.getElementById(value.name + "Popup").value;
+                if(value.name != "button"){
+                    data[value.name] =  document.getElementById(value.name + "Popup").value;
+                }
             });
 
             common.fetchLoad("/saveCode","POST", data, (result) => {
@@ -178,11 +185,10 @@ const  AdminCode = () => {
                     <input type="text" className="form-control search-slt" placeholder="코드 명" id="codeName"/>
                 </div>
                 <div className="col-md-2 my-2">
-                    <select className="form-select search-slt"  id="useYn">
-                        <option value="">사용여부</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select>
+                    <Select upperCodeId={"U001"}
+                            codeId={"useYn"}
+                            codeClassName={"form-select search-slt"}
+                            text={"사용여부"}/>
                 </div>
                 <div className="col-md-2 my-2">
                     <button type="button" className="btn btn-primary wrn-btn" onClick={codeSearch}>
@@ -198,27 +204,26 @@ const  AdminCode = () => {
             <Modal open={modalOpen} close={closeModal} header={modalTitle}>
                 <form id="formTest">
                     <div className="form-floating mb-3">
-                        <input className="form-control" id="userId" type="text" maxLength="20" id="codeIdPopup" onChange={codeOverlapChk}/>
+                        <input className="form-control" type="text" maxLength="20" id="codeIdPopup" onChange={codeOverlapChk}/>
                         <label htmlFor="userId" id="idCheck">코드</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" id="userId" type="text" maxLength="20" id="codeNamePopup"/>
+                        <input className="form-control" type="text" maxLength="20" id="codeNamePopup"/>
                         <label>코드 명</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" id="userId" type="text" maxLength="20" id="upperCodeIdPopup" disabled={"disabled"}/>
+                        <input className="form-control" type="text" maxLength="20" id="upperCodeIdPopup" disabled={"disabled"}/>
                         <label>부모 코드</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" id="userId" type="text" maxLength="20" id="codeValuePopup"/>
+                        <input className="form-control" type="text" maxLength="20" id="codeValuePopup"/>
                         <label>코드 값</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <select id="gender" className="form-select" id="useYnPopup">
-                            <option value="">선택</option>
-                            <option value="Y">Y</option>
-                            <option value="N">N</option>
-                        </select>
+                        <Select upperCodeId={"U001"}
+                                codeId={"useYnPopup"}
+                                codeClassName={"form-select"}
+                                chkVal={"Y"}/>
                         <label>사용여부</label>
                     </div>
                     <div className="mt-4 mb-0">

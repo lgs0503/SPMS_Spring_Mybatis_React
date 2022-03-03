@@ -5,6 +5,7 @@ import Modal from "../../common/Modal";
 import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../../action/alertModal";
+import Select from "../../common/Select";
 
 const  AdminBoard = () => {
 
@@ -45,18 +46,22 @@ const  AdminBoard = () => {
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
 
+            setModalTitle("게시판 상세");
+            openModal();
+
             let data = {
                 boardId : e.target.parentNode.id
             };
 
             common.fetchLoad("/searchBoard","POST", data,(result) => {
-                setModalTitle("게시판 상세");
-                openModal();
 
                 //console.log(result.data.board);
-                tableInit.headerColData.forEach((value, index) => {
-                    document.getElementById(value.name + "Popup").value = result.data.board[value.name];
-                });
+                setTimeout(() => {
+
+                    tableInit.headerColData.forEach((value, index) => {
+                        document.getElementById(value.name + "Popup").value = result.data.board[value.name];
+                    });
+                },200);
             });
         }
         , addBtnClickEvent : () => {
@@ -129,18 +134,16 @@ const  AdminBoard = () => {
                   <input type="text" className="form-control search-slt" placeholder="게시판 명" id="boardName"/>
               </div>
               <div className="col-md-2 my-2">
-                  <select className="form-select search-slt"  id="useYn">
-                      <option value="">사용여부</option>
-                      <option value="Y">Y</option>
-                      <option value="N">N</option>
-                  </select>
+                  <Select upperCodeId={"U001"}
+                          codeId={"useYn"}
+                          codeClassName={"form-select"}
+                          text={"사용여부"}/>
               </div>
               <div className="col-md-2 my-2">
-                  <select className="form-select search-slt"  id="fileYn">
-                      <option value="">파일여부</option>
-                      <option value="Y">Y</option>
-                      <option value="N">N</option>
-                  </select>
+                  <Select upperCodeId={"F001"}
+                          codeId={"fileYn"}
+                          codeClassName={"form-select"}
+                          text={"파일여부"}/>
               </div>
               <div className="col-md-2 my-2">
                   <button type="button" className="btn btn-primary wrn-btn" onClick={boardSearch}>
@@ -156,19 +159,18 @@ const  AdminBoard = () => {
           <Modal open={modalOpen} close={closeModal} header={modalTitle}>
               <form id="formTest">
                   <div className="form-floating mb-3">
-                      <input className="form-control" id="userId" type="text" maxLength="20" id="boardIdPopup" disabled={true}/>
+                      <input className="form-control" type="text" maxLength="20" id="boardIdPopup" disabled={true}/>
                       <label htmlFor="userId" id="idCheck">일련번호</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <input className="form-control" id="userId" type="text" maxLength="20" id="boardNamePopup"/>
+                      <input className="form-control" type="text" maxLength="20" id="boardNamePopup"/>
                       <label>게시판 명</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="boardTypePopup">
-                          <option value="">선택</option>
-                          <option value="1">일반게시판</option>
-                          <option value="2">사진게시판</option>
-                      </select>
+                      <Select upperCodeId={"B001"}
+                              codeId={"boardTypePopup"}
+                              codeClassName={"form-select"}
+                              chkVal={"1"}/>
                       <label>게시판 타입</label>
                   </div>
                   <div className="form-floating mb-3">
@@ -176,19 +178,17 @@ const  AdminBoard = () => {
                       <label>게시판 설명</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="useYnPopup">
-                          <option value="">선택</option>
-                          <option value="Y">Y</option>
-                          <option value="N">N</option>
-                      </select>
+                      <Select upperCodeId={"U001"}
+                              codeId={"useYnPopup"}
+                              codeClassName={"form-select"}
+                              chkVal={"Y"}/>
                       <label>사용여부</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="fileYnPopup">
-                          <option value="">선택</option>
-                          <option value="Y">Y</option>
-                          <option value="N">N</option>
-                      </select>
+                      <Select upperCodeId={"F001"}
+                              codeId={"fileYnPopup"}
+                              codeClassName={"form-select"}
+                              chkVal={"Y"}/>
                       <label>파일여부</label>
                   </div>
                   <div className="mt-4 mb-0">
