@@ -63,3 +63,26 @@
 .table-header-vertical-align{
     vertical-align : middle;
 }
+.table-depth1{
+    padding-left: 10px !important;
+}
+.table-depth2{
+    padding-left: 30px !important;
+}
+.table-depth3{
+    padding-left: 50px !important;
+}
+.table-depth4{
+    padding-left: 70px !important;
+}
+table tbody tr {
+    line-height: 29px;
+}
+.treeItem i{
+    transform: rotate(45deg);
+    margin-right: 5px;
+    font-size: 13px;
+}
+.treeItem{
+    margin-right: 5px;
+}

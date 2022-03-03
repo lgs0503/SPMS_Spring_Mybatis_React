@@ -6,7 +6,7 @@ import '../../css/table.css';
 import TableColGroup from "./TableColGroup";
 
 const Table  = (props) => {
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(props.tableInit.pagination ? 10 : 100000);
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
 

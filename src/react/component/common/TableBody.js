@@ -5,8 +5,10 @@ const TableBody = (props) => {
 
     const cellSelect = (e) => {
 
-        if(e.target.nodeName == 'INPUT')
+        let nodeName = e.target.nodeName;
+        if(nodeName == 'INPUT'||nodeName == 'BUTTON'||nodeName == 'I')
             return;
+
 
         props.tableInit.cellSelectEvent(e);
 
@@ -32,9 +34,32 @@ const TableBody = (props) => {
                                 props.tableInit.headerColData.map((headerVal, headerIndex) =>
                                     headerVal.hidden === false
                                     ?
-                                    (
-                                        <td name={headerVal.name} key={headerIndex}>{value[headerVal.name]}</td>
-                                    )
+                                        <td className={
+                                            props.tableInit.selectCol == headerVal.name && value["level"] == "1"
+                                            ? "table-depth1"
+                                                : props.tableInit.selectCol == headerVal.name && value["level"] == "2"
+                                                ? "table-depth2"
+                                                : props.tableInit.selectCol == headerVal.name && value["level"] == "3"
+                                                    ? "table-depth3"
+                                                    : props.tableInit.selectCol == headerVal.name && value["level"] == "4"
+                                                        ? "table-depth4" : null
+                                            }
+                                            name={headerVal.name} key={headerIndex}>
+                                            {
+                                            headerVal.name == "button" && value["level"] != "4"
+                                            ?
+                                            (
+                                                <button type="button" className="btn btn-primary wrn-btn btn-sm " onClick={headerVal.clickEvent}>{headerVal.btnValue}</button>
+                                            )
+                                            :
+                                                props.tableInit.selectCol == headerVal.name && value["level"] && value["level"] != "1"
+                                                ?
+                                                (
+                                                    <span><span className="treeItem"><i className="fa-solid fa-chevron-down"></i></span>{value[headerVal.name]}</span>
+                                                )
+                                                : value[headerVal.name]
+                                            }
+                                        </td>
                                     : null
                                 )
                             }
