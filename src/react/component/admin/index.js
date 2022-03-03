@@ -12,11 +12,19 @@ import "../../css/styles.css";
 import * as common from "../../comm/common";
 import AdminBoard from "./content/board";
 import AdminPost from "./content/post";
+import {useDispatch} from "react-redux";
+import {showAlertModal} from "../../action/alertModal";
 
 const  AdminLayout = () => {
 
+    const dispatch = useDispatch();
+
     useEffect( () => {
-        common.loginUserSessionCheck();
+        if(common.loginUserSessionCheck()){
+
+            dispatch(showAlertModal("세션이 존재하지 않습니다."));
+            window.location.href = "/showpingmall/#/admin/login";
+        }
     },[]);
 
 
