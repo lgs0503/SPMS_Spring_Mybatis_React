@@ -12,7 +12,7 @@ const Select  = (props) => {
             upperCodeId     : props.upperCodeId
         };
 
-        console.log(data);
+        //console.log(data);
 
         common.fetchLoad("/codeList","POST", data,(result) => {
             console.log(result.data.codeList);
