@@ -132,8 +132,7 @@ export function valiImageType(image) {
 export function loginUserSessionCheck(){
     let userId = sessionStorage.getItem("userId");
     if(!userId){
-        alert("세션이 존재하지 않습니다.");
-        window.location.href = "/showpingmall/#/admin/login";
+        return true;
     }
 }
 /**

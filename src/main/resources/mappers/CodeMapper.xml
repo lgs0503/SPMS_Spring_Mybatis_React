@@ -53,6 +53,10 @@
 			<if test="codeName != null and codeName != ''">
 				AND 	CODE_NAME LIKE '%' || #{codeName} || '%'
 			</if>
+			<if test="upperCodeId != null and upperCodeId != ''">
+				AND 	UPPER_CODE_ID = #{upperCodeId}
+				AND 	USE_YN = 'Y'
+			</if>
 			<if test="useYn != null and useYn != ''">
 				AND 	USE_YN = #{useYn}
 			</if>

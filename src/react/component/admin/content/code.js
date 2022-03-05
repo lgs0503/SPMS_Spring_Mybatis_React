@@ -4,6 +4,7 @@ import * as common from "../../../comm/common";
 import {showAlertModal} from "../../../action/alertModal";
 import Table from "../../common/Table";
 import Modal from "../../common/Modal";
+import Select from "../../common/Select";
 
 const  AdminCode = () => {
     const dispatch = useDispatch();
@@ -14,10 +15,12 @@ const  AdminCode = () => {
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
 
-    const [modalTitle, setModalTitle] = useState("게시판 등록");
+    const pageTitle = "코드";
+    const [modalTitle, setModalTitle] = useState(pageTitle + " 등록");
+    const [overLab, setOverLab] = useState(false);
 
     useEffect(() => {
-        boardSearch();
+        codeSearch();
     },[]);
 
     const openModal = () => {
@@ -28,37 +31,66 @@ const  AdminCode = () => {
         setModalOpen(false);
     };
 
+    const addBtnClickEvent = (e) => {
+
+        setModalTitle(pageTitle + " 등록");
+        openModal();
+
+        const target = e.target;
+
+        setTimeout(()=>{
+
+            if(target.nodeName == "BUTTON"){
+                document.getElementById("upperCodeIdPopup").value = target.parentNode.parentNode.id;
+            } else if(target.nodeName == "I") {
+                //console.log(e.target.parentNode.parentNode.parentNode.id);
+                document.getElementById("upperCodeIdPopup").value = target.parentNode.parentNode.parentNode.id;
+            }
+        },100);
+
+    }
+
     let tableInit = {
-        headerColData : [{title: "ID",         name : "codeId",             width:"10px",  hidden: false}
-                        ,{title: "코드명",      name : "codeName",           width:"60%",   hidden: false}
-                        ,{title: "사용여부",    name : "useYn",              width:"30%",   hidden: false}
-                        ,{title: "부모코드명",  name : "upperCodeId",         width:"0",   hidden: true}
-                        ,{title: "코드값",      name : "codeValue",          width:"0",   hidden: true}]
+        headerColData : [{title: "ID",         name : "codeId",       width:"40%",  hidden: false}
+                        ,{title: "코드명",      name : "codeName",    width:"30%",   hidden: false}
+                        ,{title: "사용여부",    name : "useYn",       width:"20%",   hidden: false}
+                        ,{
+                            title: "추가"
+                         ,  name : "button"
+                         ,  width:"10%"
+                         ,  hidden: false
+                         ,  btnValue:<i className="fa-solid fa-plus"></i>
+                         ,  clickEvent: addBtnClickEvent
+                         }
+                        ,{title: "부모코드명",  name : "upperCodeId",  width:"0",   hidden: true}
+                        ,{title: "코드값",      name : "codeValue",   width:"0",   hidden: true}]
         ,   title : "Code List"
         ,   selectCol : 'codeId'
         ,   deleted : true
-        ,   inserted : true
-        ,   pagination : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
 
+            setModalTitle(pageTitle+" 상세");
+            openModal();
+
             let data = {
-                boardId : e.target.parentNode.id
+                codeId : e.target.parentNode.id
             };
 
-            common.fetchLoad("/searchBoard","POST", data,(result) => {
-                setModalTitle("게시판 상세");
-                openModal();
+            common.fetchLoad("/searchCode","POST", data,(result) => {
 
-                //console.log(result.data.board);
-                tableInit.headerColData.forEach((value, index) => {
-                    document.getElementById(value.name + "Popup").value = result.data.board[value.name];
-                });
+                //console.log(result.data.code);
+
+                setTimeout(() => {
+
+                    tableInit.headerColData.forEach((value, index) => {
+                        if(value.name != 'button')
+                            document.getElementById(value.name + "Popup").value = result.data.code[value.name];
+                    });
+                },200);
+
+                document.getElementById("codeIdPopup").disabled = "disabled";
             });
-        }
-        , addBtnClickEvent : () => {
-            setModalTitle("게시판 등록");
-            openModal();
         }
         , deleteBtnClickEvent :() => {
             if(window.confirm("삭제하시겠습니까?")){
@@ -67,20 +99,20 @@ const  AdminCode = () => {
                     dispatch(showAlertModal('항목을 선택해주세요.'));
                     return;
                 } else {
-                    let data = {boardIds : []};
+                    let data = {codeIds : []};
 
-                    data.boardIds = common.tableChkIds("chk");
+                    data.codeIds = common.tableChkIds("chk");
 
-                    common.fetchLoad("/deleteBoard","POST", data, () => {
+                    common.fetchLoad("/deleteCode","POST", data, () => {
                         dispatch(showAlertModal('삭제 되었습니다.'));
-                        boardSearch();
+                        codeSearch();
                     });
                 }
             }
         }
     }
 
-    const boardSearch = () => {
+    const codeSearch = () => {
 
         let data = {
                 codeId     : document.getElementById("codeId").value
@@ -89,33 +121,61 @@ const  AdminCode = () => {
         };
 
         common.fetchLoad("/codeList","POST", data,(result) => {
-            //console.log(result.data.boardList);
-            //console.log(result.data.boardCnt);
+            //console.log(result.data.codeList);
+            //console.log(result.data.codeCnt);
             setBodyData(result.data.codeList);
             setBodyCnt(result.data.codeCnt);
         });
     }
 
-    const boardSave = () => {
+    const codeSave = () => {
         if(window.confirm("저장하시겠습니까?")){
+            if(overLab){
+                dispatch(showAlertModal('중복된 코드가 존재합니다.'));
+                return;
+            }
+
             let data = {};
             tableInit.headerColData.forEach((value, index) => {
-                data[value.name] =  document.getElementById(value.name + "Popup").value;
+                if(value.name != "button"){
+                    data[value.name] =  document.getElementById(value.name + "Popup").value;
+                }
             });
 
-            common.fetchLoad("/saveBoard","POST", data, (result) => {
+            common.fetchLoad("/saveCode","POST", data, (result) => {
                 dispatch(showAlertModal('저장 되었습니다.'));
                 closeModal();
-                boardSearch();
+                codeSearch();
             });
         }
+    }
+
+    const codeOverlapChk = (e) => {
+
+        let data = {
+            codeId : e.target.value
+        };
+
+        common.fetchLoad("/searchCode","POST", data,(result) => {
+            //console.log(result.data.code);
+            if(result.data.code){
+                document.getElementById("idCheck").innerText = "중복된 코드가 존재합니다.";
+                document.getElementById("idCheck").style.color = "red";
+                setOverLab(true);
+            } else {
+                document.getElementById("idCheck").innerText = "코드";
+                document.getElementById("idCheck").style.color = "black";
+                setOverLab(false);
+            }
+            
+        });
     }
 
     return (
         <div className="container-fluid px-4">
             <h1 className="mt-4">CODE</h1>
             <ol className="breadcrumb mb-4">
-                <li className="breadcrumb-item active">코드 관리</li>
+                <li className="breadcrumb-item active">{pageTitle} 관리</li>
             </ol>
             <div className="row py-2">
                 <div className="col-md-3 my-2">
@@ -125,14 +185,13 @@ const  AdminCode = () => {
                     <input type="text" className="form-control search-slt" placeholder="코드 명" id="codeName"/>
                 </div>
                 <div className="col-md-2 my-2">
-                    <select className="form-select search-slt"  id="useYn">
-                        <option value="">사용여부</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select>
+                    <Select upperCodeId={"U001"}
+                            codeId={"useYn"}
+                            codeClassName={"form-select search-slt"}
+                            text={"사용여부"}/>
                 </div>
                 <div className="col-md-2 my-2">
-                    <button type="button" className="btn btn-primary wrn-btn" onClick={boardSearch}>
+                    <button type="button" className="btn btn-primary wrn-btn" onClick={codeSearch}>
                         <i className="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>
@@ -145,44 +204,31 @@ const  AdminCode = () => {
             <Modal open={modalOpen} close={closeModal} header={modalTitle}>
                 <form id="formTest">
                     <div className="form-floating mb-3">
-                        <input className="form-control" id="userId" type="text" maxLength="20" id="boardIdPopup" disabled={true}/>
-                        <label htmlFor="userId" id="idCheck">일련번호</label>
+                        <input className="form-control" type="text" maxLength="20" id="codeIdPopup" onChange={codeOverlapChk}/>
+                        <label htmlFor="userId" id="idCheck">코드</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" id="userId" type="text" maxLength="20" id="boardNamePopup"/>
-                        <label>게시판 명</label>
+                        <input className="form-control" type="text" maxLength="20" id="codeNamePopup"/>
+                        <label>코드 명</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <select id="gender" className="form-select" id="boardTypePopup">
-                            <option value="">선택</option>
-                            <option value="1">일반게시판</option>
-                            <option value="2">사진게시판</option>
-                        </select>
-                        <label>게시판 타입</label>
+                        <input className="form-control" type="text" maxLength="20" id="upperCodeIdPopup" disabled={"disabled"}/>
+                        <label>부모 코드</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" type="text" maxLength="20" id="boardDescriptionPopup"/>
-                        <label>게시판 설명</label>
+                        <input className="form-control" type="text" maxLength="20" id="codeValuePopup"/>
+                        <label>코드 값</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <select id="gender" className="form-select" id="useYnPopup">
-                            <option value="">선택</option>
-                            <option value="Y">Y</option>
-                            <option value="N">N</option>
-                        </select>
+                        <Select upperCodeId={"U001"}
+                                codeId={"useYnPopup"}
+                                codeClassName={"form-select"}
+                                chkVal={"Y"}/>
                         <label>사용여부</label>
-                    </div>
-                    <div className="form-floating mb-3">
-                        <select id="gender" className="form-select" id="fileYnPopup">
-                            <option value="">선택</option>
-                            <option value="Y">Y</option>
-                            <option value="N">N</option>
-                        </select>
-                        <label>파일여부</label>
                     </div>
                     <div className="mt-4 mb-0">
                         <div className="d-grid">
-                            <a className="btn btn-primary btn-block" id="btnRegister" onClick={boardSave}>저장</a>
+                            <a className="btn btn-primary btn-block" id="btnRegister" onClick={codeSave}>저장</a>
                         </div>
                     </div>
                 </form>
