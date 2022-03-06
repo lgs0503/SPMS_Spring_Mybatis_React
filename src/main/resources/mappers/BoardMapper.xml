@@ -113,10 +113,10 @@
 		</foreach>
 		</delete>
 
-<select id="searchBoard" resultType="lgs.com.board.vo.BoardVO" parameterType="lgs.com.board.vo.BoardVO">
-		/* searchBoard 게시판  조회  */
-		SELECT	BOARD_ID
-			,	BOARD_NAME
+	<select id="boardCodeList" resultType="lgs.com.code.vo.CodeVO">
+		/* boardCodeList 게시판 (콤보로드 용)  조회  */
+		SELECT	BOARD_ID AS CODE_VALUE
+			,	BOARD_NAME AS CODE_NAME
 		FROM	BOARD
 	</select>
-		</mapper>
+</mapper>
