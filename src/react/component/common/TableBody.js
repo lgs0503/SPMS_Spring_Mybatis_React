@@ -1,5 +1,6 @@
 import React from "react";
 import Table from "./Table";
+import * as common from "../../comm/common";
 
 const TableBody = (props) => {
 
@@ -8,7 +9,6 @@ const TableBody = (props) => {
         let nodeName = e.target.nodeName;
         if(nodeName == 'INPUT'||nodeName == 'BUTTON'||nodeName == 'I')
             return;
-
 
         props.tableInit.cellSelectEvent(e);
 
@@ -22,10 +22,12 @@ const TableBody = (props) => {
         checkBox = null;
     }
 
+    //console.log(common.nullCheck(props.bodyData));
+
     return(
         <tbody>
             {
-                props.bodyData != null
+                common.nullCheck(props.bodyData) == true
                 ?
                     props.bodyData.slice(props.offset, props.offset + props.limit).map((value, index) => (
                         <tr className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
