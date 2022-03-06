@@ -8,9 +8,7 @@ const Select  = (props) => {
     const [codeList, setCodeList] = useState(null);
 
     useEffect(() => {
-        let data = {
-            upperCodeId     : props.upperCodeId
-        };
+        let data = {};
 
         //console.log(data);
         let url = "";
@@ -18,6 +16,7 @@ const Select  = (props) => {
         let callBack = null;
 
         if(!props.codeStatus){
+            data = { upperCodeId     : props.upperCodeId } ;
             url = "/codeList";
 
             callBack = (result) => {
