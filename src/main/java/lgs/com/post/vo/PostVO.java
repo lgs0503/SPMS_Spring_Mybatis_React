@@ -11,6 +11,7 @@ public class PostVO extends DefaultVO {
 	private String boardId;
 	private String postId;
 	private String postType;
+	private String postTitle;
 	private String postContent;
 	private String viewCnt;
 	private String deleted;
