@@ -89,12 +89,12 @@ public class BoardController {
 	 * @return 게시판 리스트
 	 */
 	@RequestMapping(value = "/boardCodeList", method = RequestMethod.POST)
-	public ResponseEntity<Message> boardCodeList(@RequestBody BoardVO boardVO) {
+	public ResponseEntity<Message> boardCodeList() {
 		logger.info("boardCodeList");
 
 		CommonResponse commonResponse = new CommonResponse();
 
-		commonResponse.putData("boardCodeList", boardService.boardCodeList(boardVO));
+		commonResponse.putData("boardCodeList", boardService.boardCodeList());
 
 		return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
 	}
