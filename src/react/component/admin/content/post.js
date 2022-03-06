@@ -2,10 +2,10 @@ import React, {useEffect, useState, useRef} from 'react';
 import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
-import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../../action/alertModal";
 import Select from "../../common/Select";
+import "../../../css/custom.css"
 
 const  AdminPost = () => {
 
@@ -33,11 +33,11 @@ const  AdminPost = () => {
 
     let tableInit = {
         headerColData : [{title: "ID",         name : "postId",             width:"10px",  hidden: false}
-            ,{title: "게시판명",    name : "boardName",           width:"30%",   hidden: false}
-            ,{title: "게시글명",    name : "postName",           width:"30%",   hidden: false}
-            ,{title: "게시글타입",  name : "postType",           width:"30%",   hidden: false}
-            ,{title: "작성자",    name : "createUser",               width:"12%",   hidden: false}
-            ,{title: "게시글설명",  name : "postDescription",    width:"0",     hidden: true}]
+                        ,{title: "게시판명",    name : "boardName",           width:"20%",   hidden: false}
+                        ,{title: "게시글제목",    name : "postName",           width:"30%",   hidden: false}
+                        ,{title: "게시글타입",  name : "postType",           width:"20%",   hidden: false}
+                        ,{title: "작성자",    name : "createUser",               width:"10%",   hidden: false}
+                        ,{title: "작성일",    name : "createDate",               width:"10%",   hidden: false}]
         ,   title : "Post List"
         ,   selectCol : 'postId'
         ,   deleted : true
@@ -131,7 +131,13 @@ const  AdminPost = () => {
                     <input type="text" className="form-control search-slt" placeholder="게시글 ID" id="postId"/>
                 </div>
                 <div className="col-md-3 my-2">
-                    <input type="text" className="form-control search-slt" placeholder="게시글 명" id="postName"/>
+                    <input type="text" className="form-control search-slt" placeholder="게시글 제목" id="postName"/>
+                </div>
+                <div className="col-md-2 my-2">
+                    <Select codeStatus={"BOARD"}
+                            codeId={"boardId"}
+                            codeClassName={"form-select"}
+                            text={"게시판"}/>
                 </div>
                 <div className="col-md-2 my-2">
                     <Select upperCodeId={"U001"}
@@ -163,33 +169,34 @@ const  AdminPost = () => {
                         <label htmlFor="userId" id="idCheck">일련번호</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" type="text" maxLength="20" id="postNamePopup"/>
-                        <label>게시글 명</label>
+                        <Select codeStatus={"BOARD"}
+                                codeId={"boardId"}
+                                codeClassName={"form-select"}
+                                text={"선택"}/>
+                        <label>게시판</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <Select upperCodeId={"B001"}
+                        <input className="form-control" type="text" maxLength="20" id="postNamePopup"/>
+                        <label>게시글 제목</label>
+                    </div>
+                    <div className="form-floating mb-3">
+                        <Select upperCodeId={"P001"}
                                 codeId={"postTypePopup"}
                                 codeClassName={"form-select"}
                                 chkVal={"1"}/>
                         <label>게시글 타입</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" type="text" maxLength="20" id="postDescriptionPopup"/>
-                        <label>게시글 설명</label>
+                        <input className="form-control" type="textarea" maxLength="20" id="postDescriptionPopup"/>
+                        <label>내용</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <Select upperCodeId={"U001"}
-                                codeId={"useYnPopup"}
-                                codeClassName={"form-select"}
-                                chkVal={"Y"}/>
-                        <label>사용여부</label>
+                        <input className="form-control fileInput" type="file" maxLength="20" id="fileNo1Popup"/>
+                        <label>파일업로드 1</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <Select upperCodeId={"F001"}
-                                codeId={"fileYnPopup"}
-                                codeClassName={"form-select"}
-                                chkVal={"Y"}/>
-                        <label>파일여부</label>
+                        <input className="form-control fileInput" type="file" maxLength="20" id="fileNo2Popup"/>
+                        <label>파일업로드 2</label>
                     </div>
                     <div className="mt-4 mb-0">
                         <div className="d-grid">
