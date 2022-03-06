@@ -8,6 +8,7 @@ import Modal from "../common/Modal";
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../action/alertModal";
+import "../../css/custom.css"
 
 const  AdminRegister = () => {
     const dispatch = useDispatch();
@@ -233,7 +234,8 @@ const  AdminRegister = () => {
                                                   <label htmlFor="phoneNum">연락처(-)없이 숫자만 입력</label>
                                               </div>
                                               <div className="form-floating mb-3">
-                                                  <input className="form-control" id="imageFile" type="file" accept=".gif, .jpg, .png" onChange={fileChange}/>
+                                                  <input className="form-control fileInput" id="imageFile" type="file" accept=".gif, .jpg, .png" onChange={fileChange}/>
+                                                  <label>프로필 사진</label>
                                               </div>
                                               <img id="thumbnailImg" src="" style={imageStyle}/>
                                               <div className="mt-4 mb-0">
