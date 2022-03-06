@@ -43,7 +43,7 @@ export function fetchLoad(url, method, data, callback, fileUpload = false){
  * @return Null아니면TRUENull이면FALSE
  * */
 export function nullCheck(data) {
-    if (data == null || data == "" || data == "undefined"){
+    if (data == null || data == "" || data == "undefined" || data == [] || data == {}){
         return false;
     } else {
         return true;
