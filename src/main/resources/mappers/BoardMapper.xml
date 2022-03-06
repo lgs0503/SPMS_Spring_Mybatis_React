@@ -111,6 +111,12 @@
 				 separator="," open="(" close=")" >
 			#{idx}
 		</foreach>
-	</delete>
+		</delete>
 
-</mapper>
+<select id="searchBoard" resultType="lgs.com.board.vo.BoardVO" parameterType="lgs.com.board.vo.BoardVO">
+		/* searchBoard 게시판  조회  */
+		SELECT	BOARD_ID
+			,	BOARD_NAME
+		FROM	BOARD
+	</select>
+		</mapper>

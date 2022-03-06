@@ -15,5 +15,6 @@ public interface BoardMapper {
 	public int boardCnt(BoardVO boardVO);
 	public void saveBoard(BoardVO boardVO);
 	public void deleteBoard(BoardVO boardVO);
-	
+	public List<BoardVO> boardCodeList(BoardVO boardVO);
+
 }

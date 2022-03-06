@@ -81,4 +81,21 @@ public class BoardController {
 		CommonResponse commonResponse = new CommonResponse();
 		return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
 	}
+
+
+	/**
+	 *  게시판 리스트 조회 (콤보박스용)
+	 * @param BoardVO 조회조건
+	 * @return 게시판 리스트
+	 */
+	@RequestMapping(value = "/boardCodeList", method = RequestMethod.POST)
+	public ResponseEntity<Message> boardCodeList(@RequestBody BoardVO boardVO) {
+		logger.info("boardCodeList");
+
+		CommonResponse commonResponse = new CommonResponse();
+
+		commonResponse.putData("boardCodeList", boardService.boardCodeList(boardVO));
+
+		return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
+	}
 }

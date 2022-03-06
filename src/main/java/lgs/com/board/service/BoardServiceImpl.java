@@ -80,4 +80,19 @@ public class BoardServiceImpl implements BoardService {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public List<BoardVO> boardCodeList(BoardVO boardVO) {
+		List<BoardVO> result = new ArrayList<BoardVO>();
+
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+
+			result = mapper.boardCodeList(boardVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }
