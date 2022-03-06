@@ -34,7 +34,7 @@ public class PostController {
      * @param PostVO 조회조건
      * @return 게시글 리스트
      */
-    @RequestMapping(value = "/postList", method = RequestMethod.GET)
+    @RequestMapping(value = "/postList", method = RequestMethod.POST)
     public ResponseEntity<Message> postList(@RequestBody PostVO postVO) {
         logger.info("postList");
 
@@ -51,7 +51,7 @@ public class PostController {
      * @param PostVO 조회조건
      * @return 게시글 리스트
      */
-    @RequestMapping(value = "/searchPost", method = RequestMethod.GET)
+    @RequestMapping(value = "/searchPost", method = RequestMethod.POST)
     public ResponseEntity<Message> searchPost(@RequestBody PostVO postVO) {
         logger.info("searchPost");
 
