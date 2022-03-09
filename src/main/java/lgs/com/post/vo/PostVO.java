@@ -9,8 +9,10 @@ import java.util.ArrayList;
 public class PostVO extends DefaultVO {
 
 	private String boardId;
+	private String boardName;
 	private String postId;
 	private String postType;
+	private String postTypeName;
 	private String postTitle;
 	private String postContent;
 	private String viewCnt;

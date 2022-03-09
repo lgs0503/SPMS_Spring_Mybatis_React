@@ -14,6 +14,7 @@ public class CodeVO extends DefaultVO {
 	private String upperCodeId;
 	private String codeValue;
 	private String useYn;
+	private String useYnName;
 	private String deleted;
 	private String codeInfo;
 
