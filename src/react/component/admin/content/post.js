@@ -6,6 +6,8 @@ import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../../action/alertModal";
 import Select from "../../common/Select";
 import "../../../css/custom.css"
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const  AdminPost = () => {
 
@@ -16,6 +18,7 @@ const  AdminPost = () => {
 
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
+    const [content, setContent] = useState("");
 
     const [modalTitle, setModalTitle] = useState("게시글 등록");
 
@@ -33,17 +36,17 @@ const  AdminPost = () => {
 
     let tableInit = {
         headerColData : [{title: "ID",         name : "postId",             width:"10px",  hidden: false}
-                        ,{title: "게시판명",    name : "boardName",           width:"20%",   hidden: false}
-                        ,{title: "게시글제목",    name : "postName",           width:"30%",   hidden: false}
-                        ,{title: "게시글타입",  name : "postType",           width:"20%",   hidden: false}
-                        ,{title: "작성자",    name : "createUser",               width:"10%",   hidden: false}
-                        ,{title: "작성일",    name : "createDate",               width:"10%",   hidden: false}]
+                        ,{title: "게시판명",    name : "boardName",          width:"15%",   hidden: false}
+                        ,{title: "게시글제목",    name : "postTitle",        width:"25%",   hidden: false}
+                        ,{title: "게시글타입",  name : "postTypeName",       width:"15%",   hidden: false}
+                        ,{title: "작성자",    name : "createUser",           width:"10%",   hidden: false}
+                        ,{title: "작성일",    name : "createDate",           width:"15%",   hidden: false}]
         ,   title : "Post List"
         ,   selectCol : 'postId'
         ,   deleted : true
         ,   inserted : true
         ,   pagination : true
-        ,   colSpan : 5
+        ,   colSpan : 6
         ,   cellSelectEvent : (e) => {
 
             setModalTitle("게시글 상세");
@@ -58,9 +61,13 @@ const  AdminPost = () => {
                 //console.log(result.data.post);
                 setTimeout(() => {
 
-                    tableInit.headerColData.forEach((value, index) => {
-                        document.getElementById(value.name + "Popup").value = result.data.post[value.name];
-                    });
+                    document.getElementById("postIdPopup").value = result.data.post["postId"];
+                    document.getElementById("boardIdPopup").value = result.data.post["boardId"];
+                    document.getElementById("postTitlePopup").value = result.data.post["postTitle"];
+                    document.getElementById("postTypePopup").value = result.data.post["postType"];
+                    document.getElementById("fileNo1Popup").value = result.data.post["fileNo1"];
+                    document.getElementById("fileNo2Popup").value = result.data.post["fileNo2"];
+                    setContent(result.data.post["postContent"]);
                 },200);
             });
         }
@@ -91,7 +98,7 @@ const  AdminPost = () => {
     const postSearch = () => {
 
         let data = {
-            postId     : document.getElementById("postId").value
+                postId     : document.getElementById("postId").value
             ,   postName   : document.getElementById("postName").value
             ,   useYn       : document.getElementById("useYn").value
             ,   fileYn      : document.getElementById("fileYn").value
@@ -108,9 +115,16 @@ const  AdminPost = () => {
     const postSave = () => {
         if(window.confirm("저장하시겠습니까?")){
             let data = {};
-            tableInit.headerColData.forEach((value, index) => {
-                data[value.name] =  document.getElementById(value.name + "Popup").value;
-            });
+
+            data = {
+                postId : document.getElementById("postIdPopup").value,
+                boardId : document.getElementById("boardIdPopup").value,
+                postTitle : document.getElementById("postTitlePopup").value,
+                postType : document.getElementById("postTypePopup").value,
+                fileNo1 : document.getElementById("fileNo1Popup").value,
+                fileNo2 : document.getElementById("fileNo2Popup").value,
+                postContent : content
+            }
 
             common.fetchLoad("/savePost","POST", data, (result) => {
                 dispatch(showAlertModal('저장 되었습니다.'));
@@ -162,7 +176,7 @@ const  AdminPost = () => {
                    bodyData={bodyData}
                    bodyCnt={bodyCnt}/>
 
-            <Modal open={modalOpen} close={closeModal} header={modalTitle}>
+            <Modal open={modalOpen} close={closeModal} header={modalTitle} modalSize={"modalSize9"}>
                 <form id="formTest">
                     <div className="form-floating mb-3">
                         <input className="form-control" type="text" maxLength="20" id="postIdPopup" disabled={true}/>
@@ -170,13 +184,13 @@ const  AdminPost = () => {
                     </div>
                     <div className="form-floating mb-3">
                         <Select codeStatus={"BOARD"}
-                                codeId={"boardId"}
+                                codeId={"boardIdPopup"}
                                 codeClassName={"form-select"}
                                 text={"선택"}/>
                         <label>게시판</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" type="text" maxLength="20" id="postNamePopup"/>
+                        <input className="form-control" type="text" maxLength="20" id="postTitlePopup"/>
                         <label>게시글 제목</label>
                     </div>
                     <div className="form-floating mb-3">
@@ -187,8 +201,57 @@ const  AdminPost = () => {
                         <label>게시글 타입</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" type="textarea" maxLength="20" id="postDescriptionPopup"/>
                         <label>내용</label>
+                        <CKEditor
+                            data = {content}
+                            editor={ ClassicEditor }
+                            config={{
+                                language: "ko",
+                                toolbar: [
+                                "heading",
+                                "|",
+                                "bold",
+                                "italic",
+                                "underline",
+                                "strikethrough",
+                                "|",
+                                "fontSize",
+                                "fontColor",
+                                "fontBackgroundColor",
+                                "|",
+                                "alignment",
+                                "outdent",
+                                "indent",
+                                "bulletedList",
+                                "numberedList",
+                                "blockQuote",
+                                "|",
+                                "link",
+                                "insertTable",
+                                "imageUpload",
+                                "|",
+                                "undo",
+                                "redo",
+                                ],
+                                placeholder: "글을 입력해보세요!"
+                            }}
+                            onReady={ editor => {
+                                // You can store the "editor" and use when it is needed.
+                                console.log( 'Editor is ready to use!', editor );
+                            } }
+                            onChange={ ( event, editor ) => {
+                                const data = editor.getData();
+                                setContent(data);
+                                console.log( { event, editor, data } );
+                            } }
+                            onBlur={ ( event, editor ) => {
+                                console.log( 'Blur.', editor );
+                            } }
+                            onFocus={ ( event, editor ) => {
+                                console.log( 'Focus.', editor );
+                            } }
+                        />
+                      {/*  <input className="form-control" type="textarea" maxLength="20" id="postDescriptionPopup"/>*/}
                     </div>
                     <div className="form-floating mb-3">
                         <input className="form-control fileInput" type="file" maxLength="20" id="fileNo1Popup"/>

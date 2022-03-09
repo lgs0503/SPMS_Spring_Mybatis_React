@@ -51,19 +51,13 @@ const  AdminCode = () => {
     }
 
     let tableInit = {
-        headerColData : [{title: "ID",         name : "codeId",       width:"40%",  hidden: false}
-                        ,{title: "코드명",      name : "codeName",    width:"30%",   hidden: false}
-                        ,{title: "사용여부",    name : "useYn",       width:"20%",   hidden: false}
-                        ,{
-                            title: "추가"
-                         ,  name : "button"
-                         ,  width:"10%"
-                         ,  hidden: false
-                         ,  btnValue:<i className="fa-solid fa-plus"></i>
-                         ,  clickEvent: addBtnClickEvent
-                         }
-                        ,{title: "부모코드명",  name : "upperCodeId",  width:"0",   hidden: true}
-                        ,{title: "코드값",      name : "codeValue",   width:"0",   hidden: true}]
+            headerColData : [{title: "ID",         name : "codeId",       width:"40%",  hidden: false,  useData : true}
+                            ,{title: "코드명",      name : "codeName",    width:"30%",   hidden: false}
+                            ,{title: "사용여부",    name : "useYnName",   width:"20%",   hidden: false,  useData : true}
+                            ,{title: "추가",  name : "button",  width:"10%",  hidden: false,  btnValue:<i className="fa-solid fa-plus"></i>,  clickEvent: addBtnClickEvent}
+                            ,{title: "부모코드명",  name : "upperCodeId",  width:"0",   hidden: true,  useData : true}
+                            ,{title: "코드값",      name : "codeValue",   width:"0",   hidden: true,  useData : true}
+                            ,{title: "사용여부",    name : "useYn",       width:"20%",   hidden: true,  useData : true}]
         ,   title : "Code List"
         ,   selectCol : 'codeId'
         ,   deleted : true
@@ -84,8 +78,9 @@ const  AdminCode = () => {
                 setTimeout(() => {
 
                     tableInit.headerColData.forEach((value, index) => {
-                        if(value.name != 'button')
+                        if(value.useData){
                             document.getElementById(value.name + "Popup").value = result.data.code[value.name];
+                        }
                     });
                 },200);
 
@@ -137,9 +132,8 @@ const  AdminCode = () => {
 
             let data = {};
             tableInit.headerColData.forEach((value, index) => {
-                if(value.name != "button"){
+                if(value.useData)
                     data[value.name] =  document.getElementById(value.name + "Popup").value;
-                }
             });
 
             common.fetchLoad("/saveCode","POST", data, (result) => {
