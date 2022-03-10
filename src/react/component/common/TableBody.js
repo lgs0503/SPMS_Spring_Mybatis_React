@@ -1,5 +1,7 @@
 import React from "react";
 import Table from "./Table";
+import * as common from "../../comm/common";
+import "../../css/table.css";
 
 const TableBody = (props) => {
 
@@ -8,7 +10,6 @@ const TableBody = (props) => {
         let nodeName = e.target.nodeName;
         if(nodeName == 'INPUT'||nodeName == 'BUTTON'||nodeName == 'I')
             return;
-
 
         props.tableInit.cellSelectEvent(e);
 
@@ -22,13 +23,45 @@ const TableBody = (props) => {
         checkBox = null;
     }
 
+    const treeBtnClickEvent = (e, codeId) => {
+
+        let clickState = true;
+
+        if(e.target.innerText == "-"){
+            e.target.innerText = "+";
+            clickState = false;
+        } else {
+            e.target.innerText = "-";
+        }
+
+        document.querySelectorAll('[data-bs-target="'+codeId+'"]').forEach((value, index) => {
+
+            document.querySelectorAll('[data-bs-target="'+value.id+'"]').forEach((childVal, childIndex) => {
+
+                if(clickState){
+                    childVal.style.display = 'table-row';
+                } else {
+                    childVal.style.display = 'none';
+                }
+            });
+
+            if(clickState){
+                value.style.display = 'table-row';
+            } else {
+                value.style.display = 'none';
+            }
+        });
+    }
+
+    //console.log(common.nullCheck(props.bodyData));
+
     return(
         <tbody>
             {
-                props.bodyData != null
+                common.nullCheck(props.bodyData) == true
                 ?
                     props.bodyData.slice(props.offset, props.offset + props.limit).map((value, index) => (
-                        <tr className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
+                        <tr data-bs-target={value["upperCodeId"] ? value["upperCodeId"] : null} className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
                             {checkBox}
                             {
                                 props.tableInit.headerColData.map((headerVal, headerIndex) =>
@@ -55,7 +88,20 @@ const TableBody = (props) => {
                                                 props.tableInit.selectCol == headerVal.name && value["level"] && value["level"] != "1"
                                                 ?
                                                 (
-                                                    <span><span className="treeItem"><i className="fa-solid fa-chevron-down"></i></span>{value[headerVal.name]}</span>
+                                                    <span>
+                                                        <span className="treeItem">
+                                                            <i className="fa-solid fa-chevron-down"></i>
+                                                        {
+                                                            value["leaf"] != "1"
+                                                            ?
+                                                            (
+                                                                <button className="treeBtn"
+                                                                        onClick={(e)=> treeBtnClickEvent(e, value[headerVal.name]) }>-</button>
+                                                            ) : null
+                                                        }
+                                                    </span>
+                                                        {value[headerVal.name]}
+                                                    </span>
                                                 )
                                                 : value[headerVal.name]
                                             }

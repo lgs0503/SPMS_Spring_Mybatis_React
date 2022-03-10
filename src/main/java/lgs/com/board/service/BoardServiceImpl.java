@@ -3,6 +3,7 @@ package lgs.com.board.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import lgs.com.code.vo.CodeVO;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,4 +81,19 @@ public class BoardServiceImpl implements BoardService {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public List<CodeVO> boardCodeList() {
+		List<CodeVO> result = new ArrayList<CodeVO>();
+
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+
+			result = mapper.boardCodeList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }

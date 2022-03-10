@@ -2,6 +2,7 @@ package lgs.com.board.mapper;
 
 import java.util.List;
 
+import lgs.com.code.vo.CodeVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import lgs.com.board.vo.BoardVO;
@@ -15,5 +16,6 @@ public interface BoardMapper {
 	public int boardCnt(BoardVO boardVO);
 	public void saveBoard(BoardVO boardVO);
 	public void deleteBoard(BoardVO boardVO);
-	
+	public List<CodeVO> boardCodeList();
+
 }

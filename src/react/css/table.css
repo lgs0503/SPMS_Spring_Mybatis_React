@@ -86,3 +86,20 @@ table tbody tr {
 .treeItem{
     margin-right: 5px;
 }
+.treeBtn{
+    border: none;
+    width: 25px;
+    height: 25px;
+    line-height: 0px;
+    border-radius: 4px;
+    margin: 0 5px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #212529;
+}
+.treeBtn:hover{
+    border:1px solid #212529;
+    color: #212529;
+    background-color: #ffffff;
+}

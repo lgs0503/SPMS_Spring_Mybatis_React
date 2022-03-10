@@ -4,20 +4,24 @@
 
 	<select id="postList" resultType="lgs.com.post.vo.PostVO" parameterType="lgs.com.post.vo.PostVO">
 	/* postList 게시글 리스트 조회  */
-		SELECT	BOARD_ID
-			,	POST_ID
-			,	POST_TYPE
-			,	POST_TITLE
-			,	POST_CONTENT
-			,	VIEW_CNT
-			,	DELETED
-			,	FILE_NO1
-			,	FILE_NO2
-			,	CREATE_DATE
-			,	CREATE_USER
-			,	UPDATE_DATE
-			,	UPDATE_USER
-		FROM	POST
+		SELECT	B.BOARD_ID
+			,	B.BOARD_NAME
+			,	P.POST_ID
+			,	P.POST_TYPE
+			,	GET_CODE_NAME('P001', P.POST_TYPE) AS POST_TYPE_NAME
+			,	P.POST_TITLE
+			,	P.POST_CONTENT
+			,	P.VIEW_CNT
+			,	P.DELETED
+			,	P.FILE_NO1
+			,	P.FILE_NO2
+			,	TO_CHAR(P.CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+			,	P.CREATE_USER
+			,	P.UPDATE_DATE
+			,	P.UPDATE_USER
+		FROM		POST P
+		LEFT JOIN	BOARD B
+		ON 			P.BOARD_ID = B.BOARD_ID
 		<include refid="postWhere"></include>
 	</select>
 

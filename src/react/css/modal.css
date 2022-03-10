@@ -7,6 +7,8 @@
     left: 0;
     z-index: 1500;
     background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    overflow: auto;
 }
 .modal button {
     outline: none;

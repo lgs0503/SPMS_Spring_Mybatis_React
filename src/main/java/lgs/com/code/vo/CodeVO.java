@@ -9,11 +9,13 @@ import java.util.ArrayList;
 public class CodeVO extends DefaultVO {
 
 	private String level;
+	private String leaf;
 	private String codeId;
 	private String codeName;
 	private String upperCodeId;
 	private String codeValue;
 	private String useYn;
+	private String useYnName;
 	private String deleted;
 	private String codeInfo;
 

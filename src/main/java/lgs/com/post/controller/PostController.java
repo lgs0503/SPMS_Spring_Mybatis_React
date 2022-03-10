@@ -2,6 +2,7 @@ package lgs.com.post.controller;
 
 import lgs.com.post.service.PostService;
 import lgs.com.post.vo.PostVO;
+import lgs.com.utill.CommonResponse;
 import lgs.com.utill.StatusEnum;
 import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;
@@ -33,21 +34,16 @@ public class PostController {
      * @param PostVO 조회조건
      * @return 게시글 리스트
      */
-    @RequestMapping(value = "/postList", method = RequestMethod.GET)
+    @RequestMapping(value = "/postList", method = RequestMethod.POST)
     public ResponseEntity<Message> postList(@RequestBody PostVO postVO) {
         logger.info("postList");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        Map<String, Object> data = new HashMap<String, Object>();
+        CommonResponse commonResponse = new CommonResponse();
 
-        message.setStatus(StatusEnum.OK);
-        data.put("postList", postService.postList(postVO));
-        data.put("postCnt", postService.postCnt(postVO));
-        message.setData(data);
+        commonResponse.putData("postList", postService.postList(postVO));
+        commonResponse.putData("postCnt", postService.postCnt(postVO));
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -55,36 +51,28 @@ public class PostController {
      * @param PostVO 조회조건
      * @return 게시글 리스트
      */
-    @RequestMapping(value = "/searchPost", method = RequestMethod.GET)
+    @RequestMapping(value = "/searchPost", method = RequestMethod.POST)
     public ResponseEntity<Message> searchPost(@RequestBody PostVO postVO) {
         logger.info("searchPost");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        Map<String, Object> data = new HashMap<String, Object>();
+        CommonResponse commonResponse = new CommonResponse();
 
-        message.setStatus(StatusEnum.OK);
-        data.put("post", postService.searchPost(postVO));
-        message.setData(data);
+        commonResponse.putData("post", postService.searchPost(postVO));
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
      *  게시글 viewCnt +1
      * @param PostVO 수정 게시글 데이터
      */
-    @RequestMapping(value = "/updateViewCnt", method = {RequestMethod.PUT})
+    @RequestMapping(value = "/updateViewCnt", method = {RequestMethod.POST})
     public ResponseEntity<Message> updateViewCnt(@RequestBody PostVO postVO) {
         logger.info("updateViewCnt");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         postService.updateViewCnt(postVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -94,28 +82,22 @@ public class PostController {
     @RequestMapping(value = "/savePost", method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<Message> savePost(@RequestBody PostVO postVO) {
         logger.info("savePost");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         postService.savePost(postVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
      *  게시글 삭제
      * @param PostVO 삭제 게시글 데이터
      */
-    @RequestMapping(value = "/deletePost", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deletePost", method = RequestMethod.POST)
     public ResponseEntity<Message> deletePost(@RequestBody PostVO postVO) {
         logger.info("deletePost");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         postService.deletePost(postVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 }

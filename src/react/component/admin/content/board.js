@@ -32,12 +32,15 @@ const  AdminBoard = () => {
     };
 
     let tableInit = {
-            headerColData : [{title: "ID",         name : "boardId",             width:"10px",  hidden: false}
-                            ,{title: "게시판명",    name : "boardName",           width:"30%",   hidden: false}
-                            ,{title: "게시판타입",  name : "boardType",           width:"30%",   hidden: false}
-                            ,{title: "사용여부",    name : "useYn",               width:"12%",   hidden: false}
-                            ,{title: "파일여부",    name : "fileYn",              width:"12%",   hidden: false}
-                            ,{title: "게시판설명",  name : "boardDescription",    width:"0",     hidden: true}]
+            headerColData : [{title: "ID",         name : "boardId",             width:"10px",  hidden: false,  useData : true}
+                            ,{title: "게시판명",    name : "boardName",           width:"30%",   hidden: false,  useData : true}
+                            ,{title: "게시판타입",  name : "boardTypeName",       width:"30%",   hidden: false,  useData : false}
+                            ,{title: "사용여부",    name : "useYnName",           width:"12%",   hidden: false,  useData : false}
+                            ,{title: "파일여부",    name : "fileYnName",          width:"12%",   hidden: false,  useData : false}
+                            ,{title: "게시판설명",  name : "boardDescription",    width:"0",     hidden: true,   useData : true}
+                            ,{title: "사용여부",    name : "useYn",               width:"0",     hidden: true,   useData : true}
+                            ,{title: "파일여부",    name : "fileYn",              width:"0",     hidden: true,   useData : true}
+                            ,{title: "게시판타입",  name : "boardType",           width:"0",     hidden: true,   useData : true}]
         ,   title : "Board List"
         ,   selectCol : 'boardId'
         ,   deleted : true
@@ -59,7 +62,9 @@ const  AdminBoard = () => {
                 setTimeout(() => {
 
                     tableInit.headerColData.forEach((value, index) => {
-                        document.getElementById(value.name + "Popup").value = result.data.board[value.name];
+                        if(value.useData === true) {
+                            document.getElementById(value.name + "Popup").value = result.data.board[value.name];
+                        }
                     });
                 },200);
             });

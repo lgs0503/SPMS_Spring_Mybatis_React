@@ -5,11 +5,13 @@
 	<select id="codeList" resultType="lgs.com.code.vo.CodeVO" parameterType="lgs.com.code.vo.CodeVO">
 	/* codeList 코드 리스트 조회  */
 		SELECT  LEVEL
+			,	CONNECT_BY_ISLEAF AS LEAF
 			,   CODE_ID
 			,	CODE_NAME
 			,	UPPER_CODE_ID
 			,	CODE_VALUE
 			,	USE_YN
+			,	GET_CODE_NAME('U001', USE_YN) AS USE_YN_NAME
 			,	DELETED
 			,	CREATE_DATE
 			,	CREATE_USER

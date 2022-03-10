@@ -2,9 +2,12 @@ import React, {useEffect, useState, useRef} from 'react';
 import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
-import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../../action/alertModal";
+import Select from "../../common/Select";
+import "../../../css/custom.css"
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const  AdminPost = () => {
 
@@ -15,11 +18,12 @@ const  AdminPost = () => {
 
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
+    const [content, setContent] = useState("");
 
-    const [modalTitle, setModalTitle] = useState("게시판 등록");
+    const [modalTitle, setModalTitle] = useState("게시글 등록");
 
     useEffect(() => {
-        boardSearch();
+        postSearch();
     },[]);
 
     const openModal = () => {
@@ -31,36 +35,44 @@ const  AdminPost = () => {
     };
 
     let tableInit = {
-            headerColData : [{title: "ID",         name : "boardId",             hidden: false}
-                            ,{title: "게시판명",    name : "boardName",           hidden: false}
-                            ,{title: "게시글명",  name : "boardType",           hidden: false}
-                            ,{title: "사용여부",    name : "useYn",               hidden: false}
-                            ,{title: "파일여부",    name : "fileYn",              hidden: false}
-                            ,{title: "게시판설명",  name : "boardDescription",    hidden: true}]
+        headerColData : [{title: "ID",         name : "postId",             width:"10px",  hidden: false}
+                        ,{title: "게시판명",    name : "boardName",          width:"15%",   hidden: false}
+                        ,{title: "게시글제목",    name : "postTitle",        width:"25%",   hidden: false}
+                        ,{title: "게시글타입",  name : "postTypeName",       width:"15%",   hidden: false}
+                        ,{title: "작성자",    name : "createUser",           width:"10%",   hidden: false}
+                        ,{title: "작성일",    name : "createDate",           width:"15%",   hidden: false}]
         ,   title : "Post List"
-        ,   selectCol : 'boardId'
+        ,   selectCol : 'postId'
         ,   deleted : true
         ,   inserted : true
         ,   pagination : true
-        ,   colSpan : 5
+        ,   colSpan : 6
         ,   cellSelectEvent : (e) => {
 
+            setModalTitle("게시글 상세");
+            openModal();
+
             let data = {
-                boardId : e.target.parentNode.id
+                postId : e.target.parentNode.id
             };
 
-            common.fetchLoad("/searchBoard","POST", data,(result) => {
-                setModalTitle("게시판 상세");
-                openModal();
+            common.fetchLoad("/searchPost","POST", data,(result) => {
 
-                //console.log(result.data.board);
-                tableInit.headerColData.forEach((value, index) => {
-                    document.getElementById(value.name + "Popup").value = result.data.board[value.name];
-                });
+                //console.log(result.data.post);
+                setTimeout(() => {
+
+                    document.getElementById("postIdPopup").value = result.data.post["postId"];
+                    document.getElementById("boardIdPopup").value = result.data.post["boardId"];
+                    document.getElementById("postTitlePopup").value = result.data.post["postTitle"];
+                    document.getElementById("postTypePopup").value = result.data.post["postType"];
+                    document.getElementById("fileNo1Popup").value = result.data.post["fileNo1"];
+                    document.getElementById("fileNo2Popup").value = result.data.post["fileNo2"];
+                    setContent(result.data.post["postContent"]);
+                },200);
             });
         }
         , addBtnClickEvent : () => {
-            setModalTitle("게시판 등록");
+            setModalTitle("게시글 등록");
             openModal();
         }
         , deleteBtnClickEvent :() => {
@@ -70,136 +82,194 @@ const  AdminPost = () => {
                     dispatch(showAlertModal('항목을 선택해주세요.'));
                     return;
                 } else {
-                    let data = {boardIds : []};
+                    let data = {postIds : []};
 
-                    data.boardIds = common.tableChkIds("chk");
+                    data.postIds = common.tableChkIds("chk");
 
-                    common.fetchLoad("/deleteBoard","POST", data, () => {
+                    common.fetchLoad("/deletePost","POST", data, () => {
                         dispatch(showAlertModal('삭제 되었습니다.'));
-                        boardSearch();
+                        postSearch();
                     });
                 }
             }
         }
     }
 
-    const boardSearch = () => {
+    const postSearch = () => {
 
         let data = {
-                boardId     : document.getElementById("boardId").value
-            ,   boardName   : document.getElementById("boardName").value
+                postId     : document.getElementById("postId").value
+            ,   postName   : document.getElementById("postName").value
             ,   useYn       : document.getElementById("useYn").value
             ,   fileYn      : document.getElementById("fileYn").value
         };
 
-        common.fetchLoad("/boardList","POST", data,(result) => {
-            //console.log(result.data.boardList);
-            //console.log(result.data.boardCnt);
-            setBodyData(result.data.boardList);
-            setBodyCnt(result.data.boardCnt);
+        common.fetchLoad("/postList","POST", data,(result) => {
+            //console.log(result.data.postList);
+            //console.log(result.data.postCnt);
+            setBodyData(result.data.postList);
+            setBodyCnt(result.data.postCnt);
         });
     }
 
-    const boardSave = () => {
+    const postSave = () => {
         if(window.confirm("저장하시겠습니까?")){
             let data = {};
-            tableInit.headerColData.forEach((value, index) => {
-                data[value.name] =  document.getElementById(value.name + "Popup").value;
-            });
 
-            common.fetchLoad("/saveBoard","POST", data, (result) => {
+            data = {
+                postId : document.getElementById("postIdPopup").value,
+                boardId : document.getElementById("boardIdPopup").value,
+                postTitle : document.getElementById("postTitlePopup").value,
+                postType : document.getElementById("postTypePopup").value,
+                fileNo1 : document.getElementById("fileNo1Popup").value,
+                fileNo2 : document.getElementById("fileNo2Popup").value,
+                postContent : content
+            }
+
+            common.fetchLoad("/savePost","POST", data, (result) => {
                 dispatch(showAlertModal('저장 되었습니다.'));
                 closeModal();
-                boardSearch();
+                postSearch();
             });
         }
     }
 
-  return (
-      <div className="container-fluid px-4">
-          <h1 className="mt-4">POST</h1>
-          <ol className="breadcrumb mb-4">
-              <li className="breadcrumb-item active">게시글 관리</li>
-          </ol>
-          <div className="row py-2">
-              <div className="col-md-3 my-2">
-                  <input type="text" className="form-control search-slt" placeholder="게시판 ID" id="boardId"/>
-              </div>
-              <div className="col-md-3 my-2">
-                  <input type="text" className="form-control search-slt" placeholder="게시판 명" id="boardName"/>
-              </div>
-              <div className="col-md-2 my-2">
-                  <select className="form-select search-slt"  id="useYn">
-                      <option value="">사용여부</option>
-                      <option value="Y">Y</option>
-                      <option value="N">N</option>
-                  </select>
-              </div>
-              <div className="col-md-2 my-2">
-                  <select className="form-select search-slt"  id="fileYn">
-                      <option value="">파일여부</option>
-                      <option value="Y">Y</option>
-                      <option value="N">N</option>
-                  </select>
-              </div>
-              <div className="col-md-2 my-2">
-                  <button type="button" className="btn btn-primary wrn-btn" onClick={boardSearch}>
-                      <i className="fa-solid fa-magnifying-glass"></i>
-                  </button>
-              </div>
-          </div>
+    return (
+        <div className="container-fluid px-4">
+            <h1 className="mt-4">POST</h1>
+            <ol className="breadcrumb mb-4">
+                <li className="breadcrumb-item active">게시글 관리</li>
+            </ol>
+            <div className="row py-2">
+                <div className="col-md-3 my-2">
+                    <input type="text" className="form-control search-slt" placeholder="게시글 ID" id="postId"/>
+                </div>
+                <div className="col-md-3 my-2">
+                    <input type="text" className="form-control search-slt" placeholder="게시글 제목" id="postName"/>
+                </div>
+                <div className="col-md-2 my-2">
+                    <Select codeStatus={"BOARD"}
+                            codeId={"boardId"}
+                            codeClassName={"form-select"}
+                            text={"게시판"}/>
+                </div>
+                <div className="col-md-2 my-2">
+                    <Select upperCodeId={"U001"}
+                            codeId={"useYn"}
+                            codeClassName={"form-select"}
+                            text={"사용여부"}/>
+                </div>
+                <div className="col-md-2 my-2">
+                    <Select upperCodeId={"F001"}
+                            codeId={"fileYn"}
+                            codeClassName={"form-select"}
+                            text={"파일여부"}/>
+                </div>
+                <div className="col-md-2 my-2">
+                    <button type="button" className="btn btn-primary wrn-btn" onClick={postSearch}>
+                        <i className="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
 
-          <Table tableInit={tableInit}
-                 bodyData={bodyData}
-                 bodyCnt={bodyCnt}/>
+            <Table tableInit={tableInit}
+                   bodyData={bodyData}
+                   bodyCnt={bodyCnt}/>
 
-          <Modal open={modalOpen} close={closeModal} header={modalTitle}>
-              <form id="formTest">
-                  <div className="form-floating mb-3">
-                      <input className="form-control" id="userId" type="text" maxLength="20" id="boardIdPopup" disabled={true}/>
-                      <label htmlFor="userId" id="idCheck">일련번호</label>
-                  </div>
-                  <div className="form-floating mb-3">
-                      <input className="form-control" id="userId" type="text" maxLength="20" id="boardNamePopup"/>
-                      <label>게시판 명</label>
-                  </div>
-                  <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="boardTypePopup">
-                          <option value="">선택</option>
-                          <option value="1">일반게시판</option>
-                          <option value="2">사진게시판</option>
-                      </select>
-                      <label>게시판 타입</label>
-                  </div>
-                  <div className="form-floating mb-3">
-                      <input className="form-control" type="text" maxLength="20" id="boardDescriptionPopup"/>
-                      <label>게시판 설명</label>
-                  </div>
-                  <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="useYnPopup">
-                          <option value="">선택</option>
-                          <option value="Y">Y</option>
-                          <option value="N">N</option>
-                      </select>
-                      <label>사용여부</label>
-                  </div>
-                  <div className="form-floating mb-3">
-                      <select id="gender" className="form-select" id="fileYnPopup">
-                          <option value="">선택</option>
-                          <option value="Y">Y</option>
-                          <option value="N">N</option>
-                      </select>
-                      <label>파일여부</label>
-                  </div>
-                  <div className="mt-4 mb-0">
-                      <div className="d-grid">
-                          <a className="btn btn-primary btn-block" id="btnRegister" onClick={boardSave}>저장</a>
-                      </div>
-                  </div>
-              </form>
-          </Modal>
-      </div>
-  );
+            <Modal open={modalOpen} close={closeModal} header={modalTitle} modalSize={"modalSize9"}>
+                <form id="formTest">
+                    <div className="form-floating mb-3">
+                        <input className="form-control" type="text" maxLength="20" id="postIdPopup" disabled={true}/>
+                        <label htmlFor="userId" id="idCheck">일련번호</label>
+                    </div>
+                    <div className="form-floating mb-3">
+                        <Select codeStatus={"BOARD"}
+                                codeId={"boardIdPopup"}
+                                codeClassName={"form-select"}
+                                text={"선택"}/>
+                        <label>게시판</label>
+                    </div>
+                    <div className="form-floating mb-3">
+                        <input className="form-control" type="text" maxLength="20" id="postTitlePopup"/>
+                        <label>게시글 제목</label>
+                    </div>
+                    <div className="form-floating mb-3">
+                        <Select upperCodeId={"P001"}
+                                codeId={"postTypePopup"}
+                                codeClassName={"form-select"}
+                                chkVal={"1"}/>
+                        <label>게시글 타입</label>
+                    </div>
+                    <div className="form-floating mb-3">
+                        <label>내용</label>
+                        <CKEditor
+                            data = {content}
+                            editor={ ClassicEditor }
+                            config={{
+                                language: "ko",
+                                toolbar: [
+                                "heading",
+                                "|",
+                                "bold",
+                                "italic",
+                                "underline",
+                                "strikethrough",
+                                "|",
+                                "fontSize",
+                                "fontColor",
+                                "fontBackgroundColor",
+                                "|",
+                                "alignment",
+                                "outdent",
+                                "indent",
+                                "bulletedList",
+                                "numberedList",
+                                "blockQuote",
+                                "|",
+                                "link",
+                                "insertTable",
+                                "imageUpload",
+                                "|",
+                                "undo",
+                                "redo",
+                                ],
+                                placeholder: "글을 입력해보세요!"
+                            }}
+                            onReady={ editor => {
+                                // You can store the "editor" and use when it is needed.
+                                console.log( 'Editor is ready to use!', editor );
+                            } }
+                            onChange={ ( event, editor ) => {
+                                const data = editor.getData();
+                                setContent(data);
+                                console.log( { event, editor, data } );
+                            } }
+                            onBlur={ ( event, editor ) => {
+                                console.log( 'Blur.', editor );
+                            } }
+                            onFocus={ ( event, editor ) => {
+                                console.log( 'Focus.', editor );
+                            } }
+                        />
+                      {/*  <input className="form-control" type="textarea" maxLength="20" id="postDescriptionPopup"/>*/}
+                    </div>
+                    <div className="form-floating mb-3">
+                        <input className="form-control fileInput" type="file" maxLength="20" id="fileNo1Popup"/>
+                        <label>파일업로드 1</label>
+                    </div>
+                    <div className="form-floating mb-3">
+                        <input className="form-control fileInput" type="file" maxLength="20" id="fileNo2Popup"/>
+                        <label>파일업로드 2</label>
+                    </div>
+                    <div className="mt-4 mb-0">
+                        <div className="d-grid">
+                            <a className="btn btn-primary btn-block" id="btnRegister" onClick={postSave}>저장</a>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
+        </div>
+    );
 }
 
 export default AdminPost;

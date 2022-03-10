@@ -31,6 +31,8 @@ target/
 *.class
 .classpath
 
-yarn.lock
 public
-package-lock.json
+
+*.iml
+react-scripts
+yarn.lock
