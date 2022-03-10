@@ -8,9 +8,12 @@ import Select from "../../common/Select";
 import "../../../css/custom.css"
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {useParams} from "react-router-dom";
 
 const  AdminPost = () => {
 
+    const boardType = useParams().boardType;
+    console.log(boardType);
     const dispatch = useDispatch();
 
     // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
@@ -23,7 +26,14 @@ const  AdminPost = () => {
     const [modalTitle, setModalTitle] = useState("게시글 등록");
 
     useEffect(() => {
-        postSearch();
+
+        setTimeout(()=>{
+            if(boardType){
+                document.getElementById("boardId").value = boardType;
+            }
+            postSearch();
+        },500);
+
     },[]);
 
     const openModal = () => {
@@ -99,7 +109,8 @@ const  AdminPost = () => {
 
         let data = {
                 postId     : document.getElementById("postId").value
-            ,   postName   : document.getElementById("postName").value
+            ,   postTitle   : document.getElementById("postTitle").value
+            ,   boardId    : document.getElementById("boardId").value
             ,   useYn       : document.getElementById("useYn").value
             ,   fileYn      : document.getElementById("fileYn").value
         };
@@ -145,7 +156,7 @@ const  AdminPost = () => {
                     <input type="text" className="form-control search-slt" placeholder="게시글 ID" id="postId"/>
                 </div>
                 <div className="col-md-3 my-2">
-                    <input type="text" className="form-control search-slt" placeholder="게시글 제목" id="postName"/>
+                    <input type="text" className="form-control search-slt" placeholder="게시글 제목" id="postTitle"/>
                 </div>
                 <div className="col-md-2 my-2">
                     <Select codeStatus={"BOARD"}
