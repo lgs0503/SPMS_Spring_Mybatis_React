@@ -52,9 +52,9 @@ const  AdminCode = () => {
 
     let tableInit = {
             headerColData : [{title: "ID",         name : "codeId",       width:"40%",  hidden: false,  useData : true}
-                            ,{title: "코드명",      name : "codeName",    width:"30%",   hidden: false}
-                            ,{title: "사용여부",    name : "useYnName",   width:"20%",   hidden: false,  useData : true}
-                            ,{title: "추가",  name : "button",  width:"10%",  hidden: false,  btnValue:<i className="fa-solid fa-plus"></i>,  clickEvent: addBtnClickEvent}
+                            ,{title: "코드명",      name : "codeName",    width:"30%",   hidden: false,  useData : true}
+                            ,{title: "사용여부",    name : "useYnName",   width:"20%",   hidden: false}
+                            ,{title: "추가",      name : "button",  width:"10%",  hidden: false,  btnValue:<i className="fa-solid fa-plus"></i>,  clickEvent: addBtnClickEvent}
                             ,{title: "부모코드명",  name : "upperCodeId",  width:"0",   hidden: true,  useData : true}
                             ,{title: "코드값",      name : "codeValue",   width:"0",   hidden: true,  useData : true}
                             ,{title: "사용여부",    name : "useYn",       width:"20%",   hidden: true,  useData : true}]
@@ -78,7 +78,7 @@ const  AdminCode = () => {
                 setTimeout(() => {
 
                     tableInit.headerColData.forEach((value, index) => {
-                        if(value.useData){
+                        if(value.useData === true){
                             document.getElementById(value.name + "Popup").value = result.data.code[value.name];
                         }
                     });
@@ -95,13 +95,29 @@ const  AdminCode = () => {
                     return;
                 } else {
                     let data = {codeIds : []};
+                    let delChk = true;
 
                     data.codeIds = common.tableChkIds("chk");
 
-                    common.fetchLoad("/deleteCode","POST", data, () => {
-                        dispatch(showAlertModal('삭제 되었습니다.'));
-                        codeSearch();
-                    });
+                    bodyData.forEach((value, index)=>{
+
+                        data.codeIds.forEach((delVal, delIndex)=> {
+
+                            //console.log("delVal:"+delVal +"|codeId"+ value.codeId+"|leaf" +value.leaf);
+                            if(delVal == value.codeId && value.leaf == "0"){
+                                delChk = false;
+                                dispatch(showAlertModal('하위항목을 삭제 해주시기 바랍니다.'));
+                                return;
+                            }
+                        });
+                    })
+
+                    if(delChk){
+                        common.fetchLoad("/deleteCode","POST", data, () => {
+                            dispatch(showAlertModal('삭제 되었습니다.'));
+                            codeSearch();
+                        });
+                    }
                 }
             }
         }
