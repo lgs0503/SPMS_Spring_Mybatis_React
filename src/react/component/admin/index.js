@@ -41,6 +41,7 @@ const  AdminLayout = () => {
                           <Route path="/menu" element={<AdminMenu />} />
                           <Route path="/board" element={<AdminBoard />} />
                           <Route path="/post" element={<AdminPost />} />
+                          <Route path="/post/:boardType" element={<AdminPost />} />
                       </Routes>
                   </main>
                   <AdminFooter/>
