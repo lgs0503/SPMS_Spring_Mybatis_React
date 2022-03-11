@@ -77,11 +77,13 @@ const  AdminPost = () => {
                     document.getElementById("postTypePopup").value = result.data.post["postType"];
                     document.getElementById("fileNo1Popup").value = result.data.post["fileNo1"];
                     document.getElementById("fileNo2Popup").value = result.data.post["fileNo2"];
+
                     setContent(result.data.post["postContent"]);
                 },200);
             });
         }
         , addBtnClickEvent : () => {
+            setContent(null);
             setModalTitle("게시글 등록");
             openModal();
         }
@@ -125,22 +127,62 @@ const  AdminPost = () => {
 
     const postSave = () => {
         if(window.confirm("저장하시겠습니까?")){
-            let data = {};
 
-            data = {
-                postId : document.getElementById("postIdPopup").value,
-                boardId : document.getElementById("boardIdPopup").value,
-                postTitle : document.getElementById("postTitlePopup").value,
-                postType : document.getElementById("postTypePopup").value,
-                fileNo1 : document.getElementById("fileNo1Popup").value,
-                fileNo2 : document.getElementById("fileNo2Popup").value,
-                postContent : content
-            }
+            /*파일업로드 */
+            new Promise(function(resolve, reject){
 
-            common.fetchLoad("/savePost","POST", data, (result) => {
-                dispatch(showAlertModal('저장 되었습니다.'));
-                closeModal();
-                postSearch();
+                let resultFile = {};
+                if(document.getElementById("fileNo1Popup").value){
+
+                    let form = new FormData();
+                    form.append( "file", document.getElementById("fileNo1Popup").files[0]);
+
+                    common.fetchLoad("/file/upload", "POST", form, function (result) {
+
+                        resultFile.fileNo1 = result.uploadList[0].fileNo;
+                    }, true);
+                }
+
+                if(document.getElementById("fileNo2Popup").value){
+
+                    let form = new FormData();
+                    form.append( "file", document.getElementById("fileNo2Popup").files[0]);
+
+                    common.fetchLoad("/file/upload", "POST", form, function (result) {
+                        resultFile.fileNo2 = result.uploadList[0].fileNo;
+                    }, true);
+                }
+                console.log(resultFile);
+
+                resolve(resultFile);
+
+
+            }).then(function (resolve) {
+
+                let data = {
+                    postId : document.getElementById("postIdPopup").value,
+                    boardId : document.getElementById("boardIdPopup").value,
+                    postTitle : document.getElementById("postTitlePopup").value,
+                    postType : document.getElementById("postTypePopup").value,
+                    postContent : content
+                }
+
+                /* 이미지 번호가 있으면 회원가입에 같이 저장한다.*/
+                if (resolve.fileNo1){
+                    data.fileNo1 = resolve.fileNo1;
+                }
+
+                if (resolve.fileNo2){
+                    data.fileNo2 = resolve.fileNo2;
+                }
+
+                console.log(data);
+
+                common.fetchLoad("/savePost","POST", data, (result) => {
+                    dispatch(showAlertModal('저장 되었습니다.'));
+                    closeModal();
+                    postSearch();
+                });
             });
         }
     }
