@@ -14,6 +14,7 @@ import AdminBoard from "./content/board";
 import AdminPost from "./content/post";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../action/alertModal";
+import AdminBanner from "./content/banner";
 
 const  AdminLayout = () => {
 
@@ -39,6 +40,7 @@ const  AdminLayout = () => {
                           <Route path="/" element={<AdminMain />} />
                           <Route path="/code" element={<AdminCode />} />
                           <Route path="/menu" element={<AdminMenu />} />
+                          <Route path="/banner" element={<AdminBanner />} />
                           <Route path="/board" element={<AdminBoard />} />
                           <Route path="/post" element={<AdminPost />} />
                           <Route path="/post/:boardType" element={<AdminPost />} />
