@@ -23,6 +23,7 @@
 		LEFT JOIN	BOARD B
 		ON 			P.BOARD_ID = B.BOARD_ID
 		<include refid="postWhere"></include>
+		ORDER BY P.POST_ID DESC
 	</select>
 
 	<select id="postCnt" resultType="int" parameterType="lgs.com.post.vo.PostVO">
