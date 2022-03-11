@@ -5,9 +5,24 @@
 .modalSize4{
     max-width: 450px !important;
 }
+.modalSize5{
+    max-width: 550px !important;
+}
+.modalSize6{
+    max-width: 650px !important;
+}
+.modalSize7{
+    max-width: 750px !important;
+}
+.modalSize8{
+    max-width: 850px !important;
+}
 .modalSize9{
     max-width: 950px !important;
 }
 .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
     min-height: 200px;
+}
+.hiddenItem {
+    display: none;
 }
