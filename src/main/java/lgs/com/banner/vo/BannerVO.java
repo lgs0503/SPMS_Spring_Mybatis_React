@@ -11,9 +11,11 @@ public class BannerVO extends DefaultVO {
 	private String bannerId;
 	private String bannerTitle;
 	private String bannerStatus;
+	private String bannerStatusName;
 	private String bannerContent;
 	private String bannerImageNo;
 	private String useYn;
+	private String useYnName;
 
 	private ArrayList<String> bannerIds;
 
