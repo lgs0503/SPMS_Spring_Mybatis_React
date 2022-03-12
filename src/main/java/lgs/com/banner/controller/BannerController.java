@@ -55,7 +55,7 @@ public class BannerController {
         logger.info("searchBanner");
         CommonResponse commonResponse = new CommonResponse();
 
-        commonResponse.putData("code", bannerService.searchBanner(bannerVO));
+        commonResponse.putData("banner", bannerService.searchBanner(bannerVO));
 
         return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
