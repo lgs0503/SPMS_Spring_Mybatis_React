@@ -16,6 +16,7 @@ public class BannerVO extends DefaultVO {
 	private String bannerImageNo;
 	private String useYn;
 	private String useYnName;
+	private String fileName;
 
 	private ArrayList<String> bannerIds;
 
