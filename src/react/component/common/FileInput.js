@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import * as common from "../../comm/common";
 import "../../css/custom.css";
 
-const FileUpload  = (props) => {
+const FileInput  = (props) => {
 
     const fileChange = () => {
         document.getElementById(`fileName${props.fileId}`).value = document.getElementById(props.fileId).files[0].name;
@@ -10,6 +10,13 @@ const FileUpload  = (props) => {
 
     const fileDownLoad = () => {
 
+        const data = {
+            fileNo : props.fileNo
+        }
+
+        common.fetchLoad("/file/download","POST", data,() => {
+
+        })
     }
 
     return(
@@ -29,4 +36,4 @@ const FileUpload  = (props) => {
         </div>
     )
 };
-export default FileUpload;
+export default FileInput;
