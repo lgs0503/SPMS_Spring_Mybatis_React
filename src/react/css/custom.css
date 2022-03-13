@@ -26,3 +26,23 @@
 .hiddenItem {
     display: none;
 }
+.fileUpBtn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px 10px 0 0 ;
+}
+
+.fileDownBtnShow{
+    display: inline-block !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px 90px 0 0 ;
+}
+.fileDownBtnHidden{
+    display: none !important;
+}
+.fileItem{
+    display: none;
+}
