@@ -25,6 +25,10 @@ const AdminNavigation = () => {
                           <div className="sb-nav-link-icon"><i className="fa-solid fa-square-plus"></i></div>
                           팝업 관리
                       </Link>
+                      <Link className="nav-link" to="/admin/user">
+                          <div className="sb-nav-link-icon"><i className="fa-solid fa-user"></i></div>
+                          회원 관리
+                      </Link>
                       <div className="sb-sidenav-menu-heading">Board</div>
                       <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse"
                          data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">

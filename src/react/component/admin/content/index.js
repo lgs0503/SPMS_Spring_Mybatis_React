@@ -21,17 +21,30 @@ const  AdminMain = () => {
               <li className="breadcrumb-item active">Dashboard</li>
           </ol>
           <div className="row">
-              <AdminDashboardCard title={"공지사항"} bgColor={"card bg-primary text-white mb-4"} detailUrl={"/admin/board/notice"}/>
-              <AdminDashboardCard title={"이벤트"} bgColor={"card bg-warning text-white mb-4"} detailUrl={"/admin/board/event"}/>
-              <AdminDashboardCard title={"게시판"} bgColor={"card bg-success text-white mb-4"} detailUrl={"/admin/board/freeboard"}/>
-              <AdminDashboardCard title={"Q/A"} bgColor={"card bg-danger text-white mb-4"} detailUrl={"/admin/board/qa"}/>
+              <AdminDashboardCard title={"공지사항"} bgColor={"card bg-primary text-white mb-4"} detailUrl={"/admin/post/1"}/>
+              <AdminDashboardCard title={"자유게시판"} bgColor={"card bg-success text-white mb-4"} detailUrl={"/admin/post/2"}/>
+              <AdminDashboardCard title={"이벤트"} bgColor={"card bg-warning text-white mb-4"} detailUrl={"/admin/post/3"}/>
+              <AdminDashboardCard title={"Q/A"} bgColor={"card bg-danger text-white mb-4"} detailUrl={"/admin/post/4"}/>
           </div>
-          <div className="card-header">
-              <i className="fas fa-table me-1"></i>
-              Notice
-          </div>
-          <div className="card-body">
-              {/*<Table tableInit={tableInit}></Table>*/}
+          <div className="row">
+              <div className="col-md-6">
+                  <div className="card-header">
+                      <i className="fas fa-table me-1"></i>
+                      Notice
+                  </div>
+                  <div className="card-body">
+                      {/*<Table tableInit={tableInit}></Table>*/}
+                  </div>
+              </div>
+              <div className="col-md-6">
+                  <div className="card-header">
+                      <i className="fas fa-table me-1"></i>
+                      FreeBoard
+                  </div>
+                  <div className="card-body">
+                      {/*<Table tableInit={tableInit}></Table>*/}
+                  </div>
+              </div>
           </div>
       </div>
   );

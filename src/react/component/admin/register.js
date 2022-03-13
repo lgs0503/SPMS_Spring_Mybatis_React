@@ -154,7 +154,7 @@ const  AdminRegister = () => {
             common.fetchLoad("/registerProcessing", "POST", data, function (result) {
                 if (result.registerStatus == "1"){
                     dispatch(showAlertModal("회원가입이 성공되었습니다."));
-                    window.location.href = "../admin/login.html";
+                    window.location.href = "/spring-showpingmall/#/admin/login";
                 }
             });
         }

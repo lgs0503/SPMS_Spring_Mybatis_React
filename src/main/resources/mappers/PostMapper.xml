@@ -23,12 +23,15 @@
 		LEFT JOIN	BOARD B
 		ON 			P.BOARD_ID = B.BOARD_ID
 		<include refid="postWhere"></include>
+		ORDER BY P.POST_ID DESC
 	</select>
 
 	<select id="postCnt" resultType="int" parameterType="lgs.com.post.vo.PostVO">
 		/* postCnt 게시글 리스트 갯수 조회  */
 		SELECT	COUNT(*) CNT
-		FROM	POST
+		FROM		POST P
+		LEFT JOIN	BOARD B
+		ON 			P.BOARD_ID = B.BOARD_ID
 		<include refid="postWhere"></include>
 	</select>
 
@@ -55,13 +58,13 @@
 		/* postWhere 게시글 조회조건  */
 		<where>
 			<if test="boardId != null and boardId != ''">
-				AND 	BOARD_ID = #{boardId}
+				AND 	B.BOARD_ID = #{boardId}
 			</if>
 			<if test="postId != null and postId != ''">
-				AND 	POST_ID LIKE '%' || #{postId} || '%'
+				AND 	P.POST_ID LIKE '%' || #{postId} || '%'
 			</if>
 			<if test="postTitle != null and postTitle != ''">
-				AND 	POST_TITLE LIKE '%' || #{postTitle} || '%'
+				AND 	P.POST_TITLE LIKE '%' || #{postTitle} || '%'
 			</if>
 		</where>
 	</sql>

@@ -33,12 +33,15 @@ const  AdminCode = () => {
 
     const addBtnClickEvent = (e) => {
 
-        setModalTitle(pageTitle + " 등록");
-        openModal();
+        new Promise((resolve, reject)=>{
 
-        const target = e.target;
+            setModalTitle(pageTitle + " 등록");
+            openModal();
 
-        setTimeout(()=>{
+            resolve();
+        }).then(()=>{
+
+            const target = e.target;
 
             if(target.nodeName == "BUTTON"){
                 document.getElementById("upperCodeIdPopup").value = target.parentNode.parentNode.id;
@@ -46,8 +49,7 @@ const  AdminCode = () => {
                 //console.log(e.target.parentNode.parentNode.parentNode.id);
                 document.getElementById("upperCodeIdPopup").value = target.parentNode.parentNode.parentNode.id;
             }
-        },100);
-
+        });
     }
 
     let tableInit = {
@@ -63,27 +65,23 @@ const  AdminCode = () => {
         ,   deleted : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
+            new Promise((resolve, reject)=> {
+                setModalTitle(pageTitle+" 상세");
+                openModal();
+                let data = {
+                    codeId : e.target.parentNode.id
+                };
 
-            setModalTitle(pageTitle+" 상세");
-            openModal();
+                common.fetchLoad("/searchCode","POST", data,(result) => {
+                    resolve(result);
 
-            let data = {
-                codeId : e.target.parentNode.id
-            };
-
-            common.fetchLoad("/searchCode","POST", data,(result) => {
-
-                //console.log(result.data.code);
-
-                setTimeout(() => {
-
-                    tableInit.headerColData.forEach((value, index) => {
-                        if(value.useData === true){
-                            document.getElementById(value.name + "Popup").value = result.data.code[value.name];
-                        }
-                    });
-                },200);
-
+                });
+            }).then((result) => {
+                tableInit.headerColData.forEach((value, index) => {
+                    if(value.useData === true){
+                        document.getElementById(value.name + "Popup").value = result.data.code[value.name];
+                    }
+                });
                 document.getElementById("codeIdPopup").disabled = "disabled";
             });
         }

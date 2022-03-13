@@ -115,7 +115,7 @@ public class FileController {
             response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
 
             // 파일 읽어오기
-            FileInputStream fileInputStream = new FileInputStream(path);
+            FileInputStream fileInputStream = new FileInputStream(file);
             OutputStream out = response.getOutputStream();
 
             //1024바이트씩 계속 읽으면서 outputStream에 저장, -1이 나오면 더이상 읽을 파일이 없음
@@ -124,6 +124,9 @@ public class FileController {
             while ((read = fileInputStream.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
             }
+
+            response.flushBuffer();
+            fileInputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

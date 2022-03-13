@@ -20,7 +20,7 @@ const Select  = (props) => {
             url = "/codeList";
 
             callBack = (result) => {
-                console.log(result.data.codeList);
+                //console.log(result.data.codeList);
                 setCodeList(result.data.codeList);
 
                 if(props.chkVal){
@@ -41,10 +41,11 @@ const Select  = (props) => {
         }
 
         common.fetchLoad(url, "POST", data, callBack);
+
     },[]);
 
     return(
-        <select id={props.codeId} className={props.codeClassName} >
+        <select id={props.codeId} className={props.codeClassName} onChange={() => props.changeEventFunction()}>
             {
                 props.text ?
                 (

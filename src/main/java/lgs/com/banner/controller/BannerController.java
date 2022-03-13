@@ -2,6 +2,7 @@ package lgs.com.banner.controller;
 
 import lgs.com.banner.service.BannerService;
 import lgs.com.banner.vo.BannerVO;
+import lgs.com.utill.CommonResponse;
 import lgs.com.utill.StatusEnum;
 import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;
@@ -33,21 +34,15 @@ public class BannerController {
      * @param BannerVO 조회조건
      * @return 배너 리스트
      */
-    @RequestMapping(value = "/bannerList", method = RequestMethod.GET)
+    @RequestMapping(value = "/bannerList", method = RequestMethod.POST)
     public ResponseEntity<Message> bannerList(@RequestBody BannerVO bannerVO) {
         logger.info("bannerList");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        CommonResponse commonResponse = new CommonResponse();
 
-        Map<String, Object> data = new HashMap<String, Object>();
+        commonResponse.putData("bannerList", bannerService.bannerList(bannerVO));
+        commonResponse.putData("bannerCnt", bannerService.bannerCnt(bannerVO));
 
-        message.setStatus(StatusEnum.OK);
-        data.put("bannerList", bannerService.bannerList(bannerVO));
-        data.put("bannerCnt", bannerService.bannerCnt(bannerVO));
-        message.setData(data);
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -55,20 +50,13 @@ public class BannerController {
      * @param BannerVO 조회조건
      * @return 배너 리스트
      */
-    @RequestMapping(value = "/searchBanner", method = RequestMethod.GET)
+    @RequestMapping(value = "/searchBanner", method = RequestMethod.POST)
     public ResponseEntity<Message> searchBanner(@RequestBody BannerVO bannerVO) {
         logger.info("searchBanner");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        CommonResponse commonResponse = new CommonResponse();
+        commonResponse.putData("banner", bannerService.searchBanner(bannerVO));
 
-        Map<String, Object> data = new HashMap<String, Object>();
-
-        message.setStatus(StatusEnum.OK);
-        data.put("banner", bannerService.searchBanner(bannerVO));
-        message.setData(data);
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -78,28 +66,22 @@ public class BannerController {
     @RequestMapping(value = "/saveBanner", method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<Message> saveBanner(@RequestBody BannerVO bannerVO) {
         logger.info("saveBanner");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         bannerService.saveBanner(bannerVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
      *  배너 삭제
      * @param BannerVO 삭제 배너 데이터
      */
-    @RequestMapping(value = "/deleteBanner", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteBanner", method = RequestMethod.POST)
     public ResponseEntity<Message> deleteBanner(@RequestBody BannerVO bannerVO) {
         logger.info("deleteBanner");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         bannerService.deleteBanner(bannerVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 }
