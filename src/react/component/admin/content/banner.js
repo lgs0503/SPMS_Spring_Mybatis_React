@@ -8,39 +8,43 @@ import Select from "../../common/Select";
 import "../../../css/custom.css";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
+import FileInput from "../../common/FileInput";
 
 const  AdminBanner = () => {
 
     const dispatch = useDispatch();
 
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    const [modalOpen, setModalOpen] = useState(false);
-
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
-    const [content, setContent] = useState("");
 
-    const [modalTitle, setModalTitle] = useState("배너 등록");
+    const [modalStatus, setModalStatus] = useState({
+        title : "배너등록",
+        chkStatus : "1",
+        content : "",
+        open : false,
+        bannerImageNo : null
+    })
 
     useEffect(() => {
         bannerSearch();
     },[]);
 
-    const openModal = () => {
-        setModalOpen(true);
-    };
-
     const closeModal = () => {
-        setModalOpen(false);
+        setModalStatus(prevState => {
+            return{
+                ...prevState
+                , open : false
+            }
+        })
     };
 
     let tableInit = {
-        headerColData : [{title: "ID",         name : "bannerId",             width:"10px",  hidden: false,  useData : true}
-            ,{title: "배너명",    name : "bannerTitle",           width:"30%",   hidden: false,  useData : true}
-            ,{title: "배너타입",    name : "bannerStatusName",    width:"30%",   hidden: false,  useData : false}
-            ,{title: "사용여부",    name : "useYnName",           width:"12%",   hidden: false,  useData : false}
-            ,{title: "배너타입",  name : "bannerStatus",          width:"0",   hidden: true,  useData : true}
-            ,{title: "사용여부",    name : "useYn",               width:"0",     hidden: true,   useData : true}]
+        headerColData : [{title: "ID",         name : "bannerId",            width:"10px",  hidden: false,  useData : true}
+                        ,{title: "배너명",      name : "bannerTitle",         width:"50%",   hidden: false,  useData : true}
+                        ,{title: "배너타입",    name : "bannerStatusName",    width:"30%",   hidden: false,  useData : false}
+                        ,{title: "사용여부",    name : "useYnName",           width:"12%",   hidden: false,  useData : false}
+                        ,{title: "배너타입",    name : "bannerStatus",        width:"0",     hidden: true,   useData : true}
+                        ,{title: "사용여부",    name : "useYn",               width:"0",     hidden: true,   useData : true}]
         ,   title : "Banner List"
         ,   selectCol : 'bannerId'
         ,   deleted : true
@@ -49,41 +53,66 @@ const  AdminBanner = () => {
         ,   colSpan : 4
         ,   cellSelectEvent : (e) => {
 
-            setModalTitle("배너 상세");
-            openModal();
-
             let data = {
                 bannerId : e.target.parentNode.id
             };
 
             new Promise((resolve, reject)=> {
                 common.fetchLoad("/searchBanner","POST", data,(result) => {
+
+                    setModalStatus(prevState => {
+                        return {
+                            ...prevState
+                            , open: true
+                            , title: "배너 상세"
+                            , content : result.data.banner["bannerContent"]
+                            , chkStatus : result.data.banner["bannerStatus"]
+                        }
+                    });
+
                     resolve(result);
                 });
             }).then((result)=>{
 
                 tableInit.headerColData.forEach((value, index) => {
-                    console.log(value);
+                    //console.log(value);
                     if(value.useData)
                         document.getElementById(value.name + "Popup").value = result.data.banner[value.name];
                 });
 
-                if(common.nullCheck(result.data.banner["bannerContent"])){
-                    setContent(result.data.banner["bannerContent"]);
-                }
-
                 bannerStatusChange(result.data.banner["bannerStatus"]);
 
-                setTimeout(()=>{
-                    document.getElementById("bannerStatusPopup").value = result.data.banner["bannerStatus"];
-                },200)
-            });
+                if(result.data.banner["fileName"]){
+                    document.getElementById("fileName_bannerImageNo").value = result.data.banner["fileName"];
 
+                    setModalStatus((prevState => {
+                        return{
+                            ...prevState
+                            , bannerImageNo: result.data.banner["bannerImageNo"]
+                        }
+                    }));
+                } else {
+                    setModalStatus((prevState => {
+                        return{
+                            ...prevState
+                            , bannerImageNo: null
+                        }
+                    }));
+                }
+            });
         }
         , addBtnClickEvent : () => {
-            setContent(null);
-            setModalTitle("배너 등록");
-            openModal();
+
+            setModalStatus(prevState => {
+                return {
+                    ...prevState
+                    , open: true
+                    , title: "배너 등록"
+                    , chkStatus : 1
+                    , content : null
+                    , bannerImageNo : null
+                }
+            });
         }
         , deleteBtnClickEvent :() => {
             if(window.confirm("삭제하시겠습니까?")){
@@ -108,7 +137,7 @@ const  AdminBanner = () => {
     const bannerSearch = () => {
 
         let data = {
-            bannerId     : document.getElementById("bannerId").value
+                bannerId     : document.getElementById("bannerId").value
             ,   bannerTitle   : document.getElementById("bannerTitle").value
             ,   useYn       : document.getElementById("useYn").value
         };
@@ -148,8 +177,8 @@ const  AdminBanner = () => {
                         data[value.name] =  document.getElementById(value.name + "Popup").value;
                 });
 
-                if(content){
-                    data.bannerContent = content;
+                if(modalStatus.content){
+                    data.bannerContent = modalStatus.content;
                 }
 
                 /* 이미지 번호가 있으면 같이 저장한다.*/
@@ -160,7 +189,12 @@ const  AdminBanner = () => {
 
                 common.fetchLoad("/saveBanner","POST", data, (result) => {
                     dispatch(showAlertModal('저장 되었습니다.'));
-                    closeModal();
+                    setModalStatus(prevState => {
+                        return{
+                            ...prevState
+                            , open : false
+                        }
+                    })
                     bannerSearch();
                 });
             });
@@ -186,6 +220,13 @@ const  AdminBanner = () => {
         } else {
             htmlForm.classList.add("hiddenItem");
             imageForm.classList.remove("hiddenItem");
+
+            setModalStatus((prevState => {
+                return{
+                    ...prevState
+                    , bannerImageNo: null
+                }
+            }));
         }
     }
 
@@ -219,7 +260,7 @@ const  AdminBanner = () => {
                    bodyData={bodyData}
                    bodyCnt={bodyCnt}/>
 
-            <Modal open={modalOpen} close={closeModal} header={modalTitle} modalSize={"modalSize6"}>
+            <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title} modalSize={"modalSize6"}>
                 <form id="formTest">
                     <div className="form-floating mb-3">
                         <input className="form-control" type="text" maxLength="20" id="bannerIdPopup" disabled={true}/>
@@ -233,13 +274,13 @@ const  AdminBanner = () => {
                         <Select upperCodeId={"BAN001"}
                                 codeId={"bannerStatusPopup"}
                                 codeClassName={"form-select"}
-                                chkVal={"1"}
+                                chkVal={modalStatus.chkStatus}
                                 changeEventFunction={bannerStatusChange}/>
                         <label>배너 타입</label>
                     </div>
                     <div id="htmlForm" className="form-floating mb-3">
                         <CKEditor
-                            data = {content}
+                            data = {modalStatus.content}
                             editor={ ClassicEditor }
                             config={{
                                 language: "ko",
@@ -277,7 +318,12 @@ const  AdminBanner = () => {
                             } }
                             onChange={ ( event, editor ) => {
                                 const data = editor.getData();
-                                setContent(data);
+                                setModalStatus((prevState => {
+                                    return{
+                                        ...prevState, content: data
+                                    }
+                                }))
+                                //setContent(data);
                                 console.log( { event, editor, data } );
                             } }
                             onBlur={ ( event, editor ) => {
@@ -288,10 +334,9 @@ const  AdminBanner = () => {
                             } }
                         />
                     </div>
-                    <div id="ImageForm" className="form-floating mb-3 hiddenItem">
-                        <input className="form-control fileInput" type="file" maxLength="20" id="bannerImageNo"/>
-                        <label>Image 첨부</label>
-                    </div>
+                    <FileInput fileId={"bannerImageNo"}
+                               label={"이미지 첨부"}
+                               fileNo={modalStatus.bannerImageNo}/>
                     <div className="form-floating mb-3">
                         <Select upperCodeId={"U001"}
                                 codeId={"useYnPopup"}
