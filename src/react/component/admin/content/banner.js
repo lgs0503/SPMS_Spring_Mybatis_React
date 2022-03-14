@@ -336,7 +336,8 @@ const  AdminBanner = () => {
                     </div>
                     <FileInput fileId={"bannerImageNo"}
                                label={"이미지 첨부"}
-                               fileNo={modalStatus.bannerImageNo}/>
+                               fileNo={modalStatus.bannerImageNo}
+                               fileClassName={"form-floating mb-3 hiddenItem"}/>
                     <div className="form-floating mb-3">
                         <Select upperCodeId={"U001"}
                                 codeId={"useYnPopup"}
