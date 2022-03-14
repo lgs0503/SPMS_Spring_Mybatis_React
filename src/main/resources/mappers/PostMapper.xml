@@ -37,21 +37,31 @@
 
 	<select id="searchPost" resultType="lgs.com.post.vo.PostVO" parameterType="lgs.com.post.vo.PostVO">
 		/* searchPost 게시글  조회  */
-		SELECT	BOARD_ID
-			,	POST_ID
-			,	POST_TYPE
-			,	POST_TITLE
-			,	POST_CONTENT
-			,	VIEW_CNT
-			,	DELETED
-			,	FILE_NO1
-			,	FILE_NO2
-			,	CREATE_DATE
-			,	CREATE_USER
-			,	UPDATE_DATE
-			,	UPDATE_USER
-		FROM	POST
-		WHERE	POST_ID = #{postId}
+		SELECT	P.BOARD_ID
+			,	P.POST_ID
+			,	P.POST_TYPE
+			,	P.POST_TITLE
+			,	P.POST_CONTENT
+			,	P.VIEW_CNT
+			,	P.DELETED
+			,	P.FILE_NO1
+			,	P.FILE_NO2
+			,	P.CREATE_DATE
+			,	P.CREATE_USER
+			,	P.UPDATE_DATE
+			,	P.UPDATE_USER
+			,  CASE WHEN F1.FILE_NAME IS NOT NULL
+					THEN F1.FILE_NAME || '.' ||F1.FILE_EXTEN
+					ELSE NULL END FILE_NO1_NAME
+			,  CASE WHEN F2.FILE_NAME IS NOT NULL
+					THEN F2.FILE_NAME || '.' ||F2.FILE_EXTEN
+					ELSE NULL END FILE_NO2_NAME
+		FROM			POST P
+		LEFT OUTER JOIN FILE_INFO F1
+		ON 				P.FILE_NO1 = F1.FILE_NO
+		LEFT OUTER JOIN FILE_INFO F2
+		ON 				P.FILE_NO2 = F2.FILE_NO
+		WHERE	P.POST_ID = #{postId}
 	</select>
 
 	<sql id="postWhere">
