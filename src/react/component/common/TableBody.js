@@ -61,7 +61,9 @@ const TableBody = (props) => {
                 common.nullCheck(props.bodyData) == true
                 ?
                     props.bodyData.slice(props.offset, props.offset + props.limit).map((value, index) => (
-                        <tr data-bs-target={value["upperCodeId"] ? value["upperCodeId"] : null} className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
+                        <tr data-bs-target={value["upperCodeId"] ? value["upperCodeId"] : (value["upperMenuId"] ? value["upperMenuId"] : null )}
+
+                            className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
                             {checkBox}
                             {
                                 props.tableInit.headerColData.map((headerVal, headerIndex) =>
