@@ -92,15 +92,19 @@ const  AdminPost = () => {
                 document.getElementById("postTitlePopup").value = result.data.post["postTitle"];
                 document.getElementById("postTypePopup").value = result.data.post["postType"];
 
-                document.getElementById("fileName_fileNo1").value = result.data.banner["fileNo1Name"];
-                document.getElementById("fileName_fileNo2").value = result.data.banner["fileNo2Name"];
+                if(result.data.post["fileNoName1"]){
+                    document.getElementById("fileName_fileNo1").value = result.data.post["fileNoName1"];
+                }
+                if(result.data.post["fileNoName2"]){
+                    document.getElementById("fileName_fileNo2").value = result.data.post["fileNoName2"];
+                }
 
                 setModalStatus((prevState => {
                     return{
                         ...prevState
                         ,   content : result.data.post["postContent"]
-                        ,   fileNo1: result.data.banner["fileNo1"]
-                        ,   fileNo2: result.data.banner["fileNo2"]
+                        ,   fileNo1: result.data.post["fileNo1"]
+                        ,   fileNo2: result.data.post["fileNo2"]
                     }
                 }));
             });
