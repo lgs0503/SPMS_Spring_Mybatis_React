@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-const  AdminDashboardCard = (prop) => {
+const  BoardCard = (prop) => {
     return (
         <div className="col-xl-3 col-md-6">
             <div className={prop.bgColor}>
@@ -15,4 +15,4 @@ const  AdminDashboardCard = (prop) => {
   );
 }
 
-export default AdminDashboardCard;
+export default BoardCard;
