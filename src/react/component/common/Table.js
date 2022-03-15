@@ -47,7 +47,15 @@ const Table  = (props) => {
                                limit={limit}/>
                 </table>
                 <div className={"table-bottom"}>
-                    <div>총 <strong>{props.bodyCnt}</strong> 건 조회</div>
+                    {
+                        props.tableInit.counted == false
+                        ?
+                        null
+                        :
+                        (
+                            <div>총 <strong>{props.bodyCnt}</strong> 건 조회</div>
+                        )
+                    }
                     {
                         props.tableInit.pagination == true
                         ?
