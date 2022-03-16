@@ -9,34 +9,41 @@ import Select from "../../common/Select";
 const  AdminCode = () => {
     const dispatch = useDispatch();
 
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    const [modalOpen, setModalOpen] = useState(false);
-
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
 
     const pageTitle = "코드";
-    const [modalTitle, setModalTitle] = useState(pageTitle + " 등록");
-    const [overLab, setOverLab] = useState(false);
+
+    const [modalStatus, setModalStatus] = useState({
+        title : pageTitle + "등록"
+        ,   open : false
+        ,   overLab : false
+    });
 
     useEffect(() => {
         codeSearch();
     },[]);
 
-    const openModal = () => {
-        setModalOpen(true);
-    };
-
     const closeModal = () => {
-        setModalOpen(false);
+        setModalStatus((prevState => {
+            return {
+                ...prevState
+                , open : false
+            }
+        }));
     };
 
     const addBtnClickEvent = (e) => {
 
         new Promise((resolve, reject)=>{
 
-            setModalTitle(pageTitle + " 등록");
-            openModal();
+            setModalStatus((prevState => {
+                return {
+                    ...prevState
+                    , open : true
+                    , title : pageTitle + "등록"
+                }
+            }));
 
             resolve();
         }).then(()=>{
@@ -66,8 +73,15 @@ const  AdminCode = () => {
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
             new Promise((resolve, reject)=> {
-                setModalTitle(pageTitle+" 상세");
-                openModal();
+
+                setModalStatus((prevState => {
+                    return {
+                        ...prevState
+                        , open : true
+                        , title : pageTitle + "상세"
+                    }
+                }));
+
                 let data = {
                     codeId : e.target.parentNode.id
                 };
@@ -139,7 +153,7 @@ const  AdminCode = () => {
 
     const codeSave = () => {
         if(window.confirm("저장하시겠습니까?")){
-            if(overLab){
+            if(modalStatus.overLab){
                 dispatch(showAlertModal('중복된 코드가 존재합니다.'));
                 return;
             }
@@ -166,16 +180,23 @@ const  AdminCode = () => {
 
         common.fetchLoad("/searchCode","POST", data,(result) => {
             //console.log(result.data.code);
+            let resultOverLab = false;
             if(result.data.code){
                 document.getElementById("idCheck").innerText = "중복된 코드가 존재합니다.";
                 document.getElementById("idCheck").style.color = "red";
-                setOverLab(true);
+                resultOverLab = true;
             } else {
                 document.getElementById("idCheck").innerText = "코드";
                 document.getElementById("idCheck").style.color = "black";
-                setOverLab(false);
+                resultOverLab = false;
             }
-            
+
+            setModalStatus((prevState => {
+                return {
+                    ...prevState
+                    , overLab : resultOverLab
+                }
+            }));
         });
     }
 
@@ -209,7 +230,7 @@ const  AdminCode = () => {
                    bodyData={bodyData}
                    bodyCnt={bodyCnt}/>
 
-            <Modal open={modalOpen} close={closeModal} header={modalTitle}>
+            <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title}>
                 <form id="formTest">
                     <div className="form-floating mb-3">
                         <input className="form-control" type="text" maxLength="20" id="codeIdPopup" onChange={codeOverlapChk}/>
