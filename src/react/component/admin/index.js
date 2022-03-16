@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import AdminHeader from "./layout/header";
 import AdminNavigation from "./layout/navigation";
 import AdminFooter from "./layout/footer";
-import {HashRouter, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 
 import AdminMain from "./content";
 import AdminCode from "./content/code";
@@ -15,6 +15,7 @@ import AdminPost from "./content/post";
 import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../action/alertModal";
 import AdminBanner from "./content/banner";
+import AdminPopup from "./content/popup";
 
 const  AdminLayout = () => {
 
@@ -28,7 +29,6 @@ const  AdminLayout = () => {
         }
     },[]);
 
-
   return (
       <div className="sb-nav-fixed">
           <AdminHeader title={"Admin"}/>
@@ -38,12 +38,13 @@ const  AdminLayout = () => {
                   <main>
                       <Routes>
                           <Route path="/" element={<AdminMain />} />
-                          <Route path="/code" element={<AdminCode />} />
-                          <Route path="/menu" element={<AdminMenu />} />
-                          <Route path="/banner" element={<AdminBanner />} />
-                          <Route path="/board" element={<AdminBoard />} />
-                          <Route path="/post" element={<AdminPost />} />
-                          <Route path="/post/:boardType" element={<AdminPost />} />
+                          <Route path="/code" element={<AdminCode/>} />
+                          <Route path="/menu" element={<AdminMenu/>} />
+                          <Route path="/banner" element={<AdminBanner/>} />
+                          <Route path="/board" element={<AdminBoard/>} />
+                          <Route path="/post" element={<AdminPost/>} />
+                          <Route path="/popup" element={<AdminPopup/>} />
+                          <Route path="/post/:boardType" element={<AdminPost/>} />
                       </Routes>
                   </main>
                   <AdminFooter/>
