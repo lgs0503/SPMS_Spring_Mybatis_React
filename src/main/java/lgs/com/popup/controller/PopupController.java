@@ -2,6 +2,7 @@ package lgs.com.popup.controller;
 
 import lgs.com.popup.service.PopupService;
 import lgs.com.popup.vo.PopupVO;
+import lgs.com.utill.CommonResponse;
 import lgs.com.utill.StatusEnum;
 import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;
@@ -36,18 +37,12 @@ public class PopupController {
     @RequestMapping(value = "/popupList", method = RequestMethod.GET)
     public ResponseEntity<Message> popupList(@RequestBody PopupVO popupVO) {
         logger.info("popupList");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        Map<String, Object> data = new HashMap<String, Object>();
+        CommonResponse commonResponse = new CommonResponse();
+        commonResponse.putData("popupList", popuptService.popupList(popupVO));
+        commonResponse.putData("popupCnt", popuptService.popupCnt(popupVO));
 
-        message.setStatus(StatusEnum.OK);
-        data.put("popupList", popuptService.popupList(popupVO));
-        data.put("popupCnt", popuptService.popupCnt(popupVO));
-        message.setData(data);
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -58,17 +53,11 @@ public class PopupController {
     @RequestMapping(value = "/searchPopup", method = RequestMethod.GET)
     public ResponseEntity<Message> searchPopup(@RequestBody PopupVO popupVO) {
         logger.info("searchPopup");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        Map<String, Object> data = new HashMap<String, Object>();
+        CommonResponse commonResponse = new CommonResponse();
+        commonResponse.putData("popup", popuptService.searchPopup(popupVO));
 
-        message.setStatus(StatusEnum.OK);
-        data.put("popup", popuptService.searchPopup(popupVO));
-        message.setData(data);
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -78,13 +67,9 @@ public class PopupController {
     @RequestMapping(value = "/savePopup", method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<Message> savePopup(@RequestBody PopupVO popupVO) {
         logger.info("savePopup");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
         popuptService.savePopup(popupVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -94,12 +79,9 @@ public class PopupController {
     @RequestMapping(value = "/deletePopup", method = RequestMethod.DELETE)
     public ResponseEntity<Message> deletePopup(@RequestBody PopupVO popupVO) {
         logger.info("deletePopup");
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         popuptService.deletePopup(popupVO);
-        message.setStatus(StatusEnum.OK);
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        CommonResponse commonResponse = new CommonResponse();
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
 }
