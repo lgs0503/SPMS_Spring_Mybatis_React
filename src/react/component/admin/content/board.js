@@ -11,24 +11,33 @@ const  AdminBoard = () => {
 
     const dispatch = useDispatch();
 
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    const [modalOpen, setModalOpen] = useState(false);
 
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
 
-    const [modalTitle, setModalTitle] = useState("게시판 등록");
+    // // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+    // const [modalOpen, setModalOpen] = useState(false);
+    // const [modalTitle, setModalTitle] = useState("게시판 등록");
+    const [modalStatus, setModalStatus] = useState ({
+            title : "게시판 등록"
+        ,   open : false
+    })
 
     useEffect(() => {
         boardSearch();
     },[]);
 
-    const openModal = () => {
-        setModalOpen(true);
-    };
+    // const openModal = () => {
+    //     setModalOpen(true);
+    // };
 
     const closeModal = () => {
-        setModalOpen(false);
+        setModalStatus((prevState => {
+            return {
+                ...prevState
+                ,   open : false
+            }
+        }));
     };
 
     let tableInit = {
@@ -49,29 +58,38 @@ const  AdminBoard = () => {
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
 
-            setModalTitle("게시판 상세");
-            openModal();
+            setModalStatus((prevState => {
+                return {
+                    ...prevState
+                    ,   title : "게시판 상세"
+                    ,   open : true
+                }
+            }));
 
             let data = {
                 boardId : e.target.parentNode.id
             };
 
-            common.fetchLoad("/searchBoard","POST", data,(result) => {
-
-                //console.log(result.data.board);
-                setTimeout(() => {
-
-                    tableInit.headerColData.forEach((value, index) => {
-                        if(value.useData === true) {
-                            document.getElementById(value.name + "Popup").value = result.data.board[value.name];
-                        }
-                    });
-                },200);
+            new Promise ((resolve, reject) => {
+                common.fetchLoad("/searchBoard","POST", data,(result) => {
+                   resolve(result);
+                });
+            }).then((result)=>{
+                tableInit.headerColData.forEach((value, index) => {
+                    if(value.useData === true) {
+                        document.getElementById(value.name + "Popup").value = result.data.board[value.name];
+                    }
+                });
             });
         }
         , addBtnClickEvent : () => {
-            setModalTitle("게시판 등록");
-            openModal();
+            setModalStatus((prevState => {
+                return {
+                    ...prevState
+                    ,   title : "게시판 등록"
+                    ,   open : true
+                }
+            }));
         }
         , deleteBtnClickEvent :() => {
             if(window.confirm("삭제하시겠습니까?")){
@@ -161,7 +179,7 @@ const  AdminBoard = () => {
                  bodyData={bodyData}
                  bodyCnt={bodyCnt}/>
 
-          <Modal open={modalOpen} close={closeModal} header={modalTitle}>
+          <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title}>
               <form id="formTest">
                   <div className="form-floating mb-3">
                       <input className="form-control" type="text" maxLength="20" id="boardIdPopup" disabled={true}/>
