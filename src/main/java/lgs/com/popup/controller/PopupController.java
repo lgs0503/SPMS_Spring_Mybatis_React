@@ -27,20 +27,20 @@ public class PopupController {
     private static final Logger logger = LoggerFactory.getLogger(PopupController.class);
 
     @Autowired
-    PopupService popuptService;
+    PopupService popupService;
 
     /**
      *  팝업 리스트 조회
      * @param PopupVO 조회조건
      * @return 팝업 리스트
      */
-    @RequestMapping(value = "/popupList", method = RequestMethod.GET)
+    @RequestMapping(value = "/popupList", method = RequestMethod.POST)
     public ResponseEntity<Message> popupList(@RequestBody PopupVO popupVO) {
         logger.info("popupList");
 
         CommonResponse commonResponse = new CommonResponse();
-        commonResponse.putData("popupList", popuptService.popupList(popupVO));
-        commonResponse.putData("popupCnt", popuptService.popupCnt(popupVO));
+        commonResponse.putData("popupList", popupService.popupList(popupVO));
+        commonResponse.putData("popupCnt", popupService.popupCnt(popupVO));
 
         return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
@@ -50,12 +50,12 @@ public class PopupController {
      * @param PopupVO 조회조건
      * @return 팝업 리스트
      */
-    @RequestMapping(value = "/searchPopup", method = RequestMethod.GET)
+    @RequestMapping(value = "/searchPopup", method = RequestMethod.POST)
     public ResponseEntity<Message> searchPopup(@RequestBody PopupVO popupVO) {
         logger.info("searchPopup");
 
         CommonResponse commonResponse = new CommonResponse();
-        commonResponse.putData("popup", popuptService.searchPopup(popupVO));
+        commonResponse.putData("popup", popupService.searchPopup(popupVO));
 
         return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class PopupController {
     @RequestMapping(value = "/savePopup", method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<Message> savePopup(@RequestBody PopupVO popupVO) {
         logger.info("savePopup");
-        popuptService.savePopup(popupVO);
+        popupService.savePopup(popupVO);
         CommonResponse commonResponse = new CommonResponse();
         return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
@@ -76,11 +76,11 @@ public class PopupController {
      *  팝업 삭제
      * @param PopupVO 삭제 팝업 데이터
      */
-    @RequestMapping(value = "/deletePopup", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deletePopup", method = RequestMethod.POST)
     public ResponseEntity<Message> deletePopup(@RequestBody PopupVO popupVO) {
         logger.info("deletePopup");
 
-        popuptService.deletePopup(popupVO);
+        popupService.deletePopup(popupVO);
         CommonResponse commonResponse = new CommonResponse();
         return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
     }
