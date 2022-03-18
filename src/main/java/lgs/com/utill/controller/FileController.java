@@ -5,19 +5,19 @@ import lgs.com.utill.vo.FileVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,12 +93,33 @@ public class FileController {
         return mv;
     }
 
+    @PostMapping("/download")
+    public ResponseEntity<?> downloadTest(@RequestBody FileVO fileVO, HttpServletResponse response) throws IOException {
+        fileVO = fileService.fileSearch(fileVO);
+
+        /* 업로드 경로 + 파일명 + 파일확장자*/
+        String path = uploadPath + "/" + fileVO.getFilePhysicalName() + '.' + fileVO.getFileExten();
+
+        File file = new File(path);
+        InputStreamResource resource3 = new InputStreamResource(new FileInputStream(file));
+
+        if(fileVO.getFileName() != null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                    .body(resource3);
+        }else{
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+
     /**
      *  파일 다운로드
      * @param HttpServletResponse 업로드 파일 정보를 담은 request
      * @return ModelAndView 업로드 파일 정보 및 업로드 성공여부
      */
-    @RequestMapping(value="/file/download", method=RequestMethod.POST)
+    @PostMapping("/file/download")
     public void download(@RequestBody FileVO fileVO, HttpServletResponse response) throws Exception {
         logger.info("download");
 
