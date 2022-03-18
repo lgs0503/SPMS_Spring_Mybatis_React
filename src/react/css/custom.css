@@ -46,3 +46,33 @@
 .fileItem{
     display: none;
 }
+.sb-sidenav-menu::-webkit-scrollbar{
+    /* 스크롤바 막대 너비 설정 */
+    width: 6px;
+}
+/* 스크롤바 막대 설정*/
+.sb-sidenav-menu::-webkit-scrollbar-thumb{
+    /* 스크롤바 막대 높이 설정 */
+    height: 17%;
+    background-color: #343a40;
+    border-radius: 10px;
+}
+/* 스크롤바 뒷 배경 설정*/
+.sb-sidenav-menu::-webkit-scrollbar-track{
+    background-color: rgba(0,0,0,0);
+}
+body::-webkit-scrollbar{
+    /* 스크롤바 막대 너비 설정 */
+    width: 6px;
+}
+/* 스크롤바 막대 설정*/
+body::-webkit-scrollbar-thumb{
+    /* 스크롤바 막대 높이 설정 */
+    height: 17%;
+    background-color: #343a40;
+    border-radius: 10px;
+}
+/* 스크롤바 뒷 배경 설정*/
+body::-webkit-scrollbar-track{
+    background-color: rgba(0,0,0,0);
+}
