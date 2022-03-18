@@ -109,7 +109,7 @@ public class PopupControllerTest {
         popupVO.setPopupStatus("0");
         popupVO.setPopupTitle("테스트");
         popupVO.setPopupUrl("/test");
-        popupVO.setUesYn("Y");
+        popupVO.setUseYn("Y");
 
         mockMvc.perform(put("/savePopup")
                 .contentType(contentType)
