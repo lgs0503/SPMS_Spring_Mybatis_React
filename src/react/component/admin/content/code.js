@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import * as common from "../../../comm/common";
-import {showAlertModal} from "../../../action/alertModal";
+import {showAlertModal} from "../../../action/aciton";
 import Table from "../../common/Table";
 import Modal from "../../common/Modal";
 import Select from "../../common/Select";

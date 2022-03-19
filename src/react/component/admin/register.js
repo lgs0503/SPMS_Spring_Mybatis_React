@@ -7,7 +7,7 @@ import DaumPostcode from 'react-daum-postcode';
 import Modal from "../common/Modal";
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../action/alertModal";
+import {showAlertModal} from "../../action/aciton";
 import "../../css/custom.css"
 
 const  AdminRegister = () => {

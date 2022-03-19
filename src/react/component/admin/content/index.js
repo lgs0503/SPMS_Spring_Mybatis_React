@@ -2,8 +2,12 @@ import React, {useEffect, useState} from 'react';
 import BoardCard from "./boardCard";
 import Table from "../../common/Table";
 import * as common from "../../../comm/common";
+import {useDispatch, useSelector} from "react-redux";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 
 const  AdminMain = () => {
+
+    const dispatch = useDispatch();
 
     const [bodyNoticeData, setBodyNoticeData] = useState(null);
     const [bodyFreeBoardData, setBodyFreeBoardData] = useState(null);
@@ -21,6 +25,7 @@ const  AdminMain = () => {
         ,   title : 'Notice List'
         ,   maxData : 5
         ,   colSpan : 4
+        ,   maxItem : 5
         ,   cellSelectEvent : (e) => {
         }
     };
@@ -32,6 +37,7 @@ const  AdminMain = () => {
         ,   title : 'FreeBoard List'
         ,   maxData : 5
         ,   colSpan : 4
+        ,   maxItem : 5
         ,   cellSelectEvent : (e) => {
         }
     }
@@ -41,7 +47,8 @@ const  AdminMain = () => {
     },[]);
 
     const postSearch = () => {
-
+        dispatch(showLoading());
+        
         const callBack = [
             (result)=> {
                 setBodyNoticeData(result.data.postList);
@@ -55,6 +62,7 @@ const  AdminMain = () => {
 
         data.forEach((value, index)=>{
             common.fetchLoad("/postList","POST", value, callBack[index]);
+
         })
     }
 

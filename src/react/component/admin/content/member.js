@@ -4,7 +4,7 @@ import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
 import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/alertModal";
+import {showAlertModal} from "../../../action/aciton";
 import Select from "../../common/Select";
 
 const  AdminMember = () => {

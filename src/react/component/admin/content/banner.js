@@ -3,7 +3,7 @@ import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/alertModal";
+import {showAlertModal} from "../../../action/aciton";
 import Select from "../../common/Select";
 import "../../../css/custom.css";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";

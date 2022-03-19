@@ -6,7 +6,7 @@ import "../../css/styles.css";
 import * as common from "../../comm/common";
 import AdminLoginRegiFooter from "./footer";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../action/alertModal";
+import {showAlertModal} from "../../action/aciton";
 
 const  AdminLogin = () => {
     const dispatch = useDispatch();
