@@ -13,7 +13,7 @@ import * as common from "../../comm/common";
 import AdminBoard from "./content/board";
 import AdminPost from "./content/post";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../action/alertModal";
+import {showAlertModal} from "../../action/aciton";
 import AdminBanner from "./content/banner";
 import AdminPopup from "./content/popup";
 import AdminMember from "./content/member";
