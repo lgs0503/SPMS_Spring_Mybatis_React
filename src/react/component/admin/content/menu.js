@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import * as common from "../../../comm/common";
-import {showAlertModal} from "../../../action/aciton";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Table from "../../common/Table";
 import Modal from "../../common/Modal";
 import Select from "../../common/Select";
 
 const  AdminMenu = () => {
     const dispatch = useDispatch();
-
 
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
@@ -20,11 +19,6 @@ const  AdminMenu = () => {
         ,   open : false
         ,   overLab : false
     });
-
-    //const [modalTitle, setModalTitle] = useState(pageTitle + " 등록");
-    //const [overLab, setOverLab] = useState(false);
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    //const [modalOpen, setModalOpen] = useState(false);
 
     const closeModal = () => {
         setModalStatus((prevState => {
@@ -38,6 +32,7 @@ const  AdminMenu = () => {
     useEffect(() => {
         menuSearch();
     },[]);
+
     const addBtnClickEvent = (e) => {
 
         new Promise((resolve, reject)=>{
@@ -78,6 +73,7 @@ const  AdminMenu = () => {
         ,   deleted : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
             new Promise((resolve, reject)=> {
 
                 setModalStatus((prevState => {
@@ -102,6 +98,7 @@ const  AdminMenu = () => {
                     }
                 });
                 document.getElementById("menuIdPopup").disabled = "disabled";
+                dispatch(hideLoading());
             });
         }
         , deleteBtnClickEvent :() => {
@@ -141,6 +138,7 @@ const  AdminMenu = () => {
     }
 
     const menuSearch = () => {
+        dispatch(showLoading());
 
         let data = {
                 menuId     : document.getElementById("menuId").value
@@ -153,6 +151,7 @@ const  AdminMenu = () => {
             //console.log(result.data.menuCnt);
             setBodyData(result.data.menuList);
             setBodyCnt(result.data.menuCnt);
+            dispatch(hideLoading());
         });
     }
 

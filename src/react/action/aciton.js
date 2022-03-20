@@ -19,12 +19,18 @@ export const hideAlertModal = () => {
 
 export const showLoading = () => {
     return {
-        type: SHOW_LOADING
+        type: SHOW_LOADING,
+        payload: {
+            show: true,
+        }
     };
 };
 
 export const hideLoading = () => {
     return {
-        type: HIDE_LOADING
+        type: HIDE_LOADING,
+        payload: {
+            show: false,
+        }
     };
 };

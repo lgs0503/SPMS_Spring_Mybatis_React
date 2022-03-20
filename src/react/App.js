@@ -19,10 +19,10 @@ const App = () =>{
       <div>
           <HashRouter>
               <Routes>
-                  <Route path="/"                   element={<Main />} />
-                  <Route path="/admin/*"            element={<AdminLayout />} />
-                  <Route path="/admin/login"        element={<AdminLogin />} />
-                  <Route path="/admin/register"     element={<AdminRegister />} />
+                  <Route path="/"                   element={<Main/>} />
+                  <Route path="/admin/*"            element={<AdminLayout/>} />
+                  <Route path="/admin/login"        element={<AdminLogin/>} />
+                  <Route path="/admin/register"     element={<AdminRegister/>} />
               </Routes>
           </HashRouter>
           <AlertModal show={alertModal.show} text={alertModal.text} callback={alertModal.callback} />

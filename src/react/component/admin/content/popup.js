@@ -3,7 +3,7 @@ import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/aciton";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
 import "../../../css/custom.css";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -23,7 +23,7 @@ const  AdminPopup = () => {
         content : "",
         open : false,
         popupImageNo : null
-    })
+    });
 
     useEffect(() => {
         popupSearch();
@@ -52,6 +52,7 @@ const  AdminPopup = () => {
         ,   pagination : true
         ,   colSpan : 4
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
 
             let data = {
                 popupId : e.target.parentNode.id
@@ -99,6 +100,7 @@ const  AdminPopup = () => {
                         }
                     }));
                 }
+                dispatch(hideLoading());
             });
         }
         , addBtnClickEvent : () => {
@@ -135,6 +137,7 @@ const  AdminPopup = () => {
     }
 
     const popupSearch = () => {
+        dispatch(showLoading());
 
         let data = {
                 popupId     : document.getElementById("popupId").value
@@ -147,6 +150,7 @@ const  AdminPopup = () => {
             //console.log(result.data.popupCnt);
             setBodyData(result.data.popupList);
             setBodyCnt(result.data.popupCnt);
+            dispatch(hideLoading());
         });
     }
 

@@ -2,9 +2,8 @@ import React, {useEffect, useState, useRef} from 'react';
 import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
-import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/aciton";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
 
 const  AdminMember = () => {
@@ -13,10 +12,6 @@ const  AdminMember = () => {
 
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
-
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    //const [modalOpen, setModalOpen] = useState(false);
-    //const [modalTitle, setModalTitle] = useState("회원 등록");
 
     const [modalStatus, setModalStatus] =  useState({
         title : "회원 등록"
@@ -53,6 +48,7 @@ const  AdminMember = () => {
         ,   pagination : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
 
             setModalStatus((prevState => {
                 return{
@@ -76,6 +72,7 @@ const  AdminMember = () => {
                         document.getElementById(value.name + "Popup").value = result.data.member[value.name];
                     }
                 });
+                dispatch(hideLoading());
             });
         }
         , addBtnClickEvent : () => {
@@ -109,6 +106,7 @@ const  AdminMember = () => {
     }
 
     const memberSearch = () => {
+        dispatch(showLoading());
 
         let data = {
                 memberId     : document.getElementById("memberId").value
@@ -122,6 +120,7 @@ const  AdminMember = () => {
             //console.log(result.data.memberCnt);
             setBodyData(result.data.memberList);
             setBodyCnt(result.data.memberCnt);
+            dispatch(hideLoading());
         });
     }
 

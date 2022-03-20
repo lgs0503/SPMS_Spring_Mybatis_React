@@ -4,7 +4,7 @@ import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
 import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/aciton";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
 
 const  AdminBoard = () => {
@@ -13,10 +13,6 @@ const  AdminBoard = () => {
 
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
-
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    //const [modalOpen, setModalOpen] = useState(false);
-    //const [modalTitle, setModalTitle] = useState("게시판 등록");
 
     const [modalStatus, setModalStatus] =  useState({
         title : "게시판 등록"
@@ -53,6 +49,7 @@ const  AdminBoard = () => {
         ,   pagination : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
 
             setModalStatus((prevState => {
                 return{
@@ -76,6 +73,7 @@ const  AdminBoard = () => {
                         document.getElementById(value.name + "Popup").value = result.data.board[value.name];
                     }
                 });
+                dispatch(hideLoading());
             });
         }
         , addBtnClickEvent : () => {
@@ -109,6 +107,7 @@ const  AdminBoard = () => {
     }
 
     const boardSearch = () => {
+        dispatch(showLoading());
 
         let data = {
                 boardId     : document.getElementById("boardId").value
@@ -122,6 +121,7 @@ const  AdminBoard = () => {
             //console.log(result.data.boardCnt);
             setBodyData(result.data.boardList);
             setBodyCnt(result.data.boardCnt);
+            dispatch(hideLoading());
         });
     }
 

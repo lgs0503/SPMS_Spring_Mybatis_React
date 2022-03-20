@@ -5,13 +5,12 @@ import * as common from "../../../comm/common";
 import {useDispatch, useSelector} from "react-redux";
 import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 
-const  AdminMain = () => {
+const AdminMain = () => {
 
     const dispatch = useDispatch();
 
     const [bodyNoticeData, setBodyNoticeData] = useState(null);
     const [bodyFreeBoardData, setBodyFreeBoardData] = useState(null);
-
 
     let headerColData = [{title: "ID",         name : "postId",             width:"10px",  hidden: false, useData : true}
                         ,{title: "게시글제목",    name : "postTitle",        width:"50%",   hidden: false, useData : true}
@@ -63,6 +62,7 @@ const  AdminMain = () => {
         data.forEach((value, index)=>{
             common.fetchLoad("/postList","POST", value, callBack[index]);
 
+            dispatch(hideLoading());
         })
     }
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import * as common from "../../../comm/common";
-import {showAlertModal} from "../../../action/aciton";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Table from "../../common/Table";
 import Modal from "../../common/Modal";
 import Select from "../../common/Select";
@@ -72,6 +72,7 @@ const  AdminCode = () => {
         ,   deleted : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
             new Promise((resolve, reject)=> {
 
                 setModalStatus((prevState => {
@@ -97,6 +98,7 @@ const  AdminCode = () => {
                     }
                 });
                 document.getElementById("codeIdPopup").disabled = "disabled";
+                dispatch(hideLoading());
             });
         }
         , deleteBtnClickEvent :() => {
@@ -136,7 +138,7 @@ const  AdminCode = () => {
     }
 
     const codeSearch = () => {
-
+        dispatch(showLoading());
         let data = {
                 codeId     : document.getElementById("codeId").value
             ,   codeName   : document.getElementById("codeName").value
@@ -148,6 +150,7 @@ const  AdminCode = () => {
             //console.log(result.data.codeCnt);
             setBodyData(result.data.codeList);
             setBodyCnt(result.data.codeCnt);
+            dispatch(hideLoading());
         });
     }
 

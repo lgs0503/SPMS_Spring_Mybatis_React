@@ -3,7 +3,7 @@ import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/aciton";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
 import "../../../css/custom.css"
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -14,15 +14,11 @@ import FileInput from "../../common/FileInput";
 const  AdminPost = () => {
 
     const boardType = useParams().boardType;
+
     const dispatch = useDispatch();
 
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
-
-    //const [content, setContent] = useState("");
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    //const [modalOpen, setModalOpen] = useState(false);
-    //const [modalTitle, setModalTitle] = useState("게시글 등록");
 
     const [modalStatus, setModalStatus] = useState({
             title : "게시글 등록"
@@ -68,6 +64,7 @@ const  AdminPost = () => {
         ,   pagination : true
         ,   colSpan : 6
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
 
             setModalStatus((prevState => {
                 return{
@@ -107,6 +104,7 @@ const  AdminPost = () => {
                         ,   fileNo2: result.data.post["fileNo2"]
                     }
                 }));
+                dispatch(hideLoading());
             });
         }
         , addBtnClickEvent : () => {
@@ -143,6 +141,7 @@ const  AdminPost = () => {
     }
 
     const postSearch = () => {
+        dispatch(showLoading());
 
         let data = {
                 postId     : document.getElementById("postId").value
@@ -157,6 +156,7 @@ const  AdminPost = () => {
             //console.log(result.data.postCnt);
             setBodyData(result.data.postList);
             setBodyCnt(result.data.postCnt);
+            dispatch(hideLoading());
         });
     }
 
