@@ -1,15 +1,7 @@
 /** -------------------------------------------
  *  공통 함수
  * -------------------------------------------*/
-
-/**
- * 서버와 ajax 통신
- * @param url : 요청url
- * @param method : 요청method
- * @param data : 요청에필요한데이터값
- * @param callback : 성공결과콜백함수
- * */
-export function fetchLoad(url, method, data, callback, fileUpload = false){
+export function getServerURL(){
     const href = window.location.href;
     let serverUrl = "";
 
@@ -18,7 +10,18 @@ export function fetchLoad(url, method, data, callback, fileUpload = false){
     } else {                               /* 로컬 */
         serverUrl = "http://localhost:8080"
     }
+    return serverUrl;
+}
+/**
+ * 서버와 ajax 통신
+ * @param url : 요청url
+ * @param method : 요청method
+ * @param data : 요청에필요한데이터값
+ * @param callback : 성공결과콜백함수
+ * */
+export function fetchLoad(url, method, data, callback, fileUpload = false){
 
+    let serverUrl = getServerURL();
     let fetchData = {method : method};
 
     if(fileUpload){
@@ -34,7 +37,6 @@ export function fetchLoad(url, method, data, callback, fileUpload = false){
         .catch(function(error){
             console.log(error);
         });
-
 }
 
 /**
