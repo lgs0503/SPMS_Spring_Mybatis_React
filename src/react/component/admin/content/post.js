@@ -162,36 +162,46 @@ const  AdminPost = () => {
 
     const postSave = () => {
         if(window.confirm("저장하시겠습니까?")){
+            dispatch(showLoading());
 
             /*파일업로드 */
             new Promise(function(resolve, reject){
 
                 let resultFile = {};
-                if(document.getElementById("fileNo1").value){
+                new Promise(function(fileResolve, reject) {
+                    if (document.getElementById("fileNo1").value) {
 
-                    let form = new FormData();
-                    form.append( "file", document.getElementById("fileNo1").files[0]);
+                        let form = new FormData();
+                        form.append("file", document.getElementById("fileNo1").files[0]);
 
-                    common.fetchLoad("/file/upload", "POST", form, function (result) {
+                        common.fetchLoad("/file/upload", "POST", form, function (result) {
+                            fileResolve(result);
+                        }, true);
+                    } else {
+                        fileResolve();
+                    }
+                }).then((fileResult)=>{
 
-                        resultFile.fileNo1 = result.uploadList[0].fileNo;
-                    }, true);
-                }
+                    if(common.nullCheck(fileResult)){
+                        resultFile.fileNo1 = fileResult.uploadList[0].fileNo;
+                    }
 
-                if(document.getElementById("fileNo2").value){
+                    if(document.getElementById("fileNo2").value){
+                        alert("test");
 
-                    let form = new FormData();
-                    form.append( "file", document.getElementById("fileNo2").files[0]);
+                        let form = new FormData();
+                        form.append( "file", document.getElementById("fileNo2").files[0]);
 
-                    common.fetchLoad("/file/upload", "POST", form, function (result) {
-                        resultFile.fileNo2 = result.uploadList[0].fileNo;
-                    }, true);
-                }
-                console.log(resultFile);
+                        common.fetchLoad("/file/upload", "POST", form, function (result) {
+                            resultFile.fileNo2 = result.uploadList[0].fileNo;
+                            resolve(resultFile);
+                        }, true);
+                    } else {
+                        resolve(resultFile);
+                    }
+                });
 
-                resolve(resultFile);
-
-            }).then(function (resolve) {
+            }).then(function (fileData) {
 
                 let data = {
                     postId : document.getElementById("postIdPopup").value,
@@ -202,20 +212,21 @@ const  AdminPost = () => {
                 }
 
                 /* 이미지 번호가 있으면 회원가입에 같이 저장한다.*/
-                if (resolve.fileNo1){
-                    data.fileNo1 = resolve.fileNo1;
+                if (fileData.fileNo1){
+                    data.fileNo1 = fileData.fileNo1;
                 }
 
-                if (resolve.fileNo2){
-                    data.fileNo2 = resolve.fileNo2;
+                if (fileData.fileNo2){
+                    data.fileNo2 = fileData.fileNo2;
                 }
 
-                console.log(data);
+                //console.log(data);
 
                 common.fetchLoad("/savePost","POST", data, (result) => {
                     dispatch(showAlertModal('저장 되었습니다.'));
                     closeModal();
                     postSearch();
+                    dispatch(hideLoading());
                 });
             });
         }
