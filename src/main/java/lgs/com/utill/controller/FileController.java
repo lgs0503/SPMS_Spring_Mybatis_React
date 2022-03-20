@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class FileController {
         return mv;
     }
 
-    @PostMapping("/download")
+    @GetMapping("/download")
     public ResponseEntity<?> downloadTest(@RequestBody FileVO fileVO, HttpServletResponse response) throws IOException {
         fileVO = fileService.fileSearch(fileVO);
 
@@ -116,14 +117,16 @@ public class FileController {
 
     /**
      *  파일 다운로드
-     * @param HttpServletResponse 업로드 파일 정보를 담은 request
-     * @return ModelAndView 업로드 파일 정보 및 업로드 성공여부
+     * @param HttpServletRequest 파일 다운로드 fileNo 파라미터 정보
+     * @return HttpServletResponse 파일 다운로드 정보
      */
-    @PostMapping("/file/download")
-    public void download(@RequestBody FileVO fileVO, HttpServletResponse response) throws Exception {
+    @GetMapping("/file/download")
+    public void download(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("download");
 
         try {
+            FileVO fileVO = new FileVO();
+            fileVO.setFileNo(request.getParameter("fileNo"));
             /*파일 번호로 상세 정보 조회 */
             fileVO = fileService.fileSearch(fileVO);
 
@@ -133,7 +136,7 @@ public class FileController {
             File file = new File(path);
 
             // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
-            response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileVO.getFileName() + '.' + fileVO.getFileExten());
 
             // 파일 읽어오기
             FileInputStream fileInputStream = new FileInputStream(file);

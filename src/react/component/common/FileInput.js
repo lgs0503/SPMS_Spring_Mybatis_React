@@ -9,14 +9,7 @@ const FileInput  = (props) => {
     }
 
     const fileDownLoad = () => {
-
-        const data = {
-            fileNo : props.fileNo
-        }
-
-        common.fetchLoad("/file/download","POST", data,() => {
-
-        })
+        window.location.href = common.getServerURL() + "/file/download?fileNo=" + props.fileNo;
     }
 
     return(
