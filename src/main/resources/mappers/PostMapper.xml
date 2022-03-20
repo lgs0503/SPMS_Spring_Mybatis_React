@@ -102,8 +102,12 @@
 		,		POST_TITLE		= #{postTitle}
 		,		POST_CONTENT	= #{postContent}
 		,		DELETED			= #{deleted}
+		<if test="fileNo1 != null and fileNo1 != ''">
 		,		FILE_NO1		= #{fileNo1}
+		</if>
+		<if test="fileNo2 != null and fileNo2 != ''">
 		,		FILE_NO2		= #{fileNo2}
+		</if>
 		,		UPDATE_DATE		= #{updateDate}
 		,		UPDATE_USER		= #{updateUser}
 		WHEN 	NOT MATCHED THEN

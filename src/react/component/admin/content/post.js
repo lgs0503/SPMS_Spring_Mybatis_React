@@ -187,7 +187,6 @@ const  AdminPost = () => {
                     }
 
                     if(document.getElementById("fileNo2").value){
-                        alert("test");
 
                         let form = new FormData();
                         form.append( "file", document.getElementById("fileNo2").files[0]);
