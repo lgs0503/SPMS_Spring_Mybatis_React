@@ -16,7 +16,7 @@ import {useDispatch} from "react-redux";
 import {showAlertModal} from "../../action/aciton";
 import AdminBanner from "./content/banner";
 import AdminPopup from "./content/popup";
-import AdminMember from "./content/member";
+import AdminUser from "./content/user";
 
 const  AdminLayout = () => {
 
@@ -42,7 +42,7 @@ const  AdminLayout = () => {
                           <Route path="/code" element={<AdminCode/>}/>
                           <Route path="/menu" element={<AdminMenu/>}/>
                           <Route path="/banner" element={<AdminBanner/>}/>
-                          <Route path="/member" element={<AdminMember/>}/>
+                          <Route path="/user" element={<AdminUser/>}/>
                           <Route path="/board" element={<AdminBoard/>}/>
                           <Route path="/post" element={<AdminPost/>}/>
                           <Route path="/popup" element={<AdminPopup/>}/>

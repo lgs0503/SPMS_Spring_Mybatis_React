@@ -6,7 +6,7 @@ import {useDispatch} from "react-redux";
 import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
 
-const  AdminMember = () => {
+const  AdminUser = () => {
 
     const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ const  AdminMember = () => {
     });
 
     useEffect(() => {
-        memberSearch();
+        userSearch();
     },[]);
 
     const closeModal = () => {
@@ -32,17 +32,17 @@ const  AdminMember = () => {
     };
 
     let tableInit = {
-            headerColData : [{title: "ID",         name : "memberId",             width:"10px",  hidden: false,  useData : true}
-                            ,{title: "회원명",    name : "memberName",           width:"30%",   hidden: false,  useData : true}
-                            ,{title: "회원타입",  name : "memberTypeName",       width:"30%",   hidden: false,  useData : false}
+            headerColData : [{title: "ID",         name : "userId",             width:"10px",  hidden: false,  useData : true}
+                            ,{title: "회원명",    name : "userName",           width:"30%",   hidden: false,  useData : true}
+                            ,{title: "회원타입",  name : "userTypeName",       width:"30%",   hidden: false,  useData : false}
                             ,{title: "사용여부",    name : "useYnName",           width:"12%",   hidden: false,  useData : false}
                             ,{title: "파일여부",    name : "fileYnName",          width:"12%",   hidden: false,  useData : false}
-                            ,{title: "회원설명",  name : "memberDescription",    width:"0",     hidden: true,   useData : true}
+                            ,{title: "회원설명",  name : "userDescription",    width:"0",     hidden: true,   useData : true}
                             ,{title: "사용여부",    name : "useYn",               width:"0",     hidden: true,   useData : true}
                             ,{title: "파일여부",    name : "fileYn",              width:"0",     hidden: true,   useData : true}
-                            ,{title: "회원타입",  name : "memberType",           width:"0",     hidden: true,   useData : true}]
-        ,   title : "Member List"
-        ,   selectCol : 'memberId'
+                            ,{title: "회원타입",  name : "userType",           width:"0",     hidden: true,   useData : true}]
+        ,   title : "User List"
+        ,   selectCol : 'userId'
         ,   deleted : true
         ,   inserted : true
         ,   pagination : true
@@ -59,17 +59,17 @@ const  AdminMember = () => {
             }));
 
             let data = {
-                memberId : e.target.parentNode.id
+                userId : e.target.parentNode.id
             };
 
             new Promise((resolve, reject) => {
-                common.fetchLoad("/searchMember","POST", data,(result) => {
+                common.fetchLoad("/searchUser","POST", data,(result) => {
                     resolve(result);
                 });
             }).then((result) => {
                 tableInit.headerColData.forEach((value, index) => {
                     if(value.useData === true) {
-                        document.getElementById(value.name + "Popup").value = result.data.member[value.name];
+                        document.getElementById(value.name + "Popup").value = result.data.user[value.name];
                     }
                 });
                 dispatch(hideLoading());
@@ -92,49 +92,49 @@ const  AdminMember = () => {
                     dispatch(showAlertModal('항목을 선택해주세요.'));
                     return;
                 } else {
-                    let data = {memberIds : []};
+                    let data = {userIds : []};
 
-                    data.memberIds = common.tableChkIds("chk");
+                    data.userIds = common.tableChkIds("chk");
 
-                    common.fetchLoad("/deleteMember","POST", data, () => {
+                    common.fetchLoad("/deleteUser","POST", data, () => {
                         dispatch(showAlertModal('삭제 되었습니다.'));
-                        memberSearch();
+                        userSearch();
                     });
                 }
             }
         }
     }
 
-    const memberSearch = () => {
+    const userSearch = () => {
         dispatch(showLoading());
 
         let data = {
-                memberId     : document.getElementById("memberId").value
-            ,   memberName   : document.getElementById("memberName").value
+                userId     : document.getElementById("userId").value
+            ,   userName   : document.getElementById("userName").value
             ,   useYn       : document.getElementById("useYn").value
             ,   fileYn      : document.getElementById("fileYn").value
         };
 
-        common.fetchLoad("/memberList","POST", data,(result) => {
-            //console.log(result.data.memberList);
-            //console.log(result.data.memberCnt);
-            setBodyData(result.data.memberList);
-            setBodyCnt(result.data.memberCnt);
+        common.fetchLoad("/userList","POST", data,(result) => {
+            //console.log(result.data.userList);
+            //console.log(result.data.userCnt);
+            setBodyData(result.data.userList);
+            setBodyCnt(result.data.userCnt);
             dispatch(hideLoading());
         });
     }
 
-    const memberSave = () => {
+    const userSave = () => {
         if(window.confirm("저장하시겠습니까?")){
             let data = {};
             tableInit.headerColData.forEach((value, index) => {
                 data[value.name] =  document.getElementById(value.name + "Popup").value;
             });
 
-            common.fetchLoad("/saveMember","POST", data, (result) => {
+            common.fetchLoad("/saveUser","POST", data, (result) => {
                 dispatch(showAlertModal('저장 되었습니다.'));
                 closeModal();
-                memberSearch();
+                userSearch();
             });
         }
     }
@@ -147,10 +147,10 @@ const  AdminMember = () => {
           </ol>
           <div className="row py-2">
               <div className="col-md-3 my-2">
-                  <input type="text" className="form-control search-slt" placeholder="회원 ID" id="memberId"/>
+                  <input type="text" className="form-control search-slt" placeholder="회원 ID" id="userId"/>
               </div>
               <div className="col-md-3 my-2">
-                  <input type="text" className="form-control search-slt" placeholder="회원 명" id="memberName"/>
+                  <input type="text" className="form-control search-slt" placeholder="회원 명" id="userName"/>
               </div>
               <div className="col-md-2 my-2">
                   <Select upperCodeId={"U001"}
@@ -165,7 +165,7 @@ const  AdminMember = () => {
                           text={"파일여부"}/>
               </div>
               <div className="col-md-2 my-2">
-                  <button type="button" className="btn btn-primary wrn-btn" onClick={memberSearch}>
+                  <button type="button" className="btn btn-primary wrn-btn" onClick={userSearch}>
                       <i className="fa-solid fa-magnifying-glass"></i>
                   </button>
               </div>
@@ -178,22 +178,22 @@ const  AdminMember = () => {
           <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title}>
               <form id="formTest">
                   <div className="form-floating mb-3">
-                      <input className="form-control" type="text" maxLength="20" id="memberIdPopup" disabled={true}/>
+                      <input className="form-control" type="text" maxLength="20" id="userIdPopup" disabled={true}/>
                       <label htmlFor="userId" id="idCheck">일련번호</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <input className="form-control" type="text" maxLength="20" id="memberNamePopup"/>
+                      <input className="form-control" type="text" maxLength="20" id="userNamePopup"/>
                       <label>회원 명</label>
                   </div>
                   <div className="form-floating mb-3">
                       <Select upperCodeId={"B001"}
-                              codeId={"memberTypePopup"}
+                              codeId={"userTypePopup"}
                               codeClassName={"form-select"}
                               chkVal={"1"}/>
                       <label>회원 타입</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <input className="form-control" type="text" maxLength="20" id="memberDescriptionPopup"/>
+                      <input className="form-control" type="text" maxLength="20" id="userDescriptionPopup"/>
                       <label>회원 설명</label>
                   </div>
                   <div className="form-floating mb-3">
@@ -212,7 +212,7 @@ const  AdminMember = () => {
                   </div>
                   <div className="mt-4 mb-0">
                       <div className="d-grid">
-                          <a className="btn btn-primary btn-block" id="btnRegister" onClick={memberSave}>저장</a>
+                          <a className="btn btn-primary btn-block" id="btnRegister" onClick={userSave}>저장</a>
                       </div>
                   </div>
               </form>
@@ -221,4 +221,4 @@ const  AdminMember = () => {
   );
 }
 
-export default AdminMember;
+export default AdminUser;

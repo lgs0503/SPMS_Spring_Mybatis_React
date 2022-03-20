@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lgs.com.user.mapper.UserMapper">
+	
+	<select id="userList" resultType="lgs.com.user.vo.UserVO" parameterType="lgs.com.user.vo.UserVO">
+		/* userList 회원 리스트 조회  */
+		SELECT	USER_ID
+			,	USER_NAME
+			,	GENDER
+			,	GET_CODE_NAME('G001', USER_TYPE) AS GENDER_NAME
+			,	USER_RULE
+			,	GET_CODE_NAME('UR001', USE_YN) AS USER_RULE_NAME
+		FROM	USER_INFO
+		<include refid="userWhere"></include>
+		ORDER BY USER_ID ASC
+	</select>
+
+	<select id="userCnt" resultType="int" parameterType="lgs.com.user.vo.UserVO">
+		/* userCnt 회원 리스트 갯수 조회  */
+		SELECT	COUNT(*) CNT
+		FROM	USER_INFO
+		<include refid="userWhere"></include>
+	</select>
+
+	<select id="searchUser" resultType="lgs.com.user.vo.UserVO" parameterType="lgs.com.user.vo.UserVO">
+		/* searchUser 회원  조회  */
+		SELECT	USER_ID
+			,	USER_NAME
+			,	AGE
+			,	GENDER
+			,	EMAIL
+			,	LOCATION
+			,	LOCATION_DTL
+			,	IMAGE_FILE_NO
+			,	USER_RULE
+			,	BRIHDAY
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	USER_INFO
+		WHERE	USER_ID = #{userId}
+	</select>
+
+	<sql id="userWhere">
+		/* userWhere 회원 조회조건  */
+		<where>
+			<if test="userId != null and userId != ''">
+				AND 	USER_ID LIKE '%' || #{userId} || '%'
+			</if>
+			<if test="userName != null and userName != ''">
+				AND 	USER_NAME LIKE '%' || #{userName} || '%'
+			</if>
+			<if test="useYn != null and useYn != ''">
+				AND 	USE_YN = #{useYn}
+			</if>
+			<if test="fileYn != null and fileYn != ''">
+				AND 	FILE_YN = #{fileYn}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="saveUser" parameterType="lgs.com.user.vo.UserVO">
+		/* saveUser 회원 저장 (신규, 수정)  */
+		MERGE
+		INTO	USER_INFO B
+		USING	DUAL
+		ON 		(B.USER_ID = #{userId})
+		WHEN 	MATCHED THEN
+		UPDATE
+		SET		USER_NAME			= #{userName}
+		,		USER_TYPE			= #{userType}
+		,		USER_DESCRIPTION	= #{userDescription}
+		,		USE_YN				= #{useYn}
+		,		FILE_YN				= #{fileYn}
+		,		UPDATE_USER			= #{updateUser}
+		,		UPDATE_DATE			= #{updateDate}
+		WHEN 	NOT MATCHED THEN
+		INSERT
+		(
+			USER_ID
+		,	USER_NAME
+		,	USER_TYPE
+		,	USER_DESCRIPTION
+		,	USE_YN
+		,	FILE_YN
+		,	CREATE_USER
+		,	CREATE_DATE
+		,	UPDATE_USER
+		,	UPDATE_DATE
+		)
+		VALUES
+		(
+			(
+				SELECT 	NVL(MAX(TO_NUMBER(USER_ID)), 0) + 1
+				FROM	USER_INFO
+			)
+		,	#{userName}
+		,	#{userType}
+		,	#{userDescription}
+		,	#{useYn}
+		,	#{fileYn}
+		,	#{createUser}
+		,	#{createDate}
+		,	#{updateUser}
+		,	#{updateDate}
+		)
+	</insert>
+
+	<delete id="deleteUser" parameterType="lgs.com.user.vo.UserVO">
+		/* deleteUser 회원 삭제  */
+		DELETE
+		FROM	USER_INFO
+		WHERE 	USER_ID IN
+		<foreach collection="userIds" index="index" item="idx"
+				 separator="," open="(" close=")" >
+			#{idx}
+		</foreach>
+	</delete>
+
+</mapper>
