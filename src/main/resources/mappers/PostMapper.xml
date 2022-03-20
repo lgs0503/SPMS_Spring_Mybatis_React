@@ -23,7 +23,7 @@
 		LEFT JOIN	BOARD B
 		ON 			P.BOARD_ID = B.BOARD_ID
 		<include refid="postWhere"></include>
-		ORDER BY P.POST_ID DESC
+		ORDER BY P.CREATE_DATE DESC
 	</select>
 
 	<select id="postCnt" resultType="int" parameterType="lgs.com.post.vo.PostVO">
@@ -127,7 +127,7 @@
 		(
 			#{boardId}
 		,	(
-				SELECT	NVL(MAX(POST_ID), 0) + 1
+				SELECT	NVL(MAX(TO_NUMBER(POST_ID)), 0) + 1
 				FROM	POST
 			)
 		,	#{postType}

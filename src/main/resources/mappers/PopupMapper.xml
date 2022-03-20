@@ -99,7 +99,7 @@
 		VALUES
 		(
 			(
-				SELECT	NVL(MAX(POPUP_ID), 0) + 1
+				SELECT	NVL(MAX(TO_NUMBER(POPUP_ID)), 0) + 1
 				FROM	POPUP
 			)
 		,	#{popupTitle}

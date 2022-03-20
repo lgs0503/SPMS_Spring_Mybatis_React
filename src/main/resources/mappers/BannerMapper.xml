@@ -95,7 +95,7 @@
 		VALUES
 		(
 			(
-				SELECT	NVL(MAX(BANNER_ID), 0) + 1
+				SELECT	NVL(MAX(TO_NUMBER(BANNER_ID)), 0) + 1
 				FROM	BANNER
 			)
 		,	#{bannerTitle}

@@ -84,7 +84,7 @@
 		VALUES
 		(
 			(
-			SELECT	NVL(MAX(IDX),0)+1
+			SELECT	NVL(MAX(TO_NUMBER(IDX)),0)+1
 			FROM	PRODUCT
 			)
 		,	#{productName}
