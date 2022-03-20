@@ -22,7 +22,7 @@ public class FileServiceServiceImpl implements FileService {
             FileMapper mapper = session.getMapper(FileMapper.class);
 
             /* 파일 일련번호 생성 */
-            fileVO.setFileNo(mapper.createfileNo());
+            fileVO.setFileNo(mapper.createFileNo());
 
             mapper.fileUpload(fileVO);
         } catch (Exception e) {

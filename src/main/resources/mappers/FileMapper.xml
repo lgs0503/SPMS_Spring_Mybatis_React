@@ -51,9 +51,9 @@
 		)
 	</insert>
 
-	<select id="createfileNo" resultType="String">
-		/* createfileNo fileMaxNo를 생성한다.  */
-		SELECT	NVL(MAX(FILE_NO),0) +1  AS CNT
+	<select id="createFileNo" resultType="String">
+		/* createFileNo fileMaxNo를 생성한다.  */
+		SELECT	NVL(MAX(TO_NUMBER(FILE_NO)),0) +1  AS CNT
 		FROM	FILE_INFO
 	</select>
 
