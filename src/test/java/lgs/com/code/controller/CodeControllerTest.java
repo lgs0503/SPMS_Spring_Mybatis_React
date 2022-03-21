@@ -68,7 +68,7 @@ public class CodeControllerTest {
     public void codeList()  throws Exception  {
         codeVO.setCodeId(null);
 
-        mockMvc.perform(get("/codeList")
+        mockMvc.perform(post("/codeList")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(codeVO)))
                 .andExpect(status().isOk())
@@ -88,7 +88,7 @@ public class CodeControllerTest {
     public void searchCode() throws Exception  {
         codeVO.setCodeId("T000");
 
-        mockMvc.perform(get("/searchCode")
+        mockMvc.perform(post("/searchCode")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(codeVO)))
                 .andExpect(status().isOk())
@@ -130,7 +130,7 @@ public class CodeControllerTest {
         deletes.add("T001");
         codeVO.setCodeIds(deletes);
 
-        mockMvc.perform(delete("/deleteCode")
+        mockMvc.perform(post("/deleteCode")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(codeVO)))
                 .andExpect(status().isOk())

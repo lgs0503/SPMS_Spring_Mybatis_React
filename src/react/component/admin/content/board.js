@@ -4,31 +4,32 @@ import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
 import DaumPostcode from "react-daum-postcode";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/alertModal";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
 
 const  AdminBoard = () => {
 
     const dispatch = useDispatch();
 
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    const [modalOpen, setModalOpen] = useState(false);
-
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
 
-    const [modalTitle, setModalTitle] = useState("게시판 등록");
+    const [modalStatus, setModalStatus] =  useState({
+        title : "게시판 등록"
+        ,   open : false
+    });
 
     useEffect(() => {
         boardSearch();
     },[]);
 
-    const openModal = () => {
-        setModalOpen(true);
-    };
-
     const closeModal = () => {
-        setModalOpen(false);
+        setModalStatus((prevState => {
+            return{
+                ...prevState
+                ,   open : false
+            }
+        }));
     };
 
     let tableInit = {
@@ -48,30 +49,42 @@ const  AdminBoard = () => {
         ,   pagination : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
 
-            setModalTitle("게시판 상세");
-            openModal();
+            setModalStatus((prevState => {
+                return{
+                    ...prevState
+                    ,   open : true
+                    ,   title : "게시판 상세"
+                }
+            }));
 
             let data = {
                 boardId : e.target.parentNode.id
             };
 
-            common.fetchLoad("/searchBoard","POST", data,(result) => {
-
-                //console.log(result.data.board);
-                setTimeout(() => {
-
-                    tableInit.headerColData.forEach((value, index) => {
-                        if(value.useData === true) {
-                            document.getElementById(value.name + "Popup").value = result.data.board[value.name];
-                        }
-                    });
-                },200);
+            new Promise((resolve, reject) => {
+                common.fetchLoad("/searchBoard","POST", data,(result) => {
+                    resolve(result);
+                });
+            }).then((result) => {
+                tableInit.headerColData.forEach((value, index) => {
+                    if(value.useData === true) {
+                        document.getElementById(value.name + "Popup").value = result.data.board[value.name];
+                    }
+                });
+                dispatch(hideLoading());
             });
         }
         , addBtnClickEvent : () => {
-            setModalTitle("게시판 등록");
-            openModal();
+
+            setModalStatus((prevState => {
+                return{
+                    ...prevState
+                    ,   open : true
+                    ,   title : "게시판 등록"
+                }
+            }));
         }
         , deleteBtnClickEvent :() => {
             if(window.confirm("삭제하시겠습니까?")){
@@ -94,6 +107,7 @@ const  AdminBoard = () => {
     }
 
     const boardSearch = () => {
+        dispatch(showLoading());
 
         let data = {
                 boardId     : document.getElementById("boardId").value
@@ -107,6 +121,7 @@ const  AdminBoard = () => {
             //console.log(result.data.boardCnt);
             setBodyData(result.data.boardList);
             setBodyCnt(result.data.boardCnt);
+            dispatch(hideLoading());
         });
     }
 
@@ -161,7 +176,7 @@ const  AdminBoard = () => {
                  bodyData={bodyData}
                  bodyCnt={bodyCnt}/>
 
-          <Modal open={modalOpen} close={closeModal} header={modalTitle}>
+          <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title}>
               <form id="formTest">
                   <div className="form-floating mb-3">
                       <input className="form-control" type="text" maxLength="20" id="boardIdPopup" disabled={true}/>

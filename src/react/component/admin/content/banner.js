@@ -3,7 +3,7 @@ import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/alertModal";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
 import "../../../css/custom.css";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -53,6 +53,8 @@ const  AdminBanner = () => {
         ,   colSpan : 4
         ,   cellSelectEvent : (e) => {
 
+            dispatch(showLoading());
+
             let data = {
                 bannerId : e.target.parentNode.id
             };
@@ -99,6 +101,7 @@ const  AdminBanner = () => {
                         }
                     }));
                 }
+                dispatch(hideLoading());
             });
         }
         , addBtnClickEvent : () => {
@@ -135,6 +138,7 @@ const  AdminBanner = () => {
     }
 
     const bannerSearch = () => {
+        dispatch(showLoading());
 
         let data = {
                 bannerId     : document.getElementById("bannerId").value
@@ -147,6 +151,7 @@ const  AdminBanner = () => {
             //console.log(result.data.bannerCnt);
             setBodyData(result.data.bannerList);
             setBodyCnt(result.data.bannerCnt);
+            dispatch(hideLoading());
         });
     }
 
@@ -336,7 +341,8 @@ const  AdminBanner = () => {
                     </div>
                     <FileInput fileId={"bannerImageNo"}
                                label={"이미지 첨부"}
-                               fileNo={modalStatus.bannerImageNo}/>
+                               fileNo={modalStatus.bannerImageNo}
+                               fileClassName={"form-floating mb-3 hiddenItem"}/>
                     <div className="form-floating mb-3">
                         <Select upperCodeId={"U001"}
                                 codeId={"useYnPopup"}

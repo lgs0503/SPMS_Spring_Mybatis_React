@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { hideAlertModal } from '../../action/alertModal';
+import { hideAlertModal } from '../../action/aciton';
 
-const AlertModal = ({ text, show, callback }) => {
+const AlertModal = ({ show, text, callback }) => {
     const dispatch = useDispatch();
 
     const handleClose = () => {

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lgs.com.user.mapper.UserMapper">
+	
+	<select id="userList" resultType="lgs.com.user.vo.UserVO" parameterType="lgs.com.user.vo.UserVO">
+		/* userList 회원 리스트 조회  */
+		SELECT	USER_ID
+			,	USER_NAME
+			,	GENDER
+			,	GET_CODE_NAME('G001', GENDER) AS GENDER_NAME
+			,	USER_RULE
+			,	GET_CODE_NAME('UR001', USER_RULE) AS USER_RULE_NAME
+		FROM	USER_INFO
+		<include refid="userWhere"></include>
+		ORDER BY USER_ID ASC
+	</select>
+
+	<select id="userCnt" resultType="int" parameterType="lgs.com.user.vo.UserVO">
+		/* userCnt 회원 리스트 갯수 조회  */
+		SELECT	COUNT(*) CNT
+		FROM	USER_INFO
+		<include refid="userWhere"></include>
+	</select>
+
+	<select id="searchUser" resultType="lgs.com.user.vo.UserVO" parameterType="lgs.com.user.vo.UserVO">
+		/* searchUser 회원  조회  */
+		SELECT	U.USER_ID
+			,	U.USER_NAME
+			,	U.AGE
+			,	U.GENDER
+			,	U.EMAIL
+			,	U.LOCATION
+			,	U.LOCATION_DTL
+			,	U.IMAGE_FILE_NO
+			,  CASE WHEN F.FILE_NAME IS NOT NULL
+					THEN F.FILE_NAME || '.' ||F.FILE_EXTEN
+					ELSE NULL END AS IMAGE_FILE_NO_NAME
+			,	U.USER_RULE
+			,	U.BIRTHDAY
+			,	U.PHONE_NUM
+			,	U.CREATE_DATE
+			,	U.CREATE_USER
+			,	U.UPDATE_DATE
+			,	U.UPDATE_USER
+		FROM			USER_INFO U
+		LEFT OUTER JOIN FILE_INFO F
+		ON 				U.IMAGE_FILE_NO = F.FILE_NO
+		WHERE	U.USER_ID = #{userId}
+	</select>
+
+	<sql id="userWhere">
+		/* userWhere 회원 조회조건  */
+		<where>
+			<if test="userId != null and userId != ''">
+				AND 	USER_ID LIKE '%' || #{userId} || '%'
+			</if>
+			<if test="userName != null and userName != ''">
+				AND 	USER_NAME LIKE '%' || #{userName} || '%'
+			</if>
+			<if test="userRule != null and userRule != ''">
+				AND 	USER_RULE = #{userRule}
+			</if>
+			<if test="gender != null and gender != ''">
+				AND 	GENDER = #{gender}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="saveUser" parameterType="lgs.com.user.vo.UserVO">
+		/* saveUser 회원 저장 (신규, 수정)  */
+		MERGE
+		INTO	USER_INFO U
+		USING	DUAL
+		ON 		(U.USER_ID = #{userId})
+		WHEN 	MATCHED THEN
+		UPDATE
+		SET		USER_NAME			= #{userName}
+		,		AGE					= #{age}
+		,		BIRTHDAY			= #{birthday}
+		,		GENDER				= #{gender}
+		,		EMAIL				= #{email}
+		,		LOCATION			= #{location}
+		,		LOCATION_DTL		= #{locationDtl}
+		,		IMAGE_FILE_NO		= #{imageFileNo}
+		,		USER_RULE			= #{userRule}
+		,		UPDATE_USER			= #{updateUser}
+		,		UPDATE_DATE			= #{updateDate}
+		WHEN 	NOT MATCHED THEN
+		INSERT
+		(	USER_ID
+		)
+		VALUES
+		(	#{userId}
+		)
+	</insert>
+
+	<delete id="deleteUser" parameterType="lgs.com.user.vo.UserVO">
+		/* deleteUser 회원 삭제  */
+		DELETE
+		FROM	USER_INFO
+		WHERE 	USER_ID IN
+		<foreach collection="userIds" index="index" item="idx"
+				 separator="," open="(" close=")" >
+			#{idx}
+		</foreach>
+	</delete>
+
+</mapper>

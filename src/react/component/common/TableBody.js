@@ -60,57 +60,64 @@ const TableBody = (props) => {
             {
                 common.nullCheck(props.bodyData) == true
                 ?
-                    props.bodyData.slice(props.offset, props.offset + props.limit).map((value, index) => (
-                        <tr data-bs-target={value["upperCodeId"] ? value["upperCodeId"] : null} className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
-                            {checkBox}
-                            {
-                                props.tableInit.headerColData.map((headerVal, headerIndex) =>
-                                    headerVal.hidden === false
-                                    ?
-                                        <td className={
-                                            props.tableInit.selectCol == headerVal.name && value["level"] == "1"
-                                            ? "table-depth1"
-                                                : props.tableInit.selectCol == headerVal.name && value["level"] == "2"
-                                                ? "table-depth2"
-                                                : props.tableInit.selectCol == headerVal.name && value["level"] == "3"
-                                                    ? "table-depth3"
-                                                    : props.tableInit.selectCol == headerVal.name && value["level"] == "4"
-                                                        ? "table-depth4" : null
+                    props.bodyData.slice(props.offset, props.offset + props.limit).map((value, index) =>
+                        props.tableInit.maxItem && props.tableInit.maxItem <= index
+                        ?
+                        null
+                        :
+                        (
+                            <tr data-bs-target={value["upperCodeId"] ? value["upperCodeId"] : (value["upperMenuId"] ? value["upperMenuId"] : null )}
+                                className={"table-row"} key={index} id={value[props.tableInit.selectCol]} onClick={cellSelect}>
+                                {checkBox}
+                                {
+                                    props.tableInit.headerColData.map((headerVal, headerIndex) =>
+                                        headerVal.hidden === false
+                                            ?
+                                            <td className={
+                                                props.tableInit.selectCol == headerVal.name && value["level"] == "1"
+                                                    ? "table-depth1"
+                                                    : props.tableInit.selectCol == headerVal.name && value["level"] == "2"
+                                                    ? "table-depth2"
+                                                    : props.tableInit.selectCol == headerVal.name && value["level"] == "3"
+                                                        ? "table-depth3"
+                                                        : props.tableInit.selectCol == headerVal.name && value["level"] == "4"
+                                                            ? "table-depth4" : null
                                             }
                                             name={headerVal.name} key={headerIndex}>
                                             {
-                                            headerVal.name == "button" && value["level"] != "4"
-                                            ?
-                                            (
-                                                <button type="button" className="btn btn-primary wrn-btn btn-sm " onClick={headerVal.clickEvent}>{headerVal.btnValue}</button>
-                                            )
-                                            :
-                                                props.tableInit.selectCol == headerVal.name && value["level"] && value["level"] != "1"
-                                                ?
-                                                (
+                                                headerVal.name == "button" && value["level"] != "4"
+                                                    ?
+                                                    (
+                                                        <button type="button" className="btn btn-primary wrn-btn btn-sm " onClick={headerVal.clickEvent}>{headerVal.btnValue}</button>
+                                                    )
+                                                    :
+                                                    props.tableInit.selectCol == headerVal.name && value["level"] && value["level"] != "1"
+                                                    ?
+                                                    (
                                                     <span>
                                                         <span className="treeItem">
                                                             <i className="fa-solid fa-chevron-down"></i>
-                                                        {
-                                                            value["leaf"] != "1"
-                                                            ?
-                                                            (
-                                                                <button className="treeBtn"
-                                                                        onClick={(e)=> treeBtnClickEvent(e, value[headerVal.name]) }>-</button>
-                                                            ) : null
-                                                        }
-                                                    </span>
+                                                            {
+                                                                value["leaf"] != "1"
+                                                                ?
+                                                                (
+                                                                    <button className="treeBtn"
+                                                                            onClick={(e)=> treeBtnClickEvent(e, value[headerVal.name]) }>-</button>
+                                                                ) : null
+                                                            }
+                                                        </span>
                                                         {value[headerVal.name]}
                                                     </span>
-                                                )
-                                                : value[headerVal.name]
+                                                    )
+                                                    : value[headerVal.name]
                                             }
-                                        </td>
-                                    : null
-                                )
-                            }
-                        </tr>
-                    ))
+                                            </td>
+                                            : null
+                                    )
+                                }
+                            </tr>
+                        )
+                    )
                 :
                 (
                     <tr>

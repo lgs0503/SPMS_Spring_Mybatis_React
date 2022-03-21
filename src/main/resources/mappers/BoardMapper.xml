@@ -90,7 +90,7 @@
 		VALUES
 		(
 			(
-				SELECT 	NVL(MAX(BOARD_ID), 0) + 1
+				SELECT 	NVL(MAX(TO_NUMBER(BOARD_ID)), 0) + 1
 				FROM	BOARD
 			)
 		,	#{boardName}

@@ -65,7 +65,7 @@ public class PopupControllerTest {
     public void popupList() throws Exception {
         popupVO.setPopupId(null);
 
-        mockMvc.perform(get("/popupList")
+        mockMvc.perform(post("/popupList")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
@@ -85,7 +85,7 @@ public class PopupControllerTest {
     public void searchPopup() throws Exception {
         popupVO.setPopupId("1");
 
-        mockMvc.perform(get("/searchPopup")
+        mockMvc.perform(post("/searchPopup")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
@@ -109,9 +109,9 @@ public class PopupControllerTest {
         popupVO.setPopupStatus("0");
         popupVO.setPopupTitle("테스트");
         popupVO.setPopupUrl("/test");
-        popupVO.setUesYn("Y");
+        popupVO.setUseYn("Y");
 
-        mockMvc.perform(put("/savePopup")
+        mockMvc.perform(post("/savePopup")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())
@@ -126,7 +126,7 @@ public class PopupControllerTest {
         deletes.add("1");
         popupVO.setPopupIds(deletes);
 
-        mockMvc.perform(delete("/deletePopup")
+        mockMvc.perform(post("/deletePopup")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(popupVO)))
                 .andExpect(status().isOk())

@@ -5,22 +5,15 @@ import "../../css/custom.css";
 const FileInput  = (props) => {
 
     const fileChange = () => {
-        document.getElementById(`fileName${props.fileId}`).value = document.getElementById(props.fileId).files[0].name;
+        document.getElementById(`fileName_${props.fileId}`).value = document.getElementById(props.fileId).files[0].name;
     }
 
     const fileDownLoad = () => {
-
-        const data = {
-            fileNo : props.fileNo
-        }
-
-        common.fetchLoad("/file/download","POST", data,() => {
-
-        })
+        window.location.href = common.getServerURL() + "/file/download?fileNo=" + props.fileNo;
     }
 
     return(
-        <div id="ImageForm" className="form-floating mb-3 hiddenItem">
+        <div id="ImageForm" className={props.fileClassName}>
             <input className="form-control"
                    type="text"
                    id={`fileName_${props.fileId}`}

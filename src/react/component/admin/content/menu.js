@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import * as common from "../../../comm/common";
-import {showAlertModal} from "../../../action/alertModal";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Table from "../../common/Table";
 import Modal from "../../common/Modal";
 import Select from "../../common/Select";
@@ -9,36 +9,46 @@ import Select from "../../common/Select";
 const  AdminMenu = () => {
     const dispatch = useDispatch();
 
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    const [modalOpen, setModalOpen] = useState(false);
-
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
 
     const pageTitle = "메뉴";
-    const [modalTitle, setModalTitle] = useState(pageTitle + " 등록");
-    const [overLab, setOverLab] = useState(false);
 
-    useEffect(() => {
-        //menuSearch();
-    },[]);
-
-    const openModal = () => {
-        setModalOpen(true);
-    };
+    const [modalStatus, setModalStatus] = useState({
+        title : pageTitle + " 등록"
+        ,   open : false
+        ,   overLab : false
+    });
 
     const closeModal = () => {
-        setModalOpen(false);
+        setModalStatus((prevState => {
+            return{
+                ...prevState
+                ,   open : false
+            }
+        }))
     };
+
+    useEffect(() => {
+        menuSearch();
+    },[]);
 
     const addBtnClickEvent = (e) => {
 
-        setModalTitle(pageTitle + " 등록");
-        openModal();
+        new Promise((resolve, reject)=>{
 
-        const target = e.target;
+            setModalStatus((prevState => {
+                return{
+                    ...prevState
+                    , title : pageTitle + "등록"
+                    , open : true
+                }
+            }));
 
-        setTimeout(()=>{
+            resolve();
+        }).then(()=>{
+
+            const target = e.target;
 
             if(target.nodeName == "BUTTON"){
                 document.getElementById("upperMenuIdPopup").value = target.parentNode.parentNode.id;
@@ -46,45 +56,49 @@ const  AdminMenu = () => {
                 //console.log(e.target.parentNode.parentNode.parentNode.id);
                 document.getElementById("upperMenuIdPopup").value = target.parentNode.parentNode.parentNode.id;
             }
-        },100);
-
+        });
     }
 
     let tableInit = {
         headerColData : [{title: "ID",         name : "menuId",       width:"40%",  hidden: false,  useData : true}
-            ,{title: "메뉴명",      name : "menuName",    width:"30%",   hidden: false,  useData : true}
-            ,{title: "사용여부",    name : "useYnName",   width:"20%",   hidden: false}
-            ,{title: "추가",      name : "button",  width:"10%",  hidden: false,  btnValue:<i className="fa-solid fa-plus"></i>,  clickEvent: addBtnClickEvent}
-            ,{title: "부모메뉴명",  name : "upperMenuId",  width:"0",   hidden: true,  useData : true}
-            ,{title: "메뉴값",      name : "menuValue",   width:"0",   hidden: true,  useData : true}
-            ,{title: "사용여부",    name : "useYn",       width:"20%",   hidden: true,  useData : true}]
+                        ,{title: "메뉴명",      name : "menuName",    width:"30%",   hidden: false,  useData : true}
+                        ,{title: "사용여부",    name : "useYnName",   width:"20%",   hidden: false}
+                        ,{title: "추가",       name : "button",       width:"10%",  hidden: false,  btnValue:<i className="fa-solid fa-plus"></i>,  clickEvent: addBtnClickEvent}
+                        ,{title: "부모메뉴명",  name : "upperMenuId",  width:"0",    hidden: true,  useData : true}
+                        ,{title: "메뉴설명",    name : "menuDescription",  width:"0",    hidden: true,  useData : true}
+                        ,{title: "메뉴 URL",     name : "menuUrl",  width:"0",    hidden: true,  useData : true}
+                        ,{title: "사용여부",    name : "useYn",       width:"20%",   hidden: true,  useData : true}]
         ,   title : "Menu List"
         ,   selectCol : 'menuId'
         ,   deleted : true
         ,   colSpan : 5
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
+            new Promise((resolve, reject)=> {
 
-            setModalTitle(pageTitle+" 상세");
-            openModal();
+                setModalStatus((prevState => {
+                    return {
+                        ...prevState
+                        ,   title : pageTitle + "상세"
+                        ,   open : true
+                    }
+                }));
 
-            let data = {
-                menuId : e.target.parentNode.id
-            };
+                let data = {
+                    menuId : e.target.parentNode.id
+                };
 
-            common.fetchLoad("/searchMenu","POST", data,(result) => {
-
-                //console.log(result.data.menu);
-
-                setTimeout(() => {
-
-                    tableInit.headerColData.forEach((value, index) => {
-                        if(value.useData === true){
-                            document.getElementById(value.name + "Popup").value = result.data.menu[value.name];
-                        }
-                    });
-                },200);
-
+                common.fetchLoad("/searchMenu","POST", data,(result) => {
+                    resolve(result);
+                });
+            }).then((result) => {
+                tableInit.headerColData.forEach((value, index) => {
+                    if(value.useData === true){
+                        document.getElementById(value.name + "Popup").value = result.data.menu[value.name];
+                    }
+                });
                 document.getElementById("menuIdPopup").disabled = "disabled";
+                dispatch(hideLoading());
             });
         }
         , deleteBtnClickEvent :() => {
@@ -124,9 +138,10 @@ const  AdminMenu = () => {
     }
 
     const menuSearch = () => {
+        dispatch(showLoading());
 
         let data = {
-            menuId     : document.getElementById("menuId").value
+                menuId     : document.getElementById("menuId").value
             ,   menuName   : document.getElementById("menuName").value
             ,   useYn       : document.getElementById("useYn").value
         };
@@ -136,12 +151,13 @@ const  AdminMenu = () => {
             //console.log(result.data.menuCnt);
             setBodyData(result.data.menuList);
             setBodyCnt(result.data.menuCnt);
+            dispatch(hideLoading());
         });
     }
 
     const menuSave = () => {
         if(window.confirm("저장하시겠습니까?")){
-            if(overLab){
+            if(modalStatus.overLab){
                 dispatch(showAlertModal('중복된 메뉴가 존재합니다.'));
                 return;
             }
@@ -154,7 +170,14 @@ const  AdminMenu = () => {
 
             common.fetchLoad("/saveMenu","POST", data, (result) => {
                 dispatch(showAlertModal('저장 되었습니다.'));
-                closeModal();
+
+                setModalStatus((prevState => {
+                    return {
+                        ...prevState
+                        ,   open : false
+                    }
+                }));
+
                 menuSearch();
             });
         }
@@ -167,17 +190,25 @@ const  AdminMenu = () => {
         };
 
         common.fetchLoad("/searchMenu","POST", data,(result) => {
-            //console.log(result.data.menu);
+
+            let overLabResult = false;
+
             if(result.data.menu){
                 document.getElementById("idCheck").innerText = "중복된 메뉴가 존재합니다.";
                 document.getElementById("idCheck").style.color = "red";
-                setOverLab(true);
+                overLabResult = true;
             } else {
                 document.getElementById("idCheck").innerText = "메뉴";
                 document.getElementById("idCheck").style.color = "black";
-                setOverLab(false);
+                overLabResult = false;
             }
 
+            setModalStatus((prevState => {
+                return {
+                    ...prevState
+                    ,   overLab : overLabResult
+                }
+            }))
         });
     }
 
@@ -195,7 +226,7 @@ const  AdminMenu = () => {
                     <input type="text" className="form-control search-slt" placeholder="메뉴 명" id="menuName"/>
                 </div>
                 <div className="col-md-2 my-2">
-                    <Select upperCodeId={"U001"}
+                    <Select upperMenuId={"U001"}
                             codeId={"useYn"}
                             codeClassName={"form-select search-slt"}
                             text={"사용여부"}/>
@@ -211,11 +242,11 @@ const  AdminMenu = () => {
                    bodyData={bodyData}
                    bodyCnt={bodyCnt}/>
 
-            <Modal open={modalOpen} close={closeModal} header={modalTitle}>
+            <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title}>
                 <form id="formTest">
                     <div className="form-floating mb-3">
                         <input className="form-control" type="text" maxLength="20" id="menuIdPopup" onChange={menuOverlapChk}/>
-                        <label htmlFor="userId" id="idCheck">메뉴</label>
+                        <label id="idCheck">메뉴</label>
                     </div>
                     <div className="form-floating mb-3">
                         <input className="form-control" type="text" maxLength="20" id="menuNamePopup"/>
@@ -226,13 +257,17 @@ const  AdminMenu = () => {
                         <label>부모 메뉴</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input className="form-control" type="text" maxLength="20" id="menuValuePopup"/>
-                        <label>메뉴 값</label>
+                        <input className="form-control" type="text" maxLength="20" id="menuDescriptionPopup"/>
+                        <label>메뉴 설명</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <Select upperCodeId={"U001"}
-                                menuId={"useYnPopup"}
-                                menuClassName={"form-select"}
+                        <input className="form-control" type="text" maxLength="20" id="menuUrlPopup"/>
+                        <label>메뉴 URL</label>
+                    </div>
+                    <div className="form-floating mb-3">
+                        <Select upperMenuId={"U001"}
+                                codeId={"useYnPopup"}
+                                codeClassName={"form-select"}
                                 chkVal={"Y"}/>
                         <label>사용여부</label>
                     </div>

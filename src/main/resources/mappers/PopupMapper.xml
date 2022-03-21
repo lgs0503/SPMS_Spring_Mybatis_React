@@ -7,10 +7,12 @@
 		SELECT	POPUP_ID
 			,	POPUP_TITLE
 			,	POPUP_STATUS
+			,	GET_CODE_NAME('POP001', POPUP_STATUS) AS POPUP_STATUS_NAME
 			,	POPUP_CONTENT
 			,	POPUP_IMAGE_NO
 			,	POPUP_URL
 			,	USE_YN
+			,	GET_CODE_NAME('U001', USE_YN) AS USE_YN_NAME
 			,	CREATE_DATE
 			,	CREATE_USER
 			,	UPDATE_DATE
@@ -28,18 +30,23 @@
 
 	<select id="searchPopup" resultType="lgs.com.popup.vo.PopupVO" parameterType="lgs.com.popup.vo.PopupVO">
 		/* searchPopup 팝업 조회  */
-		SELECT	POPUP_ID
-			,	POPUP_TITLE
-			,	POPUP_STATUS
-			,	POPUP_CONTENT
-			,	POPUP_IMAGE_NO
-			,	POPUP_URL
-			,	USE_YN
-			,	CREATE_DATE
-			,	CREATE_USER
-			,	UPDATE_DATE
-			,	UPDATE_USER
-		FROM	POPUP
+		SELECT	P.POPUP_ID
+			,	P.POPUP_TITLE
+			,	P.POPUP_STATUS
+			,	P.POPUP_CONTENT
+			,	P.POPUP_IMAGE_NO
+			,	P.POPUP_URL
+			,	P.USE_YN
+			,	P.CREATE_DATE
+			,	P.CREATE_USER
+			,	P.UPDATE_DATE
+			,	P.UPDATE_USER
+			,	CASE WHEN F.FILE_NAME IS NOT NULL
+					 THEN F.FILE_NAME || '.' ||F.FILE_EXTEN
+					 ELSE NULL END FILE_NAME
+		FROM			POPUP P
+		LEFT OUTER JOIN FILE_INFO F
+		ON 				P.POPUP_IMAGE_NO = F.FILE_NO
 		WHERE	POPUP_ID = #{popupId}
 	</select>
 
@@ -92,7 +99,7 @@
 		VALUES
 		(
 			(
-				SELECT	NVL(MAX(POPUP_ID), 0) + 1
+				SELECT	NVL(MAX(TO_NUMBER(POPUP_ID)), 0) + 1
 				FROM	POPUP
 			)
 		,	#{popupTitle}

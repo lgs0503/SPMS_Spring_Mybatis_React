@@ -54,7 +54,6 @@
 .table-row:hover{
     cursor: pointer;
     background-color: #eef2f6;
-    font-weight: bold;
 }
 .table-header-dark{
     background-color: #212529 !important;

@@ -7,9 +7,13 @@
 		SELECT	PASSWORD
 		FROM	USER_INFO
 		WHERE 	USER_ID = #{userId}
-		<if test="rule != null and rule != ''">
-		AND		USER_RULE 	= #{rule}
-		</if>
+	</select>
+
+	<select id="loginRuleCheck" resultType="lgs.com.main.vo.UserVO" parameterType="lgs.com.main.vo.UserVO">
+	/* loginRuleCheck 계정 권한 체크 */
+		SELECT	USER_RULE
+		FROM	USER_INFO
+		WHERE 	USER_ID = #{userId}
 	</select>
 
 	<select id="userIdCheck" resultType="int" parameterType="lgs.com.main.vo.UserVO">
@@ -50,7 +54,7 @@
 		,		#{locationDetail}
 		,		#{phoneNum}
 		,		#{imageFileNo}
-		,		#{rule}
+		,		#{userRule}
 		,		'0'
 		,		#{createUser}
 		,		#{updateUser}

@@ -19,6 +19,8 @@ public class PostVO extends DefaultVO {
 	private String deleted;
 	private String fileNo1;
 	private String fileNo2;
+	private String fileNoName1;
+	private String fileNoName2;
 
 	private ArrayList<String> postIds;
 

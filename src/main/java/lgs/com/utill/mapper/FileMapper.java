@@ -9,7 +9,7 @@ public interface FileMapper {
 
 	public void fileUpload(FileVO fileVO);
 
-	public String createfileNo();
+	public String createFileNo();
 
 	public FileVO fileSearch(FileVO fileVO);
 	

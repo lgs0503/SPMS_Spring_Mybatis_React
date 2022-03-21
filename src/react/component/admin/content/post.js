@@ -3,27 +3,31 @@ import Table from "../../common/Table";
 import * as common from "../../../comm/common";
 import Modal from "../../common/Modal";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../../action/alertModal";
+import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
 import "../../../css/custom.css"
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {useParams} from "react-router-dom";
+import FileInput from "../../common/FileInput";
 
 const  AdminPost = () => {
 
     const boardType = useParams().boardType;
-    console.log(boardType);
-    const dispatch = useDispatch();
 
-    // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-    const [modalOpen, setModalOpen] = useState(false);
+    const dispatch = useDispatch();
 
     const [bodyData, setBodyData] = useState(null);
     const [bodyCnt, setBodyCnt] = useState(0);
-    const [content, setContent] = useState("");
 
-    const [modalTitle, setModalTitle] = useState("게시글 등록");
+    const [modalStatus, setModalStatus] = useState({
+            title : "게시글 등록"
+        ,   content : ""
+        ,   open : false
+        ,   useYnChk : 'Y'
+        ,   fileNo1 : null
+        ,   fileNo2 : null
+    })
 
     useEffect(() => {
 
@@ -36,21 +40,23 @@ const  AdminPost = () => {
 
     },[]);
 
-    const openModal = () => {
-        setModalOpen(true);
-    };
-
     const closeModal = () => {
-        setModalOpen(false);
+        setModalStatus((prevState => {
+            return{
+                ...prevState
+                ,   open : false
+            }
+        }));
     };
 
     let tableInit = {
-        headerColData : [{title: "ID",         name : "postId",             width:"10px",  hidden: false}
-                        ,{title: "게시판명",    name : "boardName",          width:"15%",   hidden: false}
-                        ,{title: "게시글제목",    name : "postTitle",        width:"25%",   hidden: false}
-                        ,{title: "게시글타입",  name : "postTypeName",       width:"15%",   hidden: false}
-                        ,{title: "작성자",    name : "createUser",           width:"10%",   hidden: false}
-                        ,{title: "작성일",    name : "createDate",           width:"15%",   hidden: false}]
+        headerColData : [{title: "ID",         name : "postId",             width:"10px",  hidden: false, useData : true}
+                        ,{title: "게시판명",    name : "boardName",          width:"15%",   hidden: false, useData : false}
+                        ,{title: "게시글제목",    name : "postTitle",        width:"25%",   hidden: false, useData : true}
+                        ,{title: "게시글타입",  name : "postTypeName",       width:"15%",   hidden: false, useData : true}
+                        ,{title: "작성자",    name : "createUser",           width:"10%",   hidden: false, useData : false}
+                        ,{title: "작성일",    name : "createDate",           width:"15%",   hidden: false, useData : false}
+                        ,{title: "게시판명",    name : "boardId",            width:"0",   hidden: true, useData : true}]
         ,   title : "Post List"
         ,   selectCol : 'postId'
         ,   deleted : true
@@ -58,34 +64,61 @@ const  AdminPost = () => {
         ,   pagination : true
         ,   colSpan : 6
         ,   cellSelectEvent : (e) => {
+            dispatch(showLoading());
 
-            setModalTitle("게시글 상세");
-            openModal();
+            setModalStatus((prevState => {
+                return{
+                    ...prevState
+                    ,   title : "게시글 상세"
+                    ,   open : true
+                }
+            }));
 
             let data = {
                 postId : e.target.parentNode.id
             };
 
-            common.fetchLoad("/searchPost","POST", data,(result) => {
+            new Promise((resolve, reject)=>{
+                common.fetchLoad("/searchPost","POST", data,(result) => {
+                    resolve(result);
+                });
+            }).then((result)=>{
 
-                //console.log(result.data.post);
-                setTimeout(() => {
+                document.getElementById("postIdPopup").value = result.data.post["postId"];
+                document.getElementById("boardIdPopup").value = result.data.post["boardId"];
+                document.getElementById("postTitlePopup").value = result.data.post["postTitle"];
+                document.getElementById("postTypePopup").value = result.data.post["postType"];
 
-                    document.getElementById("postIdPopup").value = result.data.post["postId"];
-                    document.getElementById("boardIdPopup").value = result.data.post["boardId"];
-                    document.getElementById("postTitlePopup").value = result.data.post["postTitle"];
-                    document.getElementById("postTypePopup").value = result.data.post["postType"];
-                    document.getElementById("fileNo1Popup").value = result.data.post["fileNo1"];
-                    document.getElementById("fileNo2Popup").value = result.data.post["fileNo2"];
+                if(result.data.post["fileNoName1"]){
+                    document.getElementById("fileName_fileNo1").value = result.data.post["fileNoName1"];
+                }
+                if(result.data.post["fileNoName2"]){
+                    document.getElementById("fileName_fileNo2").value = result.data.post["fileNoName2"];
+                }
 
-                    setContent(result.data.post["postContent"]);
-                },200);
+                setModalStatus((prevState => {
+                    return{
+                        ...prevState
+                        ,   content : result.data.post["postContent"]
+                        ,   fileNo1: result.data.post["fileNo1"]
+                        ,   fileNo2: result.data.post["fileNo2"]
+                    }
+                }));
+                dispatch(hideLoading());
             });
         }
         , addBtnClickEvent : () => {
-            setContent(null);
-            setModalTitle("게시글 등록");
-            openModal();
+
+            setModalStatus((prevState => {
+                return{
+                    ...prevState
+                    ,   title : "게시글 등록"
+                    ,   open : true
+                    ,   content : null
+                    ,   fileNo1 : null
+                    ,   fileNo2 : null
+                }
+            }));
         }
         , deleteBtnClickEvent :() => {
             if(window.confirm("삭제하시겠습니까?")){
@@ -108,6 +141,7 @@ const  AdminPost = () => {
     }
 
     const postSearch = () => {
+        dispatch(showLoading());
 
         let data = {
                 postId     : document.getElementById("postId").value
@@ -122,66 +156,76 @@ const  AdminPost = () => {
             //console.log(result.data.postCnt);
             setBodyData(result.data.postList);
             setBodyCnt(result.data.postCnt);
+            dispatch(hideLoading());
         });
     }
 
     const postSave = () => {
         if(window.confirm("저장하시겠습니까?")){
+            dispatch(showLoading());
 
             /*파일업로드 */
             new Promise(function(resolve, reject){
 
                 let resultFile = {};
-                if(document.getElementById("fileNo1Popup").value){
+                new Promise(function(fileResolve, reject) {
+                    if (document.getElementById("fileNo1").value) {
 
-                    let form = new FormData();
-                    form.append( "file", document.getElementById("fileNo1Popup").files[0]);
+                        let form = new FormData();
+                        form.append("file", document.getElementById("fileNo1").files[0]);
 
-                    common.fetchLoad("/file/upload", "POST", form, function (result) {
+                        common.fetchLoad("/file/upload", "POST", form, function (result) {
+                            fileResolve(result);
+                        }, true);
+                    } else {
+                        fileResolve();
+                    }
+                }).then((fileResult)=>{
 
-                        resultFile.fileNo1 = result.uploadList[0].fileNo;
-                    }, true);
-                }
+                    if(common.nullCheck(fileResult)){
+                        resultFile.fileNo1 = fileResult.uploadList[0].fileNo;
+                    }
 
-                if(document.getElementById("fileNo2Popup").value){
+                    if(document.getElementById("fileNo2").value){
 
-                    let form = new FormData();
-                    form.append( "file", document.getElementById("fileNo2Popup").files[0]);
+                        let form = new FormData();
+                        form.append( "file", document.getElementById("fileNo2").files[0]);
 
-                    common.fetchLoad("/file/upload", "POST", form, function (result) {
-                        resultFile.fileNo2 = result.uploadList[0].fileNo;
-                    }, true);
-                }
-                console.log(resultFile);
+                        common.fetchLoad("/file/upload", "POST", form, function (result) {
+                            resultFile.fileNo2 = result.uploadList[0].fileNo;
+                            resolve(resultFile);
+                        }, true);
+                    } else {
+                        resolve(resultFile);
+                    }
+                });
 
-                resolve(resultFile);
-
-
-            }).then(function (resolve) {
+            }).then(function (fileData) {
 
                 let data = {
                     postId : document.getElementById("postIdPopup").value,
                     boardId : document.getElementById("boardIdPopup").value,
                     postTitle : document.getElementById("postTitlePopup").value,
                     postType : document.getElementById("postTypePopup").value,
-                    postContent : content
+                    postContent : modalStatus.content
                 }
 
                 /* 이미지 번호가 있으면 회원가입에 같이 저장한다.*/
-                if (resolve.fileNo1){
-                    data.fileNo1 = resolve.fileNo1;
+                if (fileData.fileNo1){
+                    data.fileNo1 = fileData.fileNo1;
                 }
 
-                if (resolve.fileNo2){
-                    data.fileNo2 = resolve.fileNo2;
+                if (fileData.fileNo2){
+                    data.fileNo2 = fileData.fileNo2;
                 }
 
-                console.log(data);
+                //console.log(data);
 
                 common.fetchLoad("/savePost","POST", data, (result) => {
                     dispatch(showAlertModal('저장 되었습니다.'));
                     closeModal();
                     postSearch();
+                    dispatch(hideLoading());
                 });
             });
         }
@@ -229,7 +273,7 @@ const  AdminPost = () => {
                    bodyData={bodyData}
                    bodyCnt={bodyCnt}/>
 
-            <Modal open={modalOpen} close={closeModal} header={modalTitle} modalSize={"modalSize9"}>
+            <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title} modalSize={"modalSize9"}>
                 <form id="formTest">
                     <div className="form-floating mb-3">
                         <input className="form-control" type="text" maxLength="20" id="postIdPopup" disabled={true}/>
@@ -256,7 +300,7 @@ const  AdminPost = () => {
                     <div className="form-floating mb-3">
                         <label>내용</label>
                         <CKEditor
-                            data = {content}
+                            data = {modalStatus.content}
                             editor={ ClassicEditor }
                             config={{
                                 language: "ko",
@@ -294,7 +338,13 @@ const  AdminPost = () => {
                             } }
                             onChange={ ( event, editor ) => {
                                 const data = editor.getData();
-                                setContent(data);
+
+                                setModalStatus((prevState => {
+                                    return {
+                                        ...prevState
+                                        ,   content : data
+                                    }
+                                }))
                                 console.log( { event, editor, data } );
                             } }
                             onBlur={ ( event, editor ) => {
@@ -306,14 +356,14 @@ const  AdminPost = () => {
                         />
                       {/*  <input className="form-control" type="textarea" maxLength="20" id="postDescriptionPopup"/>*/}
                     </div>
-                    <div className="form-floating mb-3">
-                        <input className="form-control fileInput" type="file" maxLength="20" id="fileNo1Popup"/>
-                        <label>파일업로드 1</label>
-                    </div>
-                    <div className="form-floating mb-3">
-                        <input className="form-control fileInput" type="file" maxLength="20" id="fileNo2Popup"/>
-                        <label>파일업로드 2</label>
-                    </div>
+                    <FileInput fileId={"fileNo1"}
+                               label={"파일업로드 1"}
+                               fileNo={modalStatus.fileNo1}
+                               fileClassName={"form-floating mb-3"}/>
+                    <FileInput fileId={"fileNo2"}
+                               label={"파일업로드 2"}
+                               fileNo={modalStatus.fileNo2}
+                               fileClassName={"form-floating mb-3"}/>
                     <div className="mt-4 mb-0">
                         <div className="d-grid">
                             <a className="btn btn-primary btn-block" id="btnRegister" onClick={postSave}>저장</a>

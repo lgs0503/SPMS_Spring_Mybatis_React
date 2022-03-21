@@ -11,10 +11,14 @@ public class PopupVO extends DefaultVO {
 	private String popupId;
 	private String popupTitle;
 	private String popupStatus;
+	private String popupStatusName;
 	private String popupContent;
 	private String popupImageNo;
 	private String popupUrl;
-	private String uesYn;
+	private String useYn;
+	private String useYnName;
+	private String fileName;
+
 
 	private ArrayList<String> popupIds;
 

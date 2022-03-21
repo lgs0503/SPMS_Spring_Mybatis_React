@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import "../../../css/custom.css";
 
 const AdminNavigation = () => {
 
@@ -60,18 +61,14 @@ const AdminNavigation = () => {
                               <Link className="nav-link" to="/admin/productreview">REVIEW</Link>
                           </nav>
                       </div>
-                      <div className="sb-sidenav-menu-heading">Statistics</div>
-                      <Link className="nav-link collapsed" to="/admin/statistics" data-bs-toggle="collapse"
-                         data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                      <div className="sb-sidenav-menu-heading">Outer</div>
+                      <Link className="nav-link" to="/admin/statistics">
                           <div className="sb-nav-link-icon"><i className="fa-solid fa-chart-line"></i></div>
                           통계 자료
-                          <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                       </Link>
-                      <Link className="nav-link collapsed" to="/admin/loginhistory" data-bs-toggle="collapse"
-                         data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                      <Link className="nav-link" to="/admin/loginHistory">
                           <div className="sb-nav-link-icon"><i className="fa-solid fa-record-vinyl"></i></div>
                           로그인 이력
-                          <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                       </Link>
                   </div>
               </div>

@@ -6,7 +6,7 @@ import "../../css/styles.css";
 import * as common from "../../comm/common";
 import AdminLoginRegiFooter from "./footer";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../action/alertModal";
+import {hideLoading, showAlertModal, showLoading} from "../../action/aciton";
 
 const  AdminLogin = () => {
     const dispatch = useDispatch();
@@ -41,16 +41,19 @@ const  AdminLogin = () => {
     }
 
     const login = () => {
+        dispatch(showLoading());
         let userId = document.getElementById("userId");
         let password = document.getElementById("password");
 
         if(!common.nullCheck(userId.value)){
+            dispatch(hideLoading());
             dispatch(showAlertModal('아이디를 입력해주세요.'));
             userId.focus();
             return ;
         }
 
         if(!common.nullCheck(password.value)){
+            dispatch(hideLoading());
             dispatch(showAlertModal('비밀번호를 입력해주세요.'));
             password.focus();
             return ;
@@ -58,21 +61,44 @@ const  AdminLogin = () => {
 
         let data = {
             userId      : userId.value,
-            password    : password.value,
-            rule        : "admin"
+            password    : password.value
         }
 
-        common.fetchLoad("/loginProcessing", "POST", data, function (result) {
+        new Promise((resolve, reject)=>{
 
-            if(result.loginStatus == "1"){
-                sessionStorage.setItem("userId", userId.value);
-                window.location.href="/spring-showpingmall/#/admin";
-            } else {
-                dispatch(showAlertModal('아이디와 비밀번호를 확인해주세요.'));
-                userId.value = "";
-                password.value = "";
-            }
+            common.fetchLoad("/loginRuleCheck", "POST", data, (result) => {
+                if(result.loginRule == "2" || result.loginRule == "3"){
+                    resolve();
+                } else if (result.loginRule == "0"){
+                    dispatch(hideLoading());
+                    dispatch(showAlertModal('가입 미승인 계정 입니다.'));
+                    return;
+                } else if(result.loginRule == "1"){
+                    dispatch(hideLoading());
+                    dispatch(showAlertModal('관리자 권한 계정만 로그인 가능합니다.'));
+                    return;
+                } else {
+                    resolve();
+                }
+            });
+
+        }).then(()=>{
+
+            common.fetchLoad("/loginProcessing", "POST", data, (result) => {
+
+                if(result.loginStatus == "1"){
+                    sessionStorage.setItem("userId", userId.value);
+                    window.location.href="/spring-showpingmall/#/admin";
+                } else {
+                    dispatch(hideLoading());
+                    dispatch(showAlertModal('아이디와 비밀번호를 확인해주세요.'));
+                    userId.value = "";
+                    password.value = "";
+                }
+            });
         });
+
+
     };
 
   return (

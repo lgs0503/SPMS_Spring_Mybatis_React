@@ -61,6 +61,25 @@ public class MainController {
 	}
 
 	/**
+	 *  계정 권한 조회
+	 * @param UserVO 로그인 ID
+	 * @return 로그인 권한 결과값
+	 */
+	@RequestMapping(value = "/loginRuleCheck", method = RequestMethod.POST)
+	public ModelAndView loginRuleCheck(@RequestBody UserVO userVO, HttpServletRequest request) {
+		logger.info("loginRuleCheck");
+
+		ModelAndView mv = new ModelAndView();
+
+		String result = mainService.loginRuleCheck(userVO);
+
+		mv.addObject("loginRule", result);
+		mv.setViewName("jsonView");
+
+		return mv;
+	}
+
+	/**
 	 *  계정 중복확인
 	 * @param UserVO 로그인 ID
 	 * @return 중복확인 결과값

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lgs.com.menu.mapper.MenuMapper">
+
+	<select id="menuList" resultType="lgs.com.menu.vo.MenuVO" parameterType="lgs.com.menu.vo.MenuVO">
+	/* menuList 메뉴 리스트 조회  */
+		SELECT  LEVEL
+			,	CONNECT_BY_ISLEAF AS LEAF
+			,   MENU_ID
+			,	UPPER_MENU_ID
+			,	MENU_NAME
+			,	MENU_DESCRIPTION
+			,	MENU_URL
+			,	USE_YN
+			,	GET_CODE_NAME('U001', USE_YN) AS USE_YN_NAME
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	MENU
+		<include refid="menuWhere"></include>
+		START WITH MENU_ID = 'MENU'
+		CONNECT BY PRIOR MENU_ID = UPPER_MENU_ID
+	</select>
+
+	<select id="menuCnt" resultType="int" parameterType="lgs.com.menu.vo.MenuVO">
+		/* menuCnt 메뉴 리스트 갯수 조회  */
+		SELECT	COUNT(*) CNT
+		FROM	MENU
+		<include refid="menuWhere"></include>
+	</select>
+
+	<select id="searchMenu" resultType="lgs.com.menu.vo.MenuVO" parameterType="lgs.com.menu.vo.MenuVO">
+		/* searchMenu 메뉴  조회  */
+		SELECT	MENU_ID
+			,	UPPER_MENU_ID
+			,	MENU_NAME
+			,	MENU_DESCRIPTION
+			,	MENU_URL
+			,	USE_YN
+			,	CREATE_DATE
+			,	CREATE_USER
+			,	UPDATE_DATE
+			,	UPDATE_USER
+		FROM	MENU
+		WHERE	MENU_ID = #{menuId}
+	</select>
+
+	<sql id="menuWhere">
+		/* menuWhere 메뉴 조회조건  */
+		<where>
+			<if test="menuId != null and menuId != ''">
+				AND 	MENU_ID LIKE '%' || #{menuId} || '%'
+			</if>
+			<if test="menuName != null and menuName != ''">
+				AND 	MENU_NAME LIKE '%' || #{menuName} || '%'
+			</if>
+			<if test="upperMenuId != null and upperMenuId != ''">
+				AND 	UPPER_MENU_ID = #{upperMenuId}
+				AND 	USE_YN = 'Y'
+			</if>
+			<if test="useYn != null and useYn != ''">
+				AND 	USE_YN = #{useYn}
+			</if>
+		</where>
+	</sql>
+
+	<insert id="saveMenu" parameterType="lgs.com.menu.vo.MenuVO">
+		/* saveMenu 메뉴 저장 (신규, 수정)  */
+		MERGE
+		INTO	MENU C
+		USING	DUAL
+		ON 		(C.MENU_ID = #{menuId})
+		WHEN 	MATCHED THEN
+		UPDATE
+		SET		MENU_NAME			= #{menuName}
+		,		UPPER_MENU_ID		= #{upperMenuId}
+		,		MENU_DESCRIPTION	= #{menuDescription}
+		,		USE_YN				= #{useYn}
+		,		MENU_URL			= #{menuUrl}
+		,		UPDATE_USER			= #{updateUser}
+		,		UPDATE_DATE			= #{updateDate}
+		WHEN 	NOT MATCHED THEN
+		INSERT
+		(
+			MENU_ID
+		,	MENU_NAME
+		,	UPPER_MENU_ID
+		,	MENU_DESCRIPTION
+		,	MENU_URL
+		,	USE_YN
+		,	CREATE_USER
+		,	CREATE_DATE
+		,	UPDATE_USER
+		,	UPDATE_DATE
+		)
+		VALUES
+		(
+			#{menuId}
+		,	#{menuName}
+		,	#{upperMenuId}
+		,	#{menuDescription}
+		,	#{menuUrl}
+		,	#{useYn}
+		,	#{createUser}
+		,	#{createDate}
+		,	#{updateUser}
+		,	#{updateDate}
+		)
+	</insert>
+
+	<delete id="deleteMenu" parameterType="lgs.com.menu.vo.MenuVO">
+		/* deleteMenu 메뉴 삭제  */
+		DELETE
+		FROM	MENU
+		WHERE 	MENU_ID IN
+		<foreach collection="menuIds" index="index" item="idx"
+				 separator="," open="(" close=")" >
+			#{idx}
+		</foreach>
+	</delete>
+</mapper>

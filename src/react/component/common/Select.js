@@ -45,7 +45,11 @@ const Select  = (props) => {
     },[]);
 
     return(
-        <select id={props.codeId} className={props.codeClassName} onChange={() => props.changeEventFunction()}>
+        <select id={props.codeId} className={props.codeClassName}
+                onChange={() => props.changeEventFunction
+                                ?
+                                props.changeEventFunction()
+                                : null}>
             {
                 props.text ?
                 (

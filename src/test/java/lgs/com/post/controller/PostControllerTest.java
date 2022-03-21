@@ -67,7 +67,7 @@ public class PostControllerTest {
     public void postList() throws Exception{
         postVO.setPostId(null);
 
-        mockMvc.perform(get("/postList")
+        mockMvc.perform(post("/postList")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())
@@ -87,7 +87,7 @@ public class PostControllerTest {
     public void searchPost() throws Exception {
         postVO.setPostId("1");
 
-        mockMvc.perform(get("/searchPost")
+        mockMvc.perform(post("/searchPost")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())
@@ -106,7 +106,7 @@ public class PostControllerTest {
     public void updateViewCnt() throws Exception {
         postVO.setPostId("1");
 
-        mockMvc.perform(get("/updateViewCnt")
+        mockMvc.perform(post("/updateViewCnt")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())
@@ -127,7 +127,7 @@ public class PostControllerTest {
         postVO.setPostType("test");
         postVO.setViewCnt("0");
 
-        mockMvc.perform(put("/savePost")
+        mockMvc.perform(post("/savePost")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())
@@ -142,7 +142,7 @@ public class PostControllerTest {
         deletes.add("1");
         postVO.setPostIds(deletes);
 
-        mockMvc.perform(delete("/deletePost")
+        mockMvc.perform(post("/deletePost")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(postVO)))
                 .andExpect(status().isOk())

@@ -53,6 +53,23 @@ public class MainServiceServiceImpl implements MainService {
     }
 
     @Override
+    public String loginRuleCheck(UserVO userVO) {
+        String result = "";
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            MainMapper mapper = session.getMapper(MainMapper.class);
+
+            UserVO loginUser = mapper.loginRuleCheck(userVO);
+
+            result = loginUser != null ? loginUser.getUserRule() : "";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public int userIdCheck(UserVO userVO) {
         int result = FAIL;
 

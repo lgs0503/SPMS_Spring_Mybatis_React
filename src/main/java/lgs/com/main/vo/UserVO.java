@@ -16,7 +16,7 @@ public class UserVO extends DefaultVO {
 	private String locationDetail;
 	private String imageFileNo;
 	private String phoneNum;
-	private String rule;
+	private String userRule;
 	private String deleted;
 
 }
