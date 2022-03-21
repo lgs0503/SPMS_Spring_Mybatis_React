@@ -64,7 +64,7 @@ public class BannerControllerTest {
     public void bannerList() throws Exception   {
         bannerVO.setBannerId(null);
 
-        mockMvc.perform(get("/bannerList")
+        mockMvc.perform(post("/bannerList")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(bannerVO)))
                 .andExpect(status().isOk())
@@ -84,7 +84,7 @@ public class BannerControllerTest {
     public void searchBanner() throws Exception   {
         bannerVO.setBannerId("1");
 
-        mockMvc.perform(get("/searchBanner")
+        mockMvc.perform(post("/searchBanner")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(bannerVO)))
                 .andExpect(status().isOk())
@@ -109,7 +109,7 @@ public class BannerControllerTest {
         bannerVO.setBannerTitle("배너");
         bannerVO.setUseYn("Y");
 
-        mockMvc.perform(put("/saveBanner")
+        mockMvc.perform(post("/saveBanner")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(bannerVO)))
                 .andExpect(status().isOk())
@@ -124,7 +124,7 @@ public class BannerControllerTest {
         deletes.add("1");
         bannerVO.setBannerIds(deletes);
 
-        mockMvc.perform(delete("/deleteBanner")
+        mockMvc.perform(post("/deleteBanner")
                 .contentType(contentType)
                 .content(mapper.writeValueAsString(bannerVO)))
                 .andExpect(status().isOk())
