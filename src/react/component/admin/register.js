@@ -92,26 +92,26 @@ const  AdminRegister = () => {
             userId : document.getElementById("userId").value,
             password : document.getElementById("password").value,
             userName : document.getElementById("userName").value,
-            age : document.getElementById("age").value,
+            birthday : document.getElementById("birthday").value,
             gender : document.getElementById("gender").value,
             email : document.getElementById("email").value,
             location : document.getElementById("location").value,
             locationDetail : document.getElementById("locationDtl").value,
             imageFileNo : "1",
             phoneNum : document.getElementById("phoneNum").value,
-            rule : "admin",
+            userRule : "0",
             deleted : "0"
         };
 
         /* 필수값 체크 */
         let validationChkName = ["아이디", "비밀번호"
-            , "성명", "나이"
+            , "성명", "생년월일"
             , "성별", "이메일"
             , "주소", "상세주소"
             , "연락처"];
 
         let validationChkId = ["userId", "password"
-            , "userName", "age"
+            , "userName", "birthday"
             , "gender" , "email"
             , "location", "locationDtl"
             , "phoneNum"];
@@ -144,7 +144,7 @@ const  AdminRegister = () => {
                 common.fetchLoad("/registerProcessing", "POST", data, function (result) {
                     if (result.registerStatus == "1"){
                         dispatch(showAlertModal("회원가입이 성공되었습니다."));
-                        window.location.href = "../admin/login.html";
+                        window.location.href = "/spring-showpingmall/#/admin/login";
                     }
                 });
             });
@@ -194,8 +194,8 @@ const  AdminRegister = () => {
                                                   <label htmlFor="userName">성명</label>
                                               </div>
                                               <div className="form-floating mb-3">
-                                                  <input className="form-control" id="age" type="text" placeholder="나이를 입력해주세요" maxLength="20"/>
-                                                  <label htmlFor="age">나이</label>
+                                                  <input className="form-control" id="birthday" type="date" placeholder="생년월일를 입력해주세요" maxLength="20"/>
+                                                  <label htmlFor="birthday">생년월일</label>
                                               </div>
                                               <div className="form-floating mb-3">
                                                   <select id="gender" className="form-select">
@@ -218,7 +218,7 @@ const  AdminRegister = () => {
                                                   <div className="col-md-4">
                                                       <div className="form-floating mb-3 mb-md-0">
                                                           <div className="d-grid">
-                                                              <a className="btn btn-primary btn-block" id="btnLocation" onClick={openModal}>주소찾기</a>
+                                                              <a className="btn btn-primary btn-block locationBtnPadding" id="btnLocation" onClick={openModal}>주소찾기</a>
                                                           </div>
                                                       </div>
                                                   </div>
