@@ -99,3 +99,6 @@ body::-webkit-scrollbar-track{
     width: 70px;
     height: 70px;
 }
+.locationBtnPadding{
+    padding: 15px !important;
+}
