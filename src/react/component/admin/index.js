@@ -17,6 +17,7 @@ import {showAlertModal} from "../../action/aciton";
 import AdminBanner from "./content/banner";
 import AdminPopup from "./content/popup";
 import AdminUser from "./content/user";
+import AdminComment from "./content/postComment";
 
 const  AdminLayout = () => {
 
@@ -38,15 +39,16 @@ const  AdminLayout = () => {
               <div id="layoutSidenav_content">
                   <main>
                       <Routes>
-                          <Route path="/" element={<AdminMain/>}/>
-                          <Route path="/code" element={<AdminCode/>}/>
-                          <Route path="/menu" element={<AdminMenu/>}/>
-                          <Route path="/banner" element={<AdminBanner/>}/>
-                          <Route path="/user" element={<AdminUser/>}/>
-                          <Route path="/board" element={<AdminBoard/>}/>
-                          <Route path="/post" element={<AdminPost/>}/>
-                          <Route path="/popup" element={<AdminPopup/>}/>
-                          <Route path="/post/:boardType" element={<AdminPost/>}/>
+                          <Route path="/"                   element={<AdminMain/>}/>
+                          <Route path="/code"               element={<AdminCode/>}/>
+                          <Route path="/menu"               element={<AdminMenu/>}/>
+                          <Route path="/banner"             element={<AdminBanner/>}/>
+                          <Route path="/user"               element={<AdminUser/>}/>
+                          <Route path="/popup"              element={<AdminPopup/>}/>
+                          <Route path="/board"              element={<AdminBoard/>}/>
+                          <Route path="/post"               element={<AdminPost/>}/>
+                          <Route path="/post/:boardType"    element={<AdminPost/>}/>
+                          <Route path="/comment"            element={<AdminComment/>}/>
                       </Routes>
                   </main>
                   <AdminFooter/>
