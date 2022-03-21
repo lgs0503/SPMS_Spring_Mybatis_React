@@ -93,7 +93,7 @@ public class MainControllerTest {
         userVO.setLocation("테스트 주소");
         userVO.setLocationDetail("테스트 상세주소");
         userVO.setPhoneNum("01012347235");
-        userVO.setRule("admin");
+        userVO.setUserRule("2");
 
         mockMvc.perform(post("/registerProcessing")
                 .contentType(contentType)
