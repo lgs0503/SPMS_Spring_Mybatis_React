@@ -6,7 +6,7 @@ import "../../css/styles.css";
 import * as common from "../../comm/common";
 import AdminLoginRegiFooter from "./footer";
 import {useDispatch} from "react-redux";
-import {showAlertModal} from "../../action/aciton";
+import {hideLoading, showAlertModal, showLoading} from "../../action/aciton";
 
 const  AdminLogin = () => {
     const dispatch = useDispatch();
@@ -41,16 +41,19 @@ const  AdminLogin = () => {
     }
 
     const login = () => {
+        dispatch(showLoading());
         let userId = document.getElementById("userId");
         let password = document.getElementById("password");
 
         if(!common.nullCheck(userId.value)){
+            dispatch(hideLoading());
             dispatch(showAlertModal('아이디를 입력해주세요.'));
             userId.focus();
             return ;
         }
 
         if(!common.nullCheck(password.value)){
+            dispatch(hideLoading());
             dispatch(showAlertModal('비밀번호를 입력해주세요.'));
             password.focus();
             return ;
@@ -68,6 +71,7 @@ const  AdminLogin = () => {
                 sessionStorage.setItem("userId", userId.value);
                 window.location.href="/spring-showpingmall/#/admin";
             } else {
+                dispatch(hideLoading());
                 dispatch(showAlertModal('아이디와 비밀번호를 확인해주세요.'));
                 userId.value = "";
                 password.value = "";
