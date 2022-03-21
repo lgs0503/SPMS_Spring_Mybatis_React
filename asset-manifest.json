@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/spring-showpingmall/static/css/main.54dc7803.css",
-    "main.js": "/spring-showpingmall/static/js/main.52624295.js",
+    "main.css": "/spring-showpingmall/static/css/main.7fad227e.css",
+    "main.js": "/spring-showpingmall/static/js/main.7d827669.js",
     "static/js/787.75b77467.chunk.js": "/spring-showpingmall/static/js/787.75b77467.chunk.js",
+    "static/media/loading.gif": "/spring-showpingmall/static/media/loading.9bbaf61e80fb7d02c9c8.gif",
     "index.html": "/spring-showpingmall/index.html",
-    "main.54dc7803.css.map": "/spring-showpingmall/static/css/main.54dc7803.css.map",
-    "main.52624295.js.map": "/spring-showpingmall/static/js/main.52624295.js.map",
+    "main.7fad227e.css.map": "/spring-showpingmall/static/css/main.7fad227e.css.map",
+    "main.7d827669.js.map": "/spring-showpingmall/static/js/main.7d827669.js.map",
     "787.75b77467.chunk.js.map": "/spring-showpingmall/static/js/787.75b77467.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.54dc7803.css",
-    "static/js/main.52624295.js"
+    "static/css/main.7fad227e.css",
+    "static/js/main.7d827669.js"
   ]
 }
