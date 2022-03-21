@@ -7,9 +7,9 @@
 		SELECT	USER_ID
 			,	USER_NAME
 			,	GENDER
-			,	GET_CODE_NAME('G001', USER_TYPE) AS GENDER_NAME
+			,	GET_CODE_NAME('G001', GENDER) AS GENDER_NAME
 			,	USER_RULE
-			,	GET_CODE_NAME('UR001', USE_YN) AS USER_RULE_NAME
+			,	GET_CODE_NAME('UR001', USER_RULE) AS USER_RULE_NAME
 		FROM	USER_INFO
 		<include refid="userWhere"></include>
 		ORDER BY USER_ID ASC
@@ -24,21 +24,28 @@
 
 	<select id="searchUser" resultType="lgs.com.user.vo.UserVO" parameterType="lgs.com.user.vo.UserVO">
 		/* searchUser 회원  조회  */
-		SELECT	USER_ID
-			,	USER_NAME
-			,	AGE
-			,	GENDER
-			,	EMAIL
-			,	LOCATION
-			,	LOCATION_DTL
-			,	IMAGE_FILE_NO
-			,	USER_RULE
-			,	BRIHDAY
-			,	CREATE_USER
-			,	UPDATE_DATE
-			,	UPDATE_USER
-		FROM	USER_INFO
-		WHERE	USER_ID = #{userId}
+		SELECT	U.USER_ID
+			,	U.USER_NAME
+			,	U.AGE
+			,	U.GENDER
+			,	U.EMAIL
+			,	U.LOCATION
+			,	U.LOCATION_DTL
+			,	U.IMAGE_FILE_NO
+			,  CASE WHEN F.FILE_NAME IS NOT NULL
+					THEN F.FILE_NAME || '.' ||F.FILE_EXTEN
+					ELSE NULL END AS IMAGE_FILE_NO_NAME
+			,	U.USER_RULE
+			,	U.BIRTHDAY
+			,	U.PHONE_NUM
+			,	U.CREATE_DATE
+			,	U.CREATE_USER
+			,	U.UPDATE_DATE
+			,	U.UPDATE_USER
+		FROM			USER_INFO U
+		LEFT OUTER JOIN FILE_INFO F
+		ON 				U.IMAGE_FILE_NO = F.FILE_NO
+		WHERE	U.USER_ID = #{userId}
 	</select>
 
 	<sql id="userWhere">
@@ -50,11 +57,11 @@
 			<if test="userName != null and userName != ''">
 				AND 	USER_NAME LIKE '%' || #{userName} || '%'
 			</if>
-			<if test="useYn != null and useYn != ''">
-				AND 	USE_YN = #{useYn}
+			<if test="userRule != null and userRule != ''">
+				AND 	USER_RULE = #{userRule}
 			</if>
-			<if test="fileYn != null and fileYn != ''">
-				AND 	FILE_YN = #{fileYn}
+			<if test="gender != null and gender != ''">
+				AND 	GENDER = #{gender}
 			</if>
 		</where>
 	</sql>
@@ -62,47 +69,28 @@
 	<insert id="saveUser" parameterType="lgs.com.user.vo.UserVO">
 		/* saveUser 회원 저장 (신규, 수정)  */
 		MERGE
-		INTO	USER_INFO B
+		INTO	USER_INFO U
 		USING	DUAL
-		ON 		(B.USER_ID = #{userId})
+		ON 		(U.USER_ID = #{userId})
 		WHEN 	MATCHED THEN
 		UPDATE
 		SET		USER_NAME			= #{userName}
-		,		USER_TYPE			= #{userType}
-		,		USER_DESCRIPTION	= #{userDescription}
-		,		USE_YN				= #{useYn}
-		,		FILE_YN				= #{fileYn}
+		,		AGE					= #{age}
+		,		BIRTHDAY			= #{birthday}
+		,		GENDER				= #{gender}
+		,		EMAIL				= #{email}
+		,		LOCATION			= #{location}
+		,		LOCATION_DTL		= #{locationDtl}
+		,		IMAGE_FILE_NO		= #{imageFileNo}
+		,		USER_RULE			= #{userRule}
 		,		UPDATE_USER			= #{updateUser}
 		,		UPDATE_DATE			= #{updateDate}
 		WHEN 	NOT MATCHED THEN
 		INSERT
-		(
-			USER_ID
-		,	USER_NAME
-		,	USER_TYPE
-		,	USER_DESCRIPTION
-		,	USE_YN
-		,	FILE_YN
-		,	CREATE_USER
-		,	CREATE_DATE
-		,	UPDATE_USER
-		,	UPDATE_DATE
+		(	USER_ID
 		)
 		VALUES
-		(
-			(
-				SELECT 	NVL(MAX(TO_NUMBER(USER_ID)), 0) + 1
-				FROM	USER_INFO
-			)
-		,	#{userName}
-		,	#{userType}
-		,	#{userDescription}
-		,	#{useYn}
-		,	#{fileYn}
-		,	#{createUser}
-		,	#{createDate}
-		,	#{updateUser}
-		,	#{updateDate}
+		(	#{userId}
 		)
 	</insert>
 

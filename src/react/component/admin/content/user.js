@@ -5,6 +5,9 @@ import Modal from "../../common/Modal";
 import {useDispatch} from "react-redux";
 import {hideLoading, showAlertModal, showLoading} from "../../../action/aciton";
 import Select from "../../common/Select";
+import DaumPostcode from "react-daum-postcode";
+import "../../../css/custom.css";
+import FileInput from "../../common/FileInput";
 
 const  AdminUser = () => {
 
@@ -16,6 +19,8 @@ const  AdminUser = () => {
     const [modalStatus, setModalStatus] =  useState({
         title : "회원 등록"
         ,   open : false
+        ,   open_location : false
+        ,   imageFileNo : null
     });
 
     useEffect(() => {
@@ -32,21 +37,23 @@ const  AdminUser = () => {
     };
 
     let tableInit = {
-            headerColData : [{title: "ID",         name : "userId",             width:"10px",  hidden: false,  useData : true}
-                            ,{title: "회원명",    name : "userName",           width:"30%",   hidden: false,  useData : true}
-                            ,{title: "회원타입",  name : "userTypeName",       width:"30%",   hidden: false,  useData : false}
-                            ,{title: "사용여부",    name : "useYnName",           width:"12%",   hidden: false,  useData : false}
-                            ,{title: "파일여부",    name : "fileYnName",          width:"12%",   hidden: false,  useData : false}
-                            ,{title: "회원설명",  name : "userDescription",    width:"0",     hidden: true,   useData : true}
-                            ,{title: "사용여부",    name : "useYn",               width:"0",     hidden: true,   useData : true}
-                            ,{title: "파일여부",    name : "fileYn",              width:"0",     hidden: true,   useData : true}
-                            ,{title: "회원타입",  name : "userType",           width:"0",     hidden: true,   useData : true}]
+            headerColData : [{title: "ID",       name : "userId",             width:"30%",  hidden: false,  useData : true}
+                            ,{title: "성명",      name : "userName",           width:"30%",   hidden: false,  useData : true}
+                            ,{title: "권한",      name : "userRuleName",       width:"20%",   hidden: false,  useData : false}
+                            ,{title: "성별",      name : "genderName",         width:"20%",   hidden: false,   useData : false}
+                            ,{title: "권한",      name : "userRule",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "생년월일",      name : "birthday",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "이메일",      name : "email",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "주소",      name : "location",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "상세주소",      name : "locationDtl",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "휴대폰번호",      name : "phoneNum",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "성별",      name : "gender",             width:"0",     hidden: true,   useData : true}]
         ,   title : "User List"
         ,   selectCol : 'userId'
         ,   deleted : true
-        ,   inserted : true
+        ,   inserted : false
         ,   pagination : true
-        ,   colSpan : 5
+        ,   colSpan : 4
         ,   cellSelectEvent : (e) => {
             dispatch(showLoading());
 
@@ -111,8 +118,8 @@ const  AdminUser = () => {
         let data = {
                 userId     : document.getElementById("userId").value
             ,   userName   : document.getElementById("userName").value
-            ,   useYn       : document.getElementById("useYn").value
-            ,   fileYn      : document.getElementById("fileYn").value
+            ,   userRule    : document.getElementById("userRule").value
+            ,   gender      : document.getElementById("gender").value
         };
 
         common.fetchLoad("/userList","POST", data,(result) => {
@@ -139,6 +146,32 @@ const  AdminUser = () => {
         }
     }
 
+    const locationModal = (type) =>{
+        setModalStatus((prevState => {
+            return{
+                ...prevState
+                ,   open_location : type
+            }
+        }))
+    }
+
+    const onCompletePost = (data) => {
+        let fullAddr = data.address;
+        let extraAddr = '';
+
+        if (data.addressType === 'R') {
+            if (data.bname !== '') {
+                extraAddr += data.bname;
+            }
+            if (data.buildingName !== '') {
+                extraAddr += extraAddr !== '' ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddr += extraAddr !== '' ? ` (${extraAddr})` : '';
+        }
+        document.getElementById("locationPopup").value = fullAddr;
+        locationModal(false);
+    };
+
   return (
       <div className="container-fluid px-4">
           <h1 className="mt-4">MEMBER</h1>
@@ -153,16 +186,16 @@ const  AdminUser = () => {
                   <input type="text" className="form-control search-slt" placeholder="회원 명" id="userName"/>
               </div>
               <div className="col-md-2 my-2">
-                  <Select upperCodeId={"U001"}
-                          codeId={"useYn"}
+                  <Select upperCodeId={"UR001"}
+                          codeId={"userRule"}
                           codeClassName={"form-select"}
-                          text={"사용여부"}/>
+                          text={"회원권한"}/>
               </div>
               <div className="col-md-2 my-2">
-                  <Select upperCodeId={"F001"}
-                          codeId={"fileYn"}
+                  <Select upperCodeId={"G001"}
+                          codeId={"gender"}
                           codeClassName={"form-select"}
-                          text={"파일여부"}/>
+                          text={"성별"}/>
               </div>
               <div className="col-md-2 my-2">
                   <button type="button" className="btn btn-primary wrn-btn" onClick={userSearch}>
@@ -179,43 +212,70 @@ const  AdminUser = () => {
               <form id="formTest">
                   <div className="form-floating mb-3">
                       <input className="form-control" type="text" maxLength="20" id="userIdPopup" disabled={true}/>
-                      <label htmlFor="userId" id="idCheck">일련번호</label>
+                      <label htmlFor="userId" id="idCheck">ID</label>
                   </div>
                   <div className="form-floating mb-3">
                       <input className="form-control" type="text" maxLength="20" id="userNamePopup"/>
                       <label>회원 명</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <Select upperCodeId={"B001"}
-                              codeId={"userTypePopup"}
+                      <input className="form-control" type="text" maxLength="20" id="birthdayPopup"/>
+                      <label>생년월일</label>
+                  </div>
+                  <div className="form-floating mb-3">
+                      <Select upperCodeId={"G001"}
+                              codeId={"genderPopup"}
                               codeClassName={"form-select"}
                               chkVal={"1"}/>
-                      <label>회원 타입</label>
+                      <label>성별</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <input className="form-control" type="text" maxLength="20" id="userDescriptionPopup"/>
-                      <label>회원 설명</label>
+                      <input className="form-control" type="text" maxLength="50" id="emailPopup"/>
+                      <label>이메일</label>
+                  </div>
+                  <div className="row mb-3">
+                      <div className="col-md-8">
+                          <div className="form-floating mb-3 mb-md-0">
+                              <input className="form-control" id="locationPopup" type="text"/>
+                              <label>주소</label>
+                          </div>
+                      </div>
+                      <div className="col-md-4">
+                          <div className="form-floating mb-3 mb-md-0">
+                              <div className="d-grid">
+                                  <a className="btn btn-primary btn-block locationBtnPadding" id="btnLocation" onClick={() => locationModal(true)}>주소찾기</a>
+                              </div>
+                          </div>
+                      </div>
                   </div>
                   <div className="form-floating mb-3">
-                      <Select upperCodeId={"U001"}
-                              codeId={"useYnPopup"}
+                      <input className="form-control" id="locationDtlPopup"  maxLength="100" type="text"/>
+                      <label>상세주소</label>
+                  </div>
+                  <div className="form-floating mb-3">
+                      <input className="form-control" id="phoneNumPopup"  maxLength="100" type="text"/>
+                      <label>휴대폰번호</label>
+                  </div>
+                  <div className="form-floating mb-3">
+                      <Select upperCodeId={"UR001"}
+                              codeId={"userRulePopup"}
                               codeClassName={"form-select"}
-                              chkVal={"Y"}/>
-                      <label>사용여부</label>
+                              chkVal={"1"}/>
+                      <label>회원권한</label>
                   </div>
-                  <div className="form-floating mb-3">
-                      <Select upperCodeId={"F001"}
-                              codeId={"fileYnPopup"}
-                              codeClassName={"form-select"}
-                              chkVal={"Y"}/>
-                      <label>파일여부</label>
-                  </div>
+                  <FileInput fileId={"imageFileNo"}
+                             label={"프로필 사진"}
+                             fileNo={modalStatus.imageFileNo}
+                             fileClassName={"form-floating mb-3"}/>
                   <div className="mt-4 mb-0">
                       <div className="d-grid">
                           <a className="btn btn-primary btn-block" id="btnRegister" onClick={userSave}>저장</a>
                       </div>
                   </div>
               </form>
+          </Modal>
+          <Modal open={modalStatus.open_location} close={() => locationModal(false)} header="주소찾기">
+              <DaumPostcode autoClose onComplete={onCompletePost} />
           </Modal>
       </div>
   );
