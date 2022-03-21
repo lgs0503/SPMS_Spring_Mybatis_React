@@ -9,6 +9,8 @@ public interface MainMapper {
 
 	public UserVO loginProcessing(UserVO userVO);
 
+	public UserVO loginRuleCheck(UserVO userVO);
+
 	public int userIdCheck(UserVO userVO);
 
 	public void registerProcessing(UserVO userVO);
