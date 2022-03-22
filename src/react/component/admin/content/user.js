@@ -154,17 +154,41 @@ const  AdminUser = () => {
 
     const userSave = () => {
         if(window.confirm("저장하시겠습니까?")){
-            let data = {};
-            tableInit.headerColData.forEach((value, index) => {
-                if(value.useData === true) {
-                    data[value.name] = document.getElementById(value.name + "Popup").value;
-                }
-            });
 
-            common.fetchLoad("/saveUser","POST", data, (result) => {
-                dispatch(showAlertModal('저장 되었습니다.'));
-                closeModal();
-                userSearch();
+            new Promise((resolve, reject)=> {
+
+                if (document.getElementById("imageFileNo").value) {
+
+                    let form = new FormData();
+                    form.append("file", document.getElementById("imageFileNo").files[0]);
+
+                    common.fetchLoad("/file/upload", "POST", form, function (result) {
+                        resolve(result.uploadList[0].fileNo);
+                    }, true);
+
+                } else {
+                    resolve();
+                }
+
+            }).then((resolve)=>{
+                let data = {};
+
+                tableInit.headerColData.forEach((value, index) => {
+                    if(value.useData === true) {
+                        data[value.name] = document.getElementById(value.name + "Popup").value;
+                    }
+                });
+
+                /* 이미지 번호가 있으면 같이 저장한다.*/
+                if (resolve){
+                    data.imageFileNo = resolve;
+                }
+
+                common.fetchLoad("/saveUser","POST", data, (result) => {
+                    dispatch(showAlertModal('저장 되었습니다.'));
+                    closeModal();
+                    userSearch();
+                });
             });
         }
     }
