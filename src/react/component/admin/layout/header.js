@@ -43,7 +43,7 @@ const AdminHeader = (prop) => {
                   </Link>
                   <ul id="userInfoDropDown" className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style={{"right" : "0px"}} >
                       <li>
-                          <Link className="dropdown-item" to="#">MyPage</Link>
+                          <Link className="dropdown-item" to="/admin/myPage">MyPage</Link>
                       </li>
                       <li>
                           <hr className="dropdown-divider"/>
