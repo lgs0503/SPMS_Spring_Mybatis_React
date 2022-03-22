@@ -6,6 +6,10 @@ const FileInput  = (props) => {
 
     const fileChange = () => {
         document.getElementById(`fileName_${props.fileId}`).value = document.getElementById(props.fileId).files[0].name;
+
+        if(props.thumbnail){
+            common.uploadImgChange(props.fileId, props.thumbnail);
+        }
     }
 
     const fileDownLoad = () => {
