@@ -1,12 +1,15 @@
 package lgs.com.utill.controller;
 
+import lgs.com.utill.CommonResponse;
 import lgs.com.utill.service.FileService;
 import lgs.com.utill.vo.FileVO;
+import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -134,12 +139,30 @@ public class FileController {
             String path = uploadPath + "/" + fileVO.getFilePhysicalName() + '.' + fileVO.getFileExten();
 
             File file = new File(path);
+            int bytes = (int)file.length();
 
-            // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
-            response.setHeader("Content-Disposition", "attachment;filename=" + fileVO.getFileName() + '.' + fileVO.getFileExten());
+            String fileName = fileVO.getFileName() + '.' + fileVO.getFileExten();
+            String header = request.getHeader("User-Agent");
 
             // 파일 읽어오기
             FileInputStream fileInputStream = new FileInputStream(file);
+
+            // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
+            if (header.contains("MSIE") || header.contains("Trident")) {
+                fileName = URLEncoder.encode(fileName,"UTF-8").replaceAll("\\+", "%20");
+                response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+            } else {
+                fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            }
+
+            response.setContentType( "application/download; UTF-8" );
+            response.setContentLength(bytes);
+            response.setHeader("Content-Type", "application/octet-stream");
+            response.setHeader("Content-Transfer-Encoding", "binary;");
+            response.setHeader("Pragma", "no-cache;");
+            response.setHeader("Expires", "-1;");
+
             OutputStream out = response.getOutputStream();
 
             //1024바이트씩 계속 읽으면서 outputStream에 저장, -1이 나오면 더이상 읽을 파일이 없음
@@ -155,6 +178,29 @@ public class FileController {
             e.printStackTrace();
         }
     }
+
+    /**
+     *  이미지 데이터 조회
+     * @param BannerVO 조회조건
+     * @return 배너 리스트
+     */
+    @RequestMapping(value = "/getImageData", method = RequestMethod.POST)
+    public ResponseEntity<Message> bannerList(@RequestBody FileVO fileVO) throws IOException {
+        logger.info("getImageData");
+        CommonResponse commonResponse = new CommonResponse();
+
+        fileVO = fileService.fileSearch(fileVO);
+
+        /* 업로드 경로 + 파일명 + 파일확장자*/
+        String path = uploadPath + "/" + fileVO.getFilePhysicalName() + '.' + fileVO.getFileExten();
+
+        File file = new File(path);
+
+        commonResponse.putData("imageData", fileToBase64(file));
+
+        return new ResponseEntity<>(commonResponse.getMessage(), commonResponse.getHeaders(), HttpStatus.OK);
+    }
+
 
     /**
      *  폴더 생성
@@ -173,5 +219,21 @@ public class FileController {
         logger.debug(result == true ? "폴더 생성" : "폴더 생성되지않음");
 
         return result;
+    }
+
+    /**
+     *  파일 BASE64 인코딩
+     * @param file 인코딩 파일
+     */
+    public String fileToBase64(File file) throws IOException {
+
+        byte[] data = new byte[(int) file.length()];
+        try (FileInputStream stream = new FileInputStream(file)) {
+            stream.read(data, 0, data.length);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return Base64.getEncoder().encodeToString(data);
     }
 }
