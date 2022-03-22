@@ -110,6 +110,10 @@ body::-webkit-scrollbar-track{
     border-radius: 50%;
     border: 2px solid #2c3034;
 }
+.thumbnailImg{
+    width: 100%;
+    border: 1px solid #ced4da;
+}
 @media all and (max-height:1500px) {
     .userImage{
         width: 500px;

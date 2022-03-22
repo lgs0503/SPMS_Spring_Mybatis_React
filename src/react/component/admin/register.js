@@ -160,11 +160,6 @@ const  AdminRegister = () => {
         }
     }
 
-    const imageStyle = {
-        "width" : "100%",
-        "border" : "1px solid #ced4da"
-    };
-
    return (
       <div className="bg-primary-black">
           <div id="layoutAuthentication">
@@ -237,7 +232,7 @@ const  AdminRegister = () => {
                                                   <input className="form-control fileInput" id="imageFile" type="file" accept=".gif, .jpg, .png" onChange={fileChange}/>
                                                   <label>프로필 사진</label>
                                               </div>
-                                              <img id="thumbnailImg" src="" style={imageStyle}/>
+                                              <img id="thumbnailImg" src="" className={"thumbnailImg"}/>
                                               <div className="mt-4 mb-0">
                                                   <div className="d-grid">
                                                       <a className="btn btn-primary btn-block" id="btnRegister" onClick={register}>회원가입</a>

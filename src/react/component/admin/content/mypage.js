@@ -41,27 +41,18 @@ const  AdminMyPage = () => {
             };
 
             common.fetchLoad("/searchUser","POST", data,(result) => {
-
-                setMyPageStatus((prevState => {
-                    return{
-                        ...prevState
-                        ,   userRule : result.data.user["userRule"]
-                        ,   gender : result.data.user["gender"]
-                        ,   imageFileNo: result.data.user["imageFileNo"] ? result.data.user["imageFileNo"] : null
-                    }
-                }));
-
-                inputIds.forEach((value, index) => {
-                    document.getElementById(value + "Popup").value = result.data.user[value];
-                });
-
-                if(result.data.user["imageFileNo"]){
-                    document.getElementById("fileName_imageFileNo").value = result.data.user["imageFileNoName"];
-                }
                 resolve(result);
             });
 
         }).then((result) => {
+
+            inputIds.forEach((value, index) => {
+                document.getElementById(value + "Popup").value = result.data.user[value];
+            });
+
+            if(result.data.user["imageFileNo"]){
+                document.getElementById("fileName_imageFileNo").value = result.data.user["imageFileNoName"];
+            }
 
             if(result.data.user["imageFileNo"]){
                 let data = {
@@ -70,9 +61,18 @@ const  AdminMyPage = () => {
 
                 common.fetchLoad("/getImageData","POST", data,(imgResult) => {
                     document.getElementById("thumbnailImg").src = common.base64Img(imgResult.data.imageData);
+
+
+                    setMyPageStatus((prevState => {
+                        return{
+                            ...prevState
+                            ,   userRule : result.data.user["userRule"]
+                            ,   gender : result.data.user["gender"]
+                            ,   imageFileNo: result.data.user["imageFileNo"] ? result.data.user["imageFileNo"] : null
+                        }
+                    }));
                 });
             }
-
             dispatch(hideLoading());
         });
 
