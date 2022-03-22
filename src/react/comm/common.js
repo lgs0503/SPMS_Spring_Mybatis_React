@@ -163,3 +163,10 @@ export function tableChkIds(elName){
     });
     return data;
 }
+/**
+ * base64 데이터 이미지 사용 하게 변경
+ * @param base64str : base64
+ * */
+export function base64Img(base64str){
+    return "data:image/png;base64,"+base64str;
+}
