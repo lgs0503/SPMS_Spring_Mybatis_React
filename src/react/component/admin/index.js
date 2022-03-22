@@ -18,6 +18,7 @@ import AdminBanner from "./content/banner";
 import AdminPopup from "./content/popup";
 import AdminUser from "./content/user";
 import AdminComment from "./content/postComment";
+import AdminMyPage from "./content/mypage";
 
 const  AdminLayout = () => {
 
@@ -49,6 +50,7 @@ const  AdminLayout = () => {
                           <Route path="/post"               element={<AdminPost/>}/>
                           <Route path="/post/:boardType"    element={<AdminPost/>}/>
                           <Route path="/comment"            element={<AdminComment/>}/>
+                          <Route path="/myPage"            element={<AdminMyPage/>}/>
                       </Routes>
                   </main>
                   <AdminFooter/>
