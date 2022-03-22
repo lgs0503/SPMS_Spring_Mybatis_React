@@ -102,7 +102,7 @@ const  AdminLogin = () => {
     };
 
   return (
-      <div className="bg-primary">
+      <div className="bg-primary-black">
           <div id="layoutAuthentication">
               <div id="layoutAuthentication_content">
                   <main>
