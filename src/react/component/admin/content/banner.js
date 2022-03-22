@@ -174,7 +174,7 @@ const  AdminBanner = () => {
                 }
             }).then((resolve)=>{
 
-                console.log("fileNo: "+ resolve);
+                //console.log("fileNo: "+ resolve);
                 let data = {};
                 tableInit.headerColData.forEach((value, index) => {
                     console.log(value);
