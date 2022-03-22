@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/spring-showpingmall/static/css/main.f2f21536.css",
-    "main.js": "/spring-showpingmall/static/js/main.d87a1486.js",
+    "main.css": "/spring-showpingmall/static/css/main.a71764f7.css",
+    "main.js": "/spring-showpingmall/static/js/main.c22ec5a3.js",
     "static/js/787.75b77467.chunk.js": "/spring-showpingmall/static/js/787.75b77467.chunk.js",
     "static/media/loading.gif": "/spring-showpingmall/static/media/loading.9bbaf61e80fb7d02c9c8.gif",
     "index.html": "/spring-showpingmall/index.html",
-    "main.f2f21536.css.map": "/spring-showpingmall/static/css/main.f2f21536.css.map",
-    "main.d87a1486.js.map": "/spring-showpingmall/static/js/main.d87a1486.js.map",
+    "main.a71764f7.css.map": "/spring-showpingmall/static/css/main.a71764f7.css.map",
+    "main.c22ec5a3.js.map": "/spring-showpingmall/static/js/main.c22ec5a3.js.map",
     "787.75b77467.chunk.js.map": "/spring-showpingmall/static/js/787.75b77467.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f2f21536.css",
-    "static/js/main.d87a1486.js"
+    "static/css/main.a71764f7.css",
+    "static/js/main.c22ec5a3.js"
   ]
 }
