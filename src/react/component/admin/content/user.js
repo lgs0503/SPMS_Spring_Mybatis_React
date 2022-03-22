@@ -21,6 +21,8 @@ const  AdminUser = () => {
         ,   open : false
         ,   open_location : false
         ,   imageFileNo : null
+        ,   gender : "1"
+        ,   userRule : "1"
     });
 
     useEffect(() => {
@@ -42,11 +44,11 @@ const  AdminUser = () => {
                             ,{title: "권한",      name : "userRuleName",       width:"20%",   hidden: false,  useData : false}
                             ,{title: "성별",      name : "genderName",         width:"20%",   hidden: false,   useData : false}
                             ,{title: "권한",      name : "userRule",           width:"0",     hidden: true,   useData : true}
-                            ,{title: "생년월일",      name : "birthday",           width:"0",     hidden: true,   useData : true}
-                            ,{title: "이메일",      name : "email",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "생년월일",  name : "birthday",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "이메일",    name : "email",              width:"0",     hidden: true,   useData : true}
                             ,{title: "주소",      name : "location",           width:"0",     hidden: true,   useData : true}
-                            ,{title: "상세주소",      name : "locationDtl",           width:"0",     hidden: true,   useData : true}
-                            ,{title: "휴대폰번호",      name : "phoneNum",           width:"0",     hidden: true,   useData : true}
+                            ,{title: "상세주소",   name : "locationDtl",       width:"0",     hidden: true,   useData : true}
+                            ,{title: "휴대폰번호", name : "phoneNum",          width:"0",     hidden: true,   useData : true}
                             ,{title: "성별",      name : "gender",             width:"0",     hidden: true,   useData : true}]
         ,   title : "User List"
         ,   selectCol : 'userId'
@@ -57,13 +59,6 @@ const  AdminUser = () => {
         ,   cellSelectEvent : (e) => {
             dispatch(showLoading());
 
-            setModalStatus((prevState => {
-                return{
-                    ...prevState
-                    ,   open : true
-                    ,   title : "회원 상세"
-                }
-            }));
 
             let data = {
                 userId : e.target.parentNode.id
@@ -71,6 +66,17 @@ const  AdminUser = () => {
 
             new Promise((resolve, reject) => {
                 common.fetchLoad("/searchUser","POST", data,(result) => {
+
+                    setModalStatus((prevState => {
+                        return{
+                            ...prevState
+                            ,   open : true
+                            ,   title : "회원 상세"
+                            ,   userRule : result.data.user["userRule"]
+                            ,   gender : result.data.user["gender"]
+                        }
+                    }));
+
                     resolve(result);
                 });
             }).then((result) => {
@@ -79,18 +85,33 @@ const  AdminUser = () => {
                         document.getElementById(value.name + "Popup").value = result.data.user[value.name];
                     }
                 });
+
+                if(result.data.user["imageFileNo"]){
+                    document.getElementById("fileName_imageFileNo").value = result.data.user["imageFileNoName"];
+                }
+
+                setModalStatus((prevState => {
+                    return{
+                        ...prevState
+                        , imageFileNo: result.data.user["imageFileNo"] ? result.data.user["imageFileNo"] : null
+                    }
+                }));
+
                 dispatch(hideLoading());
             });
         }
         , addBtnClickEvent : () => {
-
+/*
             setModalStatus((prevState => {
                 return{
                     ...prevState
                     ,   open : true
                     ,   title : "회원 등록"
+                    ,   gender : "1"
+                    ,   userRule : "1"
+                    ,   imageFileNo : null
                 }
-            }));
+            }));*/
         }
         , deleteBtnClickEvent :() => {
             if(window.confirm("삭제하시겠습니까?")){
@@ -135,7 +156,9 @@ const  AdminUser = () => {
         if(window.confirm("저장하시겠습니까?")){
             let data = {};
             tableInit.headerColData.forEach((value, index) => {
-                data[value.name] =  document.getElementById(value.name + "Popup").value;
+                if(value.useData === true) {
+                    data[value.name] = document.getElementById(value.name + "Popup").value;
+                }
             });
 
             common.fetchLoad("/saveUser","POST", data, (result) => {
@@ -208,7 +231,7 @@ const  AdminUser = () => {
                  bodyData={bodyData}
                  bodyCnt={bodyCnt}/>
 
-          <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title}>
+          <Modal open={modalStatus.open} close={closeModal} header={modalStatus.title}  modalSize={"modalSize5"}>
               <form id="formTest">
                   <div className="form-floating mb-3">
                       <input className="form-control" type="text" maxLength="20" id="userIdPopup" disabled={true}/>
@@ -219,14 +242,14 @@ const  AdminUser = () => {
                       <label>회원 명</label>
                   </div>
                   <div className="form-floating mb-3">
-                      <input className="form-control" type="text" maxLength="20" id="birthdayPopup"/>
+                      <input className="form-control" type="date" id="birthdayPopup"/>
                       <label>생년월일</label>
                   </div>
                   <div className="form-floating mb-3">
                       <Select upperCodeId={"G001"}
                               codeId={"genderPopup"}
                               codeClassName={"form-select"}
-                              chkVal={"1"}/>
+                              chkVal={modalStatus.gender}/>
                       <label>성별</label>
                   </div>
                   <div className="form-floating mb-3">
@@ -260,7 +283,7 @@ const  AdminUser = () => {
                       <Select upperCodeId={"UR001"}
                               codeId={"userRulePopup"}
                               codeClassName={"form-select"}
-                              chkVal={"1"}/>
+                              chkVal={modalStatus.userRule}/>
                       <label>회원권한</label>
                   </div>
                   <FileInput fileId={"imageFileNo"}
