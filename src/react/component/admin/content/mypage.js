@@ -23,16 +23,15 @@ const  AdminMyPage = () => {
         open_location : false
         ,   imageFileNo : null
         ,   gender : "1"
-        ,   userRule : "1"
+        ,   userRule : "2"
     });
 
     useEffect(() => {
-        serachMyData();
+        searchMyData();
     },[]);
 
-    const serachMyData = () => {
+    const searchMyData = () => {
         dispatch(showLoading());
-
 
         new Promise((resolve, reject) => {
 
@@ -61,7 +60,6 @@ const  AdminMyPage = () => {
 
                 common.fetchLoad("/getImageData","POST", data,(imgResult) => {
                     document.getElementById("thumbnailImg").src = common.base64Img(imgResult.data.imageData);
-
 
                     setMyPageStatus((prevState => {
                         return{
