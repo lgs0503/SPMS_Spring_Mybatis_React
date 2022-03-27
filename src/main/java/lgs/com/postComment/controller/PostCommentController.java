@@ -1,7 +1,7 @@
-package lgs.com.postcomment.controller;
+package lgs.com.postComment.controller;
 
-import lgs.com.postcomment.service.PostCommentService;
-import lgs.com.postcomment.vo.PostCommentVO;
+import lgs.com.postComment.service.PostCommentService;
+import lgs.com.postComment.vo.PostCommentVO;
 import lgs.com.utill.CommonResponse;
 import lgs.com.utill.vo.Message;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
-package lgs.com.postcomment.service;
+package lgs.com.postComment.service;
 
-import lgs.com.postcomment.mapper.PostCommentMapper;
-import lgs.com.postcomment.vo.PostCommentVO;
+import lgs.com.postComment.mapper.PostCommentMapper;
+import lgs.com.postComment.vo.PostCommentVO;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

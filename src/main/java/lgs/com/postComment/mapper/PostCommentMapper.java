@@ -1,6 +1,6 @@
-package lgs.com.postcomment.mapper;
+package lgs.com.postComment.mapper;
 
-import lgs.com.postcomment.vo.PostCommentVO;
+import lgs.com.postComment.vo.PostCommentVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,6 +1,6 @@
-package lgs.com.postcomment.service;
+package lgs.com.postComment.service;
 
-import lgs.com.postcomment.vo.PostCommentVO;
+import lgs.com.postComment.vo.PostCommentVO;
 
 import java.util.List;
 

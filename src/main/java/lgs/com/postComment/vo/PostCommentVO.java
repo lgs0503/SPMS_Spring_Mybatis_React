@@ -1,4 +1,4 @@
-package lgs.com.postcomment.vo;
+package lgs.com.postComment.vo;
 
 import lgs.com.utill.vo.DefaultVO;
 import lombok.Data;
